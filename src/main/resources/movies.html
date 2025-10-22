@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>All Movies</title>
+
+   <link rel="stylesheet" type="text/css" href="common.css" />
+</head>
+<body>
+   <div class='topnav'>
+      <a href='/'>Homepage</a>
+      <a href='movies.html'>List All Movies</a>
+      <a href='moviestype.html'>Get Movies by Type</a>
+   </div>
+   
+   <div class='header'>
+      <h1 th:text="${title}"></h1>
+   </div>
+
+   <div class='content'>
+      <ul>
+         <li th:each="movie : ${movies}" th:text="${movie}"></li>
+      </ul>
+   </div>
+
+   <div class='footer'>
+      <p>COSC2803 Module 0 - Week 07</p>
+   </div>
+</body>
+</html>

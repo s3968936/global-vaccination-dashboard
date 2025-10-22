@@ -1,0 +1,47 @@
+package app;
+import app.JDBCConnection;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.sqlite.jdbc3.JDBC3Connection;
+
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
+
+/**
+ * Example Index HTML class using Javalin
+ * <p>
+ * Generate a static HTML page using Javalin
+ * by writing the raw HTML into a Java String object
+ *
+ * @author Timothy Wiley, 2023. email: timothy.wiley@rmit.edu.au
+ * @author Santha Sumanasekara, 2021. email: santha.sumanasekara@rmit.edu.au
+ */
+public class PageIndex implements Handler {
+
+    private JDBCConnection connection;
+
+    public PageIndex(JDBCConnection connection) {
+        this.connection = connection;
+    }
+
+    // URL of this page relative to http://localhost:7001/
+    public static final String URL = "/";
+
+    // Name of the Thymeleaf HTML template page in the resources folder
+    private static final String TEMPLATE = ("index.html");
+
+    @Override
+    public void handle(Context context) throws Exception {
+        // The model of data to provide to Thymeleaf.
+        // In this example the model will remain empty
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        // DO NOT MODIFY THIS
+        // Makes Javalin render the webpage using Thymeleaf
+        context.render(TEMPLATE, model);
+    }
+
+}

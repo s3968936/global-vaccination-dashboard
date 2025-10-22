@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>Movies by Type</title>
+
+   <link rel="stylesheet" type="text/css" href="common.css" />
+</head>
+<body>
+   <div class='topnav'>
+      <a href='/'>Homepage</a>
+      <a href='movies.html'>List All Movies</a>
+      <a href='moviestype.html'>Get Movies by Type</a>
+   </div>
+   
+   <div class='header'>
+      <h1 th:text="${title}"></h1>
+   </div>
+
+   <div class='content'>
+      <form action='/moviestype.html' method='post'>
+         <div class='form-group'>
+            <label for='movietype_drop'>Select the type Movie Type (Dropdown):</label>
+            <select id='movietype_drop' name='movietype_drop'>
+               <!-- This is where the movies types are populated -->
+               <option th:each="type : ${types}" th:text="${type}"></option>
+            </select>
+         </div>
+         <div class='form-group'>
+            <label for='movietype_textbox'>Select the type Movie Type (Textbox)</label>
+            <input class='form-control' id='movietype_textbox' name='movietype_textbox'>
+         </div>
+         <button type='submit' class='btn btn-primary'>Submit</button>
+      </form>
+
+      <!-- Display movies. Use check of the size of the array list to optionally show the UL -->
+      <div th:if="${#lists.size(movies_drop) > 0}"> 
+         <h2 th:text="${title_drop}"></h2>
+         <ul>
+            <li th:each="movie : ${movies_drop}" th:text="${movie}"></li>
+         </ul>
+      </div>
+
+      <!-- Display movies. Use check of the size of the array list to optionally show the UL -->
+      <div th:if="${#lists.size(movies_text) > 0}">
+         <h2 th:text="${title_text}"></h2>
+         <ul>
+            <li th:each="movie : ${movies_text}" th:text="${movie}"></li>
+         </ul>
+      </div>
+   </div>
+   
+   <div class='footer'>
+      <p>COSC2803 Module 0 - Week 07</p>
+   </div>
+</body>
+</html>
