@@ -49,6 +49,9 @@ public class App {
         app.get(PageIndex.URL, new PageIndex(connection));
         app.get(PageMoviesList.URL, new PageMoviesList(connection));      
         app.get(PageMoviesType.URL, new PageMoviesType(connection));
+        app.get(ExploreDataPage.URL, new ExploreDataPage(connection));
+        app.get(TrendingPage.URL, new TrendingPage(connection));
+        app.get(InsightsPage.URL, new InsightsPage(connection));
 
         // POST pages can accept form data
         app.post(PageMoviesType.URL, new PageMoviesType(connection));
