@@ -1,39 +1,95 @@
-<!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-   <title>Thymeleaf Example - Homepage</title>
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Global Health Dashboard - Homepage</title>
 
-   <link rel="stylesheet" type="text/css" href="common.css" />
-</head>
-<body>
-   <div class='topnav'>
-      <a href='/'>Homepage</a>
-      <a href='movies.html'>List All Movies</a>
-      <a href='moviestype.html'>Get Movies by Type</a>
-   </div>
-   
-   <div class='header'>
+    <link rel="stylesheet" type="text/css" href="common.css" />
+  </head>
+  <body>
+    <div class="topnav">
+      <a href="/">Homepage</a>
+    </div>
+
+    <div class="header">
       <h1>
-         <img src='logo.png' class='top-image' alt='RMIT logo' height='75'>
-         Homepage
+        <img src="logo.png" class="top-image" alt="RMIT logo" height="75" />
+        Global Health Dashboard
       </h1>
-   </div>
-   
-   <div class='content'>
-      <p>Links to queries on different web pages</p>
-      <ul>
-         <li>
-            <a href='movies.html'>List all Movies</a>
-         </li>
-         <li>
-            <a href='moviestype.html'>Get Movies by Type</a>
-         </li>
-      </ul>
-   </div>
-   
-   <div class='footer'>
-      <p>COSC2803 Module 0 - Week 07</p>
-   </div>
-</body>
+    </div>
+
+    <div class="content">
+      <h2>Global Health Snapshots</h2>
+
+      <!-- Top Vaccinations -->
+      <h3>Top 3 Vaccination Coverage</h3>
+      <table border="1">
+        <tr>
+          <th>Country</th>
+          <th>Vaccine</th>
+          <th>Coverage Percentage</th>
+        </tr>
+        <tr th:each="vaccination : ${topVaccinations}">
+          <td th:text="${vaccination.country_name}">Country</td>
+          <td th:text="${vaccination.vaccine_name}">Vaccine</td>
+          <td th:text="${vaccination.coverage_percentage} + '%'">Coverage</td>
+        </tr>
+      </table>
+
+      <!-- Economy Snapshot -->
+      <h3>Economic Snapshot</h3>
+      <table border="1">
+        <tr>
+          <th>Economy</th>
+          <th>Countries</th>
+          <th>Avg Coverage</th>
+        </tr>
+        <tr th:if="${economySnapshot.empty}">
+          <td colspan="3">No economy data available</td>
+        </tr>
+        <tr th:each="economy : ${economySnapshot}">
+          <td th:text="${economy.economy}">Economy</td>
+          <td th:text="${economy.country_count}">Count</td>
+          <td th:text="${economy.avg_vaccination} ?: 'N/A'">Coverage</td>
+        </tr>
+      </table>
+
+      <!-- Regions -->
+      <h3>Top Regions by Country Count</h3>
+      <table border="1">
+        <tr>
+          <th>Region</th>
+          <th>Number of Countries</th>
+        </tr>
+        <tr th:each="region : ${improvedRegions}">
+          <td th:text="${region.region}">Region Name</td>
+          <td th:text="${region.country_count}">Country Count</td>
+        </tr>
+      </table>
+
+      <!-- Top Infections -->
+      <h3>Top Reported Infections</h3>
+      <table border="1">
+        <tr>
+          <th>Infection Type</th>
+          <th>Total Cases</th>
+        </tr>
+        <tr th:if="${topInfections.empty}">
+          <td colspan="2">No infection data available</td>
+        </tr>
+        <tr th:each="infection : ${topInfections}">
+          <td th:text="${infection.infection_type}">Infection</td>
+          <td th:text="${infection.total_cases} ?: 'N/A'">Cases</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>Global Health Monitoring System</p>
+    </div>
+  </body>
 </html>

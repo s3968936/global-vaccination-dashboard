@@ -35,12 +35,14 @@ public class PageIndex implements Handler {
 
     @Override
     public void handle(Context context) throws Exception {
-        // The model of data to provide to Thymeleaf.
-        // In this example the model will remain empty
         Map<String, Object> model = new HashMap<String, Object>();
 
-        // DO NOT MODIFY THIS
-        // Makes Javalin render the webpage using Thymeleaf
+        // Get data for the 4 snapshots using JDBCConnection methods
+        model.put("topVaccinations", connection.getTopVaccinationsByCoverage());
+        model.put("economySnapshot", connection.getEconomySnapshot());
+        model.put("improvedRegions", connection.getRegions());
+        model.put("topInfections", connection.getTopInfections());
+
         context.render(TEMPLATE, model);
     }
 
