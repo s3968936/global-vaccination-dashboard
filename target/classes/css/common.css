@@ -1,43 +1,55 @@
 /* External CSS style file */
 
 .simple-topnav {
-  background-color: #f8f9fa; /* Light gray */
-  padding: 8px 20px;
+  background-color: #f8f9fa;
+  padding: 12px 40px;
   border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
+  gap: 60px;
 }
 
 /* Logo in navigation */
 .nav-logo {
-  height: 40px; /* Adjust size as needed */
+  height: 40px;
   width: auto;
-  margin-right: 20px;
+  margin-right: 60px; /* This creates space between logo and first nav item */
 }
 
-/* Navigation links */
+/* Navigation links - FIXED: Only one rule */
 .nav-links {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
-.simple-topnav a {
+/* Navigation links styling - FIXED: Only one rule */
+.nav-links a {
   display: inline-block;
   color: #333;
   text-decoration: none;
-  padding: 8px 16px;
-  margin-right: 5px;
+  padding: 10px 16px;
   border-radius: 4px;
   font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-right: 20px; /* Space between nav items */
 }
 
-.simple-topnav a:hover {
+.nav-links a:last-child {
+  margin-right: 0; /* Remove margin from last item */
+}
+
+.nav-links a:hover {
   background-color: #e9ecef;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
 }
 
-.simple-topnav a.active {
-  background-color: #007bff; /* Blue for active page */
+.nav-links a.active {
+  background-color: #007bff;
   color: white;
 }
 
@@ -57,38 +69,22 @@ body {
   text-align: center;
   background-color: #cccccc;
   color: #000000;
+  margin-top: 10px;
 }
 
 .header h1 {
   font-size: 50px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
 /* Make the logo have a rounded edge */
 img.top-image {
   vertical-align: middle;
-}
-
-/* CSS Layout from W3Schools: https://www.w3schools.com/css/css_templates.asp */
-/* Style the top navigation bar */
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
-
-/* Style the topnav links */
-.topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-/* Change color on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
+  border-radius: 8px;
 }
 
 /* Style the content */
