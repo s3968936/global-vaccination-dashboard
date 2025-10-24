@@ -1,27 +1,14 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Explore Data - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
   </head>
   <body>
-<<<<<<< HEAD:src/main/resources/ExploreData.html
     <div class="simple-topnav">
       <!-- Logo on the left -->
       <img src="logo.png" class="nav-logo" alt="RMIT logo" />
-=======
-    <div class="nav-links">
-      <a href="/">Homepage</a>
-      <a href="/explore" class="active">Explore Data</a>
-      <a href="/trending">Trending</a>
-      <a href="/insights">Insights</a>
-    </div>
->>>>>>> 937182d73214b413be7a5cfbeff9645b8a17aa3b:src/main/resources/exploredata.html
 
       <!-- Navigation links -->
       <div class="nav-links">
@@ -33,6 +20,7 @@
         <a href="/mission">Mission Statement</a>
       </div>
     </div>
+
     <div class="header">
       <h1>
         <img src="logo.png" class="top-image" alt="RMIT logo" height="75" />
@@ -42,9 +30,140 @@
 
     <div class="content">
       <h2>Explore Global Health Data</h2>
-      <p>This page will allow you to explore global health data.</p>
-      <p>Content coming soon...</p>
+      <p>
+        Select a dataset and use the filters below to explore health data from
+        around the world.
+      </p>
 
+      <!-- Error Message -->
+      <div th:if="${error}" class="error-message">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+      </div>
+
+      <!-- Dataset Selector Tabs -->
+      <div class="dataset-selector">
+        <div
+          class="dataset-tab active"
+          id="vaccination-tab"
+          onclick="switchDataset('vaccination')"
+        >
+          Vaccination Data
+        </div>
+        <div
+          class="dataset-tab"
+          id="infection-tab"
+          onclick="window.location.href='/infection'"
+        >
+          Infection Data
+        </div>
+      </div>
+
+      <!-- Filter Form -->
+      <form method="get" action="/explore" id="filter-form">
+        <input
+          type="hidden"
+          name="datasetType"
+          id="datasetType"
+          value="vaccination"
+        />
+
+        <div class="filter-section">
+          <div class="filter-grid">
+            <!-- Country Combo Box -->
+            <div class="combo-box-simple">
+              <label for="country">Country</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="Type or select country"
+                list="country-list"
+              />
+              <datalist id="country-list">
+                <option
+                  th:each="country : ${countries}"
+                  th:value="${country}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Region Combo Box -->
+            <div class="combo-box-simple">
+              <label for="region">Region</label>
+              <input
+                type="text"
+                id="region"
+                name="region"
+                placeholder="Type or select region"
+                list="region-list"
+              />
+              <datalist id="region-list">
+                <option
+                  th:each="region : ${regions}"
+                  th:value="${region}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Antigen Combo Box -->
+            <div class="combo-box-simple">
+              <label for="antigen" id="antigen-label">Antigen</label>
+              <input
+                type="text"
+                id="antigen"
+                name="antigen"
+                placeholder="Type or select antigen"
+                list="antigen-list"
+              />
+              <datalist id="antigen-list">
+                <option
+                  th:each="antigen : ${antigens}"
+                  th:value="${antigen}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Year Combo Box -->
+            <div class="combo-box-simple">
+              <label for="yearStart">Year Range</label>
+              <div class="year-range">
+                <div class="year-start">
+                  <input
+                    type="text"
+                    id="yearStart"
+                    name="yearStart"
+                    placeholder="From"
+                    list="year-list"
+                  />
+                </div>
+                <div class="year-separator">to</div>
+                <div class="year-end">
+                  <input
+                    type="text"
+                    id="yearEnd"
+                    name="yearEnd"
+                    placeholder="To (leave empty for single year)"
+                    list="year-list"
+                  />
+                </div>
+              </div>
+              <datalist id="year-list">
+                <option th:each="year : ${years}" th:value="${year}"></option>
+              </datalist>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="filter-actions">
+            <button type="submit" class="apply-btn">Apply Filters</button>
+            <button type="button" onclick="clearFilters()" class="reset-btn">
+              Clear All
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Results Section -->
       <div
         style="
           background-color: #f5f5f5;
@@ -53,8 +172,12 @@
           border-radius: 5px;
         "
       >
-        <h3>Explore Page is Working!</h3>
-        <p>This confirms the Explore page is successfully loaded.</p>
+        <h3>Data Results Will Appear Here</h3>
+        <p>
+          Select <strong>Vaccination Data</strong> or
+          <strong>Infection Data</strong> and apply filters to see the results.
+        </p>
+        <p>Data table and charts will appear here once you apply filters.</p>
       </div>
     </div>
 

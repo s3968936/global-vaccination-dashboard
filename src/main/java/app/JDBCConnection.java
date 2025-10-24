@@ -119,4 +119,28 @@ public class JDBCConnection {
                       "ORDER BY total_cases DESC LIMIT 10";
         return executeQuery(query);
     }
+// FILTER DROPDOWN METHODS FOR EXPLOREDATA PAGE (VACCINATION)
+    // Get all unique countries for the country filter dropdown
+    public ArrayList<HashMap<String, String>> getAllCountries() {
+        String query = "SELECT DISTINCT name as country FROM Country ORDER BY name";
+        return executeQuery(query);
+    }
+
+    //Get all unique regions for the region filter dropdown
+    public ArrayList<HashMap<String, String>> getAllRegions() {
+        String query = "SELECT DISTINCT region as region FROM Region ORDER BY region";
+        return executeQuery(query);
+    }
+
+    //Get all unique antigens for the antigen filter dropdown
+    public ArrayList<HashMap<String, String>> getAllAntigens() {
+        String query = "SELECT DISTINCT name as antigen FROM Antigen ORDER BY name";
+        return executeQuery(query);
+    }
+
+    //Get all unique years for the year filter dropdown
+    public ArrayList<HashMap<String, String>> getAllYears() {
+        String query = "SELECT DISTINCT year as year FROM Vaccination ORDER BY year";
+        return executeQuery(query);
+    }
 }
