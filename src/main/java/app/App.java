@@ -52,11 +52,4 @@ public class App {
         app.get(InsightsPage.URL, new InsightsPage(connection));
 
         // POST pages can accept form data
-<<<<<<< HEAD
-        
-=======
-        //app.post(PageMoviesType.URL, new PageMoviesType(connection));
->>>>>>> 006efb372cc1ec9468f3d9770e29d990e4b7388e
-    }
-
 }
