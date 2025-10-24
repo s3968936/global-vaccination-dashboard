@@ -7,14 +7,20 @@
    <link rel="stylesheet" type="text/css" href="common.css" />
 </head>
 <body>
-   <div class="nav-links">
+   <div class="simple-topnav">
+      <!-- Logo on the left -->
+      <img src="logo.png" class="nav-logo" alt="RMIT logo" />
+
+      <!-- Navigation links -->
+      <div class="nav-links">
         <a href="/">Homepage</a>
         <a href="/explore">ExploreData</a>
-        <a href="/trending">Trending</a>
+        <a href="/trending" class="active">Trending</a>
         <a href="/insights">Insights</a>
         <a href="/feedback">Feedback</a>
-        <a href="/mission" class="active">Mission Statement</a>
-   </div>
+        <a href="/mission">Mission Statement</a>
+      </div>
+    </div>
    
    <div class='header'>
       <h1 th:text="${title}"></h1>

@@ -14,7 +14,7 @@ public class MissionPage implements Handler {
         this.connection = connection;
     }
 
-    public static final String URL = "/ourmission";
+    public static final String URL = "/mission";
     private static final String TEMPLATE = "mission.html";
 
     @Override

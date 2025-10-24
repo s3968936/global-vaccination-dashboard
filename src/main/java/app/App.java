@@ -50,6 +50,8 @@ public class App {
         app.get(ExploreDataPage.URL, new ExploreDataPage(connection));
         app.get(TrendingPage.URL, new TrendingPage(connection));
         app.get(InsightsPage.URL, new InsightsPage(connection));
+        app.get(MissionPage.URL, new MissionPage(connection));
+        
 
         // POST pages can accept form data
     }
