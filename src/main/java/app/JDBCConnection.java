@@ -1,12 +1,12 @@
 package app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class for Managing the JDBC Connection to a SQLLite Database.
@@ -78,7 +78,7 @@ public class JDBCConnection {
         String query = "SELECT " +
                     "c.name as country_name, " +
                     "a.name as vaccine_name, " +
-                    "ROUND((v.doses / v.target_num) * 100, 2) as coverage_percentage " +
+                    "ROUND((v.doses / v.target_num) * 10, 2) as coverage_percentage " +
                     "FROM Vaccination v " +
                     "JOIN Country c ON v.country = c.CountryID " +
                     "JOIN Antigen a ON v.antigen = a.AntigenID " +
@@ -86,7 +86,7 @@ public class JDBCConnection {
                     "  AND v.target_num IS NOT NULL " +
                     "  AND v.target_num > 0 " +
                     "ORDER BY coverage_percentage DESC " +
-                    "LIMIT 3";
+                    "LIMIT 5";
         
         return executeQuery(query);
     }
