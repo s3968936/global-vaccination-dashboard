@@ -2,13 +2,13 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-   <title>All Movies</title>
+   <title>Mission Statement & About Us</title>
 
    <link rel="stylesheet" type="text/css" href="common.css" />
 </head>
 <body>
    <div class="topnav">
-      <a href="/">Homepage</a>
+      <a href="/">Mission Statement</a>
       <a href="/explore" class="active">Explore Data</a>
       <a href="/trending">Trending</a>
       <a href="/insights">Insights</a>
@@ -22,7 +22,7 @@
 
    <div class='content'>
       <ul>
-         <li th:each="movie : ${movies}" th:text="${movie}"></li>
+         
       </ul>
    </div>
 
