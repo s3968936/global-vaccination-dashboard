@@ -52,7 +52,4 @@ public class App {
         app.get(InsightsPage.URL, new InsightsPage(connection));
 
         // POST pages can accept form data
-        
-    }
-
 }
