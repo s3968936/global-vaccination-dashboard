@@ -15,7 +15,7 @@ public class ExploreDataPage implements Handler {
     }
 
     public static final String URL = "/explore";
-    private static final String TEMPLATE = "ExploreData.html";
+    private static final String TEMPLATE = "exploredata.html";
 
     @Override
     public void handle(Context context) throws Exception {
