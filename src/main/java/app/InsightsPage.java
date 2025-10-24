@@ -15,7 +15,7 @@ public class InsightsPage implements Handler {
     }
 
     public static final String URL = "/insights";
-    private static final String TEMPLATE = "Insights.html";
+    private static final String TEMPLATE = "insights.html";
 
     @Override
     public void handle(Context context) throws Exception {
