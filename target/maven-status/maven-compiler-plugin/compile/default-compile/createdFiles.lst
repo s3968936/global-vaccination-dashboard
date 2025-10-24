@@ -1,6 +1,7 @@
 app/model/TeamMember.class
 app/model/InfectionData.class
 app/model/InfectionType.class
+app/MissionPage.class
 app/model/Vaccination.class
 app/JDBCConnection.class
 app/InsightsPage.class
