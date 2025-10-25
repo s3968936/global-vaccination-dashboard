@@ -289,3 +289,69 @@ img.top-image {
     flex: 1 1 100%; /* single column on mobile */
   }
 }
+
+/* ---------- Feedback Form Card ---------- */
+.feedback-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 30px auto; /* center on page */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Spacing for form fields */
+.combo-box-simple {
+    margin-bottom: 20px;
+}
+
+.combo-box-simple label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.combo-box-simple input,
+.combo-box-simple textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Full width submit button */
+.apply-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 6px;
+}
+
+/* Success message styling */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 12px 16px;
+    border-radius: 5px;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Subtle background for the page */
+body {
+    background: linear-gradient(to bottom, #f1f1f1, #e2e8f0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .feedback-card {
+        padding: 20px;
+        margin: 20px;
+    }
+    .header h1 {
+        font-size: 36px;
+    }
+}

@@ -1,14 +1,13 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <meta charset="UTF-8" />
    <title>Feedback - Global Health Dashboard</title>
-
    <link rel="stylesheet" type="text/css" href="common.css" />
 </head>
 <body>
    <!-- Top Navigation -->
-    <div class="simple-topnav">
+   <div class="simple-topnav">
       <a href="/" class="nav-logo-link">
         <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
       </a>
@@ -20,20 +19,44 @@
         <a href="/mission">Mission Statement</a>
         <a href="/feedback" class="active">Feedback</a>
       </div>
-    </div>
+   </div>
    
    <div class='header'>
-      <h1 th:text="${title}"></h1>
+      <h1 th:text="${title}">Feedback</h1>
    </div>
 
    <div class='content'>
-      <ul>
-         
-      </ul>
+      <div class="feedback-card">
+          <!-- Optional success message -->
+          <div class="success-message" th:if="${submitted}">
+              Thank you, <span th:text="${name}"></span>, for your feedback!
+          </div>
+
+          <form action="/feedback" method="POST" class="feedback-form">
+              <div class="combo-box-simple">
+                  <label for="name">Name:</label>
+                  <input type="text" id="name" name="name" placeholder="Your name" required />
+              </div>
+
+              <div class="combo-box-simple">
+                  <label for="email">Email:</label>
+                  <input type="email" id="email" name="email" placeholder="Your email" required />
+              </div>
+
+              <div class="combo-box-simple">
+                  <label for="feedback">Feedback:</label>
+                  <textarea id="feedback" name="feedback" rows="5" placeholder="Your feedback" required></textarea>
+              </div>
+
+              <div class="filter-actions">
+                  <button type="submit" class="apply-btn">Submit Feedback</button>
+              </div>
+          </form>
+      </div>
    </div>
 
    <!-- Footer -->
-    <footer class="footer">
+   <footer class="footer">
       <div class="footer-content">
         <p><strong>Global Health Dashboard</strong></p>
         <nav class="footer-links">
@@ -46,6 +69,6 @@
         </nav>
         <p><small>© 2025 RMIT University - Global Vaccination Initiatives | Empowering informed global health decisions</small></p>
       </div>
-    </footer>
+   </footer>
 </body>
 </html>

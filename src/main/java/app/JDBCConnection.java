@@ -3,10 +3,12 @@ package app;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 import app.model.Persona;
 
@@ -178,6 +180,21 @@ public class JDBCConnection {
 
         return list;
     }
+    
+    public void executeUpdate(String sql, Object... params) {
+        try (Connection conn = DriverManager.getConnection(DATABASE);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            // Set parameters
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

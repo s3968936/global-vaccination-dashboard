@@ -51,8 +51,9 @@ public class App {
         app.get(InfectionPage.URL, new InfectionPage(connection));
         app.get(MissionPage.URL, new MissionPage(connection));
         app.get(Feedback.URL, new Feedback(connection));
-        
+
         // POST pages can accept form data
+        app.post(Feedback.URL, new Feedback(connection));
 
     }
 }
