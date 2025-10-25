@@ -143,4 +143,11 @@ public class JDBCConnection {
         String query = "SELECT DISTINCT year as year FROM Vaccination ORDER BY year";
         return executeQuery(query);
     }
+
+    //Get all the fields from the persona table in the database
+    public ArrayList<HashMap<String, String>> getAllPersonas() {
+    String query = "SELECT * FROM Personas ORDER BY persona_id;";
+    return executeQuery(query);
+}
+
 }

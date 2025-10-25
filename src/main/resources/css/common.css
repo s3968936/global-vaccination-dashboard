@@ -266,3 +266,36 @@ img.top-image {
   font-weight: bold;
   color: #666;
 }
+
+/* ---------- TABLE STYLES (Mission Page Personas) ---------- */
+.persona-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f8f9fa;
+  margin-top: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.persona-table th,
+.persona-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.persona-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+}
+
+.persona-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.persona-table tr:hover {
+  background-color: #e9ecef;
+}
+
