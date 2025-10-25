@@ -1,11 +1,12 @@
 package app;
 
+import app.model.Persona;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.javalin.http.Context;
-import io.javalin.http.Handler;
 
 public class MissionPage implements Handler {
 
@@ -19,14 +20,15 @@ public class MissionPage implements Handler {
     @Override
     public void handle(Context context) throws Exception {
         Map<String, Object> model = new HashMap<>();
-
-        // Page title for mission.html
         model.put("title", "Mission Statement & Personas");
 
         try {
-            // Query personas from database
-            ArrayList<HashMap<String, String>> personas = connection.getAllPersonas();
+            // Fetch all personas as Persona objects
+            ArrayList<Persona> personas = connection.getAllPersonas();
+
+            // Pass to Thymeleaf
             model.put("personas", personas);
+
         } catch (Exception e) {
             e.printStackTrace();
             model.put("error", "Error loading personas: " + e.getMessage());

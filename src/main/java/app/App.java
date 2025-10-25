@@ -42,9 +42,7 @@ public class App {
         configureRoutes(app);
     }
 
-    public static void configureRoutes(Javalin app) {
-        // Note in this example we must add Movies Type as a GET and a POST!
-        
+    public static void configureRoutes(Javalin app) {   
         // ADD ALL OF YOUR WEBPAGES HERE
         app.get(PageIndex.URL, new PageIndex(connection));
         app.get(ExploreDataPage.URL, new ExploreDataPage(connection));

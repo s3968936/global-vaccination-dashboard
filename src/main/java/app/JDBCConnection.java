@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import app.model.Persona;
+
 /**
  * Class for Managing the JDBC Connection to a SQLLite Database.
  */
@@ -145,9 +147,37 @@ public class JDBCConnection {
     }
 
     //Get all the fields from the persona table in the database
-    public ArrayList<HashMap<String, String>> getAllPersonas() {
-    String query = "SELECT * FROM Personas ORDER BY persona_id;";
-    return executeQuery(query);
-}
+    public ArrayList<Persona> getAllPersonas() {
+        ArrayList<Persona> list = new ArrayList<>();
+        String query = "SELECT * FROM Personas ORDER BY persona_id;";
+
+        try (Connection conn = DriverManager.getConnection(DATABASE);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Persona p = new Persona(
+                    rs.getInt("persona_id"),
+                    rs.getString("name"),
+                    rs.getInt("age"),
+                    rs.getString("occupation"),
+                    rs.getString("education"),
+                    rs.getString("location"),
+                    rs.getString("language"),
+                    rs.getString("disability"),
+                    rs.getString("needs"),
+                    rs.getString("goals"),
+                    rs.getString("skills"),
+                    rs.getString("image_credit")
+                );
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
 
 }

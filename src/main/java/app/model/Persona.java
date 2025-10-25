@@ -1,5 +1,9 @@
 package app.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Persona {
     private int personaId;
     private String name;
@@ -133,5 +137,24 @@ public class Persona {
     
     public void setImageCredit(String imageCredit) { 
         this.imageCredit = imageCredit; 
+    }
+
+    // --- Derived lists for Thymeleaf ---
+    public List<String> getNeedsList() {
+        return parseBulletPoints(needs);
+    }
+
+    public List<String> getGoalsList() {
+        return parseBulletPoints(goals);
+    }
+
+    public List<String> getSkillsList() {
+        return parseBulletPoints(skills);
+    }
+
+    // Utility method to split bullet points
+    private List<String> parseBulletPoints(String text) {
+        if (text == null || text.isEmpty()) return new ArrayList<>();
+        return Arrays.asList(text.split("\\s*[-;]\\s*"));
     }
 }

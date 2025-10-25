@@ -37,44 +37,33 @@
 
     <h2>Meet Our Personas</h2>
 
-    <!-- Error Message -->
-    <div th:if="${error}" class="error-message">
-      <strong>Error:</strong> <span th:text="${error}"></span>
-    </div>
+    <!-- Personas Container -->
+    <div class="personas-container" th:if="${personas}">
+    <div class="persona-card" th:each="p : ${personas}">
+      <h3 th:text="|${p.name} (${p.age})|"></h3>
+      <p><strong>Occupation:</strong> <span th:text="${p.occupation}"></span></p>
+      <p><strong>Education:</strong> <span th:text="${p.education}"></span></p>
+      <p><strong>Location:</strong> <span th:text="${p.location}"></span></p>
+      <p><strong>Language:</strong> <span th:text="${p.language}"></span></p>
+      <p><strong>Disability:</strong> <span th:text="${p.disability}"></span></p>
 
-    <!-- Personas Table -->
-    <table class="persona-table" th:if="${personas}">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Occupation</th>
-          <th>Education</th>
-          <th>Location</th>
-          <th>Language</th>
-          <th>Disability</th>
-          <th>Needs</th>
-          <th>Goals</th>
-          <th>Skills</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="p : ${personas}">
-          <td th:text="${p.persona_id}"></td>
-          <td th:text="${p.name}"></td>
-          <td th:text="${p.age}"></td>
-          <td th:text="${p.occupation}"></td>
-          <td th:text="${p.education}"></td>
-          <td th:text="${p.location}"></td>
-          <td th:text="${p.language}"></td>
-          <td th:text="${p.disability}"></td>
-          <td th:text="${p.needs}"></td>
-          <td th:text="${p.goals}"></td>
-          <td th:text="${p.skills}"></td>
-        </tr>
-      </tbody>
-    </table>
+      <p><strong>Needs:</strong></p>
+      <ul>
+        <li th:each="n : ${p.needsList}" th:text="${n}"></li>
+      </ul>
+
+      <p><strong>Goals:</strong></p>
+      <ul>
+        <li th:each="g : ${p.goalsList}" th:text="${g}"></li>
+      </ul>
+
+      <p><strong>Skills:</strong></p>
+      <ul>
+        <li th:each="s : ${p.skillsList}" th:text="${s}"></li>
+      </ul>
+    </div>
+  </div>
+
   </div>
 
   <!-- Footer -->
