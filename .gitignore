@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 *.class
-=======
 # Ignore compiled Java class files
 *.class
 
@@ -22,4 +20,5 @@ out/
 # Ignore environment files
 .env
 
->>>>>>> 2a2cba6ef1c8e89c3d29a8dd6380ef421da209b2
+#Ignore pom files
+.xml

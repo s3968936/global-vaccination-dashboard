@@ -4,6 +4,7 @@ app/model/InfectionType.class
 app/MissionPage.class
 app/model/Vaccination.class
 app/JDBCConnection.class
+app/PrivacyPage.class
 app/InsightsPage.class
 app/model/Persona.class
 app/model/CountryPopulation.class

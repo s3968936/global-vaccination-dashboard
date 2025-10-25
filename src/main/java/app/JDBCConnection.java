@@ -2,13 +2,12 @@ package app;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 
 import app.model.Persona;
 
@@ -160,6 +159,7 @@ public class JDBCConnection {
             while (rs.next()) {
                 Persona p = new Persona(
                     rs.getInt("persona_id"),
+                    rs.getString("title"),
                     rs.getString("name"),
                     rs.getInt("age"),
                     rs.getString("occupation"),
@@ -170,10 +170,12 @@ public class JDBCConnection {
                     rs.getString("needs"),
                     rs.getString("goals"),
                     rs.getString("skills"),
+                    rs.getString("image"),
                     rs.getString("image_credit")
                 );
                 list.add(p);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
