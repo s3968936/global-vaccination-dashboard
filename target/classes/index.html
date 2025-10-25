@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Global Health Dashboard - Homepage</title>
+    <link rel="stylesheet" type="text/css" href="common.css" />
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <div class="simple-topnav">
+      <a href="/" class="nav-logo-link">
+        <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+      </a>
+      <div class="nav-links">
+        <a href="/" class="active">Homepage</a>
+        <a href="/explore">Explore Data</a>
+        <a href="/trending">Trending</a>
+        <a href="/insights">Insights</a>
+        <a href="/mission">Mission Statement</a>
+        <a href="/feedback">Feedback</a>
+      </div>
+    </div>
+
+    <div class="header">
+      <h1>
+        Global Health Dashboard
+      </h1>
+    </div>
+
+    <div class="content">
+      <h2>Global Health Snapshots</h2>
+
+      <!-- Top Vaccinations -->
+      <h3>Top 3 Vaccination Coverage</h3>
+      <table border="1">
+        <tr>
+          <th>Country</th>
+          <th>Vaccine</th>
+          <th>Coverage Percentage</th>
+        </tr>
+        <tr th:each="vaccination : ${topVaccinations}">
+          <td th:text="${vaccination.country_name}">Country</td>
+          <td th:text="${vaccination.vaccine_name}">Vaccine</td>
+          <td th:text="${vaccination.coverage_percentage} + '%'">Coverage</td>
+        </tr>
+      </table>
+
+      <!-- Economy Snapshot -->
+      <h3>Economic Snapshot</h3>
+      <table border="1">
+        <tr>
+          <th>Economy</th>
+          <th>Countries</th>
+          <th>Avg Coverage</th>
+        </tr>
+        <tr th:if="${economySnapshot.empty}">
+          <td colspan="3">No economy data available</td>
+        </tr>
+        <tr th:each="economy : ${economySnapshot}">
+          <td th:text="${economy.economy}">Economy</td>
+          <td th:text="${economy.country_count}">Count</td>
+          <td th:text="${economy.avg_vaccination} ?: 'N/A'">Coverage</td>
+        </tr>
+      </table>
+
+      <!-- Regions -->
+      <h3>Top Regions by Country Count</h3>
+      <table border="1">
+        <tr>
+          <th>Region</th>
+          <th>Number of Countries</th>
+        </tr>
+        <tr th:each="region : ${improvedRegions}">
+          <td th:text="${region.region}">Region Name</td>
+          <td th:text="${region.country_count}">Country Count</td>
+        </tr>
+      </table>
+
+      <!-- Top Infections -->
+      <h3>Top Reported Infections</h3>
+      <table border="1">
+        <tr>
+          <th>Infection Type</th>
+          <th>Total Cases</th>
+        </tr>
+        <tr th:if="${topInfections.empty}">
+          <td colspan="2">No infection data available</td>
+        </tr>
+        <tr th:each="infection : ${topInfections}">
+          <td th:text="${infection.infection_type}">Infection</td>
+          <td th:text="${infection.total_cases} ?: 'N/A'">Cases</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p><strong>Global Health Dashboard</strong></p>
+        <nav class="footer-links">
+          <a href="/">Homepage</a> |
+          <a href="/explore">Explore Data</a> |
+          <a href="/trending">Trending</a> |
+          <a href="/insights">Insights</a> |
+          <a href="/mission">Mission Statement</a> |
+          <a href="/feedback">Feedback</a>
+        </nav>
+        <p><small>© 2025 RMIT University – Global Vaccination Initiatives | Empowering informed global health decisions</small></p>
+      </div>
+    </footer>
+
+  </body>
+</html>

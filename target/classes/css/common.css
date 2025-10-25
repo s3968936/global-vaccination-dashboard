@@ -1,0 +1,301 @@
+/* ==============================================
+   Global Health Dashboard - External CSS
+   COSC2803 | Java Programming Studio 1 | S2 2025
+   ============================================== */
+
+/* ---------- NAVIGATION BAR ---------- */
+.simple-topnav {
+  background-color: #f8f9fa;
+  padding: 12px 40px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 60px;
+}
+
+.nav-logo {
+  height: 100px;
+  width: auto;
+  margin-right: 100px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  display: inline-block;
+  color: #333;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-right: 20px;
+  transition: all 0.2s ease;
+}
+
+.nav-links a:last-child {
+  margin-right: 0;
+}
+
+.nav-links a:hover {
+  background-color: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.nav-links a.active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* ---------- GLOBAL LAYOUT ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10px;
+  background: #f1f1f1;
+  color: #000;
+}
+
+/* ---------- HEADER ---------- */
+.header {
+  padding: 10px;
+  text-align: center;
+  background-color: #cccccc;
+  color: #000000;
+  margin-top: 10px;
+}
+
+.header h1 {
+  font-size: 50px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+img.top-image {
+  vertical-align: middle;
+  border-radius: 8px;
+}
+
+/* ---------- CONTENT ---------- */
+.content {
+  background-color: #ddd;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  background-color: #226ca0;
+  color: #e0e1dd;
+  text-align: center;
+  padding: 1.5em 0;
+  font-size: 0.95em;
+  border-top: 2px solid #226ca0;
+  margin-top: 2em;
+}
+
+.footer-links {
+  margin: 0.5em 0;
+}
+
+.footer a {
+  color: #9ad0ec;
+  text-decoration: none;
+  margin: 0 0.4em;
+  font-weight: 500;
+}
+
+.footer a:hover {
+  color: #f4d35e;
+  text-decoration: underline;
+}
+
+.footer small {
+  color: #cbd5e0;
+}
+
+/* ---------- EXPLORE DATA PAGE ---------- */
+
+/* Dataset Selector Tabs */
+.dataset-selector {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.dataset-tab {
+  padding: 12px 24px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  margin-right: 5px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.dataset-tab.active {
+  background-color: #fff;
+  border-bottom: 1px solid white;
+  margin-bottom: -1px;
+  color: #007bff;
+}
+
+.dataset-tab:hover {
+  background-color: #e9ecef;
+}
+
+/* Filter Section */
+.filter-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.combo-box-simple {
+  width: 100%;
+}
+
+.combo-box-simple label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.combo-box-simple input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.combo-box-simple input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.combo-box-simple input::placeholder {
+  color: #999;
+}
+
+.filter-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.apply-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.apply-btn:hover {
+  background-color: #0056b3;
+}
+
+.reset-btn {
+  background-color: #6c757d;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background-color: #545b62;
+}
+
+/* Error Messages */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border: 1px solid #f5c6cb;
+}
+
+/* Year Range Inputs */
+.year-range {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.year-start,
+.year-end {
+  flex: 1;
+}
+
+.year-separator {
+  align-self: center;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #666;
+}
+
+/* ---------- TABLE STYLES (Mission Page Personas) ---------- */
+.persona-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f8f9fa;
+  margin-top: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.persona-table th,
+.persona-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.persona-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+}
+
+.persona-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.persona-table tr:hover {
+  background-color: #e9ecef;
+}
+
