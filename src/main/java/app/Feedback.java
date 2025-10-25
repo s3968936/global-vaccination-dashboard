@@ -6,16 +6,16 @@ import java.util.Map;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
-public class TrendingPage implements Handler {
+public class Feedback implements Handler {
 
     private JDBCConnection connection;
 
-    public TrendingPage(JDBCConnection connection) {
+    public Feedback(JDBCConnection connection) {
         this.connection = connection;
     }
 
-    public static final String URL = "/trending";
-    private static final String TEMPLATE = "trending.html";
+    public static final String URL = "/feedback";
+    private static final String TEMPLATE = "feedback.html";
 
     @Override
     public void handle(Context context) throws Exception {

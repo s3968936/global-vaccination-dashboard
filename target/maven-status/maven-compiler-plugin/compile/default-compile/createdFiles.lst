@@ -11,8 +11,10 @@ app/TrendingPage.class
 app/model/Region.class
 app/model/Country.class
 app/model/YearDate.class
+app/Feedback.class
 app/model/Antigen.class
 app/PageIndex.class
 app/App.class
 app/ExploreDataPage.class
+app/InfectionPage.class
 app/model/Economy.class
