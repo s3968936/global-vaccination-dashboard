@@ -1,5 +1,6 @@
 package app;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public class TrendingPage implements Handler {
 
     public static final String URL = "/trending";
     private static final String TEMPLATE = "trending.html";
+    
 
     @Override
     public void handle(Context context) throws Exception {
