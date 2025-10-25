@@ -7,15 +7,14 @@
    <link rel="stylesheet" type="text/css" href="common.css" />
 </head>
 <body>
+    <!-- Top Navigation -->
     <div class="simple-topnav">
-      <!-- Logo on the left -->
-      <img src="logo.png" class="nav-logo" alt="GHD logo" />
-
-      <!-- Navigation links -->
+      <a href="/" class="nav-logo-link">
+        <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+      </a>
       <div class="nav-links">
         <a href="/">Homepage</a>
-        <a href="/explore">Explore Data</a>
-        <a href="/infection" class="active">Infection Data</a>
+        <a href="/explore" class="active">Explore Data</a>
         <a href="/trending">Trending</a>
         <a href="/insights">Insights</a>
         <a href="/mission">Mission Statement</a>
@@ -41,19 +40,8 @@
 
       <!-- Dataset Selector Tabs -->
       <div class="dataset-selector">
-        <div
-          class="dataset-tab"
-          id="vaccination-tab"
-          onclick="window.location.href='/explore'"
-        >
-          Vaccination Data
-        </div>
-        <div
-          class="dataset-tab active"
-          id="infection-tab"
-        >
-          Infection Data
-        </div>
+        <div class="dataset-tab" id="vaccination-tab" onclick="window.location.href='/explore'">Vaccination Data</div>
+        <div class="dataset-tab active" id="infection-tab">Infection Data</div>
       </div>
       <!-- Footer -->
     <footer class="footer">
