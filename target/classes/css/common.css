@@ -292,65 +292,153 @@ img.top-image {
 
 /* ---------- Feedback Form Card ---------- */
 .feedback-card {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 30px auto; /* center on page */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 30px auto; /* center on page */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Spacing for form fields */
 .combo-box-simple {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .combo-box-simple label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .combo-box-simple input,
 .combo-box-simple textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
 }
 
 /* Full width submit button */
 .apply-btn {
-    padding: 14px;
-    font-size: 18px;
-    border-radius: 6px;
+  padding: 14px;
+  font-size: 18px;
+  border-radius: 6px;
 }
 
 /* Success message styling */
 .success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 12px 16px;
-    border-radius: 5px;
-    border: 1px solid #c3e6cb;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: 500;
+  background-color: #d4edda;
+  color: #155724;
+  padding: 12px 16px;
+  border-radius: 5px;
+  border: 1px solid #c3e6cb;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ---------- Vaccination chart styles ---------- */
+.chart-container {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* ---------- Data Table and Filter Styles ---------- */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+.data-table th,
+.data-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.data-table th {
+  background-color: #f2f2f2;
+}
+/* Filter Section */
+.filter-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+/* Combo Box Simple */
+.combo-box-simple label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.combo-box-simple input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.year-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.year-start,
+.year-end {
+  flex: 1;
+}
+.year-separator {
+  color: #666;
+}
+.filter-actions {
+  display: flex;
+  gap: 10px;
+}
+.apply-btn,
+.reset-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.apply-btn {
+  background-color: #007bff;
+  color: white;
+}
+.reset-btn {
+  background-color: #6c757d;
+  color: white;
+}
+/* Error Message */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
 }
 
 /* Subtle background for the page */
 body {
-    background: linear-gradient(to bottom, #f1f1f1, #e2e8f0);
+  background: linear-gradient(to bottom, #f1f1f1, #e2e8f0);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .feedback-card {
-        padding: 20px;
-        margin: 20px;
-    }
-    .header h1 {
-        font-size: 36px;
-    }
+  .feedback-card {
+    padding: 20px;
+    margin: 20px;
+  }
+  .header h1 {
+    font-size: 36px;
+  }
 }
