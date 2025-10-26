@@ -1,39 +1,111 @@
 <!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-   <title>Mission Statement & About Us</title>
-
-   <link rel="stylesheet" type="text/css" href="common.css" />
+  <meta charset="UTF-8" />
+  <title>Mission Statement & Personas - Global Health Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="common.css" />
 </head>
 <body>
-   <div class="simple-topnav">
-      <!-- Logo on the left -->
-      <img src="logo.png" class="nav-logo" alt="RMIT logo" />
 
-      <!-- Navigation links -->
-      <div class="nav-links">
-        <a href="/">Homepage</a>
-        <a href="/explore">ExploreData</a>
-        <a href="/trending" class="active">Trending</a>
-        <a href="/insights">Insights</a>
-        <a href="/feedback">Feedback</a>
-        <a href="/mission">Mission Statement</a>
+  <!-- Navigation -->
+  <div class="simple-topnav">
+    <a href="/" class="nav-logo-link">
+      <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+    </a>
+    <div class="nav-links">
+      <a href="/">Homepage</a>
+      <a href="/explore">Explore Data</a>
+      <a href="/trending">Trending</a>
+      <a href="/insights">Insights</a>
+      <a href="/mission" class="active">Mission Statement</a>
+      <a href="/feedback">Feedback</a>
+    </div>
+  </div>
+
+  <div class="header">
+    <h1 th:text="${title}"></h1>
+  </div>
+
+  <div class="content">
+    <h2>Our Mission</h2>
+    <p>
+      The Global Health Dashboard promotes awareness and understanding of
+      vaccination and infection trends through accessible, data-driven insights.
+      Our aim is to empower communities and decision-makers to make informed
+      global health choices.
+    </p>
+
+    <h2>Meet Our Personas</h2>
+
+    <!-- Error Message -->
+    <div th:if="${error}" class="error-message">
+      <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <!-- Personas Container -->
+    <div class="personas-container" th:if="${personas}">
+      <div class="persona-card" th:each="p : ${personas}">
+        <h3 th:text="|${p.title} ${p.name} (${p.age})|"></h3>
+        <table style="width:100%; border-collapse: collapse;">
+          <tr>
+            <!-- Text column -->
+            <td style="vertical-align: top; padding-right: 20px; width: 60%;">
+              <p><strong>Occupation:</strong> <span th:text="${p.occupation}"></span></p>
+              <p><strong>Education:</strong> <span th:text="${p.education}"></span></p>
+              <p><strong>Location:</strong> <span th:text="${p.location}"></span></p>
+              <p><strong>Language:</strong> <span th:text="${p.language}"></span></p>
+              <p><strong>Disability:</strong> <span th:text="${p.disability}"></span></p>
+            </td>
+
+            <!-- Image column -->
+            <td style="vertical-align: top; width: 40%; text-align: center;">
+              <img th:src="@{/images/{file}(file=${p.image})}" 
+                  alt="Profile Image" 
+                  style="max-width:100%; border-radius:8px;">
+              <p style="font-size: 0.8em; color: #666;" th:text="${p.imageCredit}"></p>
+            </td>
+          </tr>
+        </table>
+
+
+        <p><strong>Needs:</strong></p>
+        <ul>
+          <li th:each="n : ${p.needsList}" th:text="${n}"></li>
+        </ul>
+
+        <p><strong>Goals:</strong></p>
+        <ul>
+          <li th:each="g : ${p.goalsList}" th:text="${g}"></li>
+        </ul>
+
+        <p><strong>Skills:</strong></p>
+        <ul>
+          <li th:each="s : ${p.skillsList}" th:text="${s}"></li>
+        </ul>
       </div>
     </div>
-   
-   <div class='header'>
-      <h1 th:text="${title}"></h1>
-   </div>
+  </div>
 
-   <div class='content'>
-      <ul>
-         
-      </ul>
-   </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><strong>Global Health Dashboard</strong></p>
+      <nav class="footer-links">
+        <a href="/">Homepage</a> |
+        <a href="/explore">Explore Data</a> |
+        <a href="/trending">Trending</a> |
+        <a href="/insights">Insights</a> |
+        <a href="/mission">Mission Statement</a> |
+        <a href="/feedback">Feedback</a>
+      </nav>
+      <p>
+        <small>
+          © 2025 RMIT University - Global Vaccination Initiatives |
+          Empowering informed global health decisions
+        </small>
+      </p>
+    </div>
+  </footer>
 
-   <div class='footer'>
-      <p>COSC2803 Module 0 - Week 07</p>
-   </div>
 </body>
 </html>

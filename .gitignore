@@ -1,1 +1,27 @@
 *.class
+<<<<<<< HEAD
+=======
+# Ignore compiled Java class files
+*.class
+
+# Ignore logs
+*.log
+
+# Ignore temporary system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE settings
+.vscode/
+.idea/
+
+# Ignore build output folders
+/build/
+out/
+
+# Ignore environment files
+.env
+
+#Ignore pom files
+.xml
+>>>>>>> d8d7a75d44afab1efcc09d5f3b5e523916ac8b1d

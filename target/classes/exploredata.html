@@ -4,29 +4,118 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Explore Data - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
+    <!-- Load Google Charts -->
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <style>
+      .chart-container {
+        margin: 20px 0;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      .data-table th,
+      .data-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      .data-table th {
+        background-color: #f2f2f2;
+      }
+      .filter-section {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin: 20px 0;
+      }
+      .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+      .combo-box-simple label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      .combo-box-simple input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .year-range {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .year-start,
+      .year-end {
+        flex: 1;
+      }
+      .year-separator {
+        color: #666;
+      }
+      .filter-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .apply-btn,
+      .reset-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .apply-btn {
+        background-color: #007bff;
+        color: white;
+      }
+      .reset-btn {
+        background-color: #6c757d;
+        color: white;
+      }
+      .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+    </style>
   </head>
   <body>
-      <!-- Navigation links -->
-      <div class="simple-topnav">
-      <!-- Logo on the left -->
-      <img src="logo.png" class="nav-logo" alt="RMIT logo" />
-
-      <!-- Navigation links -->
+    <!-- Top Navigation -->
+    <div class="simple-topnav">
+      <a href="/" class="nav-logo-link">
+        <img
+          src="logo.png"
+          class="nav-logo"
+          alt="Global Health Dashboard Logo"
+        />
+      </a>
       <div class="nav-links">
         <a href="/">Homepage</a>
-        <a href="/explore" class="active">ExploreData</a>
+        <a href="/explore" class="active">Explore Data</a>
         <a href="/trending">Trending</a>
         <a href="/insights">Insights</a>
-        <a href="/feedback">Feedback</a>
         <a href="/mission">Mission Statement</a>
+        <a href="/feedback">Feedback</a>
       </div>
     </div>
-    </div>
+
     <div class="header">
-      <h1>
-        <img src="logo.png" class="top-image" alt="RMIT logo" height="75" />
-        Explore Data
-      </h1>
+      <h1>Explore Data</h1>
     </div>
 
     <div class="content">
@@ -79,6 +168,16 @@
                 name="country"
                 placeholder="Type or select country"
                 list="country-list"
+                th:if="${selectedCountry != null}"
+                th:value="${selectedCountry}"
+              />
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="Type or select country"
+                list="country-list"
+                th:unless="${selectedCountry != null}"
               />
               <datalist id="country-list">
                 <option
@@ -97,6 +196,16 @@
                 name="region"
                 placeholder="Type or select region"
                 list="region-list"
+                th:if="${selectedRegion != null}"
+                th:value="${selectedRegion}"
+              />
+              <input
+                type="text"
+                id="region"
+                name="region"
+                placeholder="Type or select region"
+                list="region-list"
+                th:unless="${selectedRegion != null}"
               />
               <datalist id="region-list">
                 <option
@@ -115,6 +224,16 @@
                 name="antigen"
                 placeholder="Type or select antigen"
                 list="antigen-list"
+                th:if="${selectedAntigen != null}"
+                th:value="${selectedAntigen}"
+              />
+              <input
+                type="text"
+                id="antigen"
+                name="antigen"
+                placeholder="Type or select antigen"
+                list="antigen-list"
+                th:unless="${selectedAntigen != null}"
               />
               <datalist id="antigen-list">
                 <option
@@ -135,6 +254,16 @@
                     name="yearStart"
                     placeholder="From"
                     list="year-list"
+                    th:if="${selectedYearStart != null}"
+                    th:value="${selectedYearStart}"
+                  />
+                  <input
+                    type="text"
+                    id="yearStart"
+                    name="yearStart"
+                    placeholder="From"
+                    list="year-list"
+                    th:unless="${selectedYearStart != null}"
                   />
                 </div>
                 <div class="year-separator">to</div>
@@ -145,6 +274,16 @@
                     name="yearEnd"
                     placeholder="To (leave empty for single year)"
                     list="year-list"
+                    th:if="${selectedYearEnd != null}"
+                    th:value="${selectedYearEnd}"
+                  />
+                  <input
+                    type="text"
+                    id="yearEnd"
+                    name="yearEnd"
+                    placeholder="To (leave empty for single year)"
+                    list="year-list"
+                    th:unless="${selectedYearEnd != null}"
                   />
                 </div>
               </div>
@@ -165,25 +304,193 @@
       </form>
 
       <!-- Results Section -->
-      <div
-        style="
-          background-color: #f5f5f5;
-          padding: 20px;
-          margin: 20px 0;
-          border-radius: 5px;
-        "
-      >
-        <h3>Data Results Will Appear Here</h3>
-        <p>
-          Select <strong>Vaccination Data</strong> or
-          <strong>Infection Data</strong> and apply filters to see the results.
-        </p>
-        <p>Data table and charts will appear here once you apply filters.</p>
+      <div th:if="${hasFilters}">
+        <div th:if="${vaccinationData != null and !vaccinationData.empty}">
+          <h2>Vaccination Data Results</h2>
+
+          <!-- Chart Section -->
+          <div class="chart-container" th:if="${hasChartData}">
+            <h3>Coverage Trend</h3>
+            <div id="coverage_chart" style="width: 100%; height: 400px"></div>
+          </div>
+
+          <div
+            class="chart-container"
+            th:if="${hasChartData != null and !hasChartData}"
+          >
+            <h3>Coverage Trend</h3>
+            <div style="text-align: center; padding: 50px; color: #666">
+              <p>No coverage data available for chart display</p>
+            </div>
+          </div>
+
+          <!-- Data Table -->
+          <h3>Detailed Data</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Country</th>
+                <th>Antigen</th>
+                <th>Coverage (%)</th>
+                <th>Target Population</th>
+                <th>Doses Administered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="data : ${vaccinationData}">
+                <td th:text="${data.year}"></td>
+                <td th:text="${data.country}"></td>
+                <td th:text="${data.antigen}"></td>
+                <td
+                  th:text="${#numbers.formatDecimal(data.coverage, 1, 2)}"
+                ></td>
+                <td
+                  th:text="${#numbers.formatDecimal(data.targetNum, 0, 0)}"
+                ></td>
+                <td th:text="${#numbers.formatDecimal(data.doses, 0, 0)}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Show message when no results -->
+        <div th:if="${vaccinationData == null or vaccinationData.empty}">
+          <div
+            style="
+              background-color: #fff3cd;
+              padding: 20px;
+              border-radius: 5px;
+              margin: 20px 0;
+            "
+          >
+            <h3>No Results Found</h3>
+            <p>
+              No vaccination data found for the selected criteria. Please try
+              different filters.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Initial state - no search performed -->
+      <div th:if="${hasFilters == null or !hasFilters}">
+        <div
+          style="
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+          "
+        >
+          <h3>Data Results Will Appear Here</h3>
+          <p>
+            Select <strong>Vaccination Data</strong> or
+            <strong>Infection Data</strong> and apply filters to see the
+            results.
+          </p>
+          <p>Data table and charts will appear here once you apply filters.</p>
+        </div>
       </div>
     </div>
 
-    <div class="footer">
-      <p>Global Health Monitoring System</p>
-    </div>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p><strong>Global Health Dashboard</strong></p>
+        <nav class="footer-links">
+          <a href="/">Homepage</a> | <a href="/explore">Explore Data</a> |
+          <a href="/trending">Trending</a> | <a href="/insights">Insights</a> |
+          <a href="/mission">Mission Statement</a> |
+          <a href="/feedback">Feedback</a> |
+          <a href="/privacy">Privacy Policy</a>
+        </nav>
+        <p>
+          <small>
+            © 2025 RMIT University - Global Vaccination Initiatives | Empowering
+            informed global health decisions
+          </small>
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Chart -->
+    <script th:inline="javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+
+      google.charts.setOnLoadCallback(function () {
+        const hasFilters = /*[[${hasFilters}]]*/ false;
+        const hasChartData = /*[[${hasChartData}]]*/ false;
+        const chartDataRaw = /*[[${chartDataJson}]]*/ "[]";
+
+        //Parse safely — Thymeleaf replaces variables before rendering
+        let chartData;
+        try {
+          chartData = JSON.parse(chartDataRaw);
+        } catch (e) {
+          console.error("Error parsing chart data:", e);
+          chartData = [];
+        }
+
+        if (hasFilters && hasChartData && chartData.length > 0) {
+          drawCoverageChart(chartData);
+        } else {
+          clearChartArea();
+        }
+      });
+
+      function drawCoverageChart(chartData) {
+        const chartDiv = document.getElementById("coverage_chart");
+        if (!chartDiv) return;
+
+        const data = new google.visualization.DataTable();
+        data.addColumn("string", "Year");
+        data.addColumn("number", "Coverage (%)");
+        data.addRows(chartData);
+
+        const options = {
+          title: "Vaccination Coverage Over Time",
+          curveType: "function",
+          legend: { position: "bottom" },
+          hAxis: { title: "Year" },
+          vAxis: { title: "Coverage (%)", viewWindow: { min: 0, max: 150 } },
+          colors: ["#3498db"],
+        };
+
+        const chart = new google.visualization.LineChart(chartDiv);
+        chart.draw(data, options);
+      }
+
+      function clearChartArea() {
+        const chartDiv = document.getElementById("coverage_chart");
+        if (chartDiv) {
+          chartDiv.innerHTML =
+            "<p style='text-align:center; color:#777; padding:60px;'>No data available</p>";
+        }
+      }
+
+      window.addEventListener("resize", function () {
+        const hasFilters = /*[[${hasFilters}]]*/ false;
+        const hasChartData = /*[[${hasChartData}]]*/ false;
+        const chartDataRaw = /*[[${chartDataJson}]]*/ "[]";
+
+        if (hasFilters && hasChartData) {
+          try {
+            const chartData = JSON.parse(chartDataRaw);
+            drawCoverageChart(chartData);
+          } catch (e) {
+            console.error("Resize chart draw failed:", e);
+          }
+        }
+      });
+
+      function clearFilters() {
+        document
+          .querySelectorAll("#filter-form input")
+          .forEach((el) => (el.value = ""));
+        clearChartArea();
+        setTimeout(() => (window.location.href = "/explore"), 300);
+      }
+    </script>
   </body>
 </html>

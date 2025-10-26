@@ -15,7 +15,7 @@ public class TrendingPage implements Handler {
     }
 
     public static final String URL = "/trending";
-    private static final String TEMPLATE = "Trending.html";
+    private static final String TEMPLATE = "trending.html";
 
     @Override
     public void handle(Context context) throws Exception {

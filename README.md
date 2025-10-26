@@ -1,58 +1,119 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=21005516&assignment_repo_type=AssignmentRepo)
-# COSC2803 2450 Week 10 Workshop 7 Starter Code
-Starter code for Week 07 Workshop for Javalin and Thymeleaf.
+# Global Health Dashboard
 
-Folders:
-```bash
-├── /src/main                    - Location of all files as required by build configuration
-│         ├── java               - Java Source location
-│         │    └── app           - package location for all Java files
-│         └── resources          - Web resources (html templates / style sheets)
-│               ├── css          - CSS Style-sheets
-│               └── images       - Image files
-│ 
-├── /target                      - build directory (DO NOT MODIFY)
-├── /database                    - The folder to store sqlite database files (*.db files)
-├── pom.xml                      - Configure Build (DO NOT MODIFY)
-└── README.md                    - This file ;)
-```
+### COSC2803 – Java Programming Studio 1  
+Semester 2, 2025 | RMIT University  
+Project Theme: Global Vaccination Initiatives  
 
-Current Libraries
-* org.xerial.sqlite-jdbc         - SQLite JDBC library
-* javalin (lightweight java webserver)
-* thymeleaf (HTML template) - https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
+---
 
-Libraries required as dependencies
-* By javalin/thymeleaf
-   * slf4j-simple (lightweight logging)
-* By xerial/jdbc
-   * sqlite-jdbc
+## Overview
+The Global Health Dashboard is a data-driven web application designed to explore and visualise worldwide vaccination and infection trends.  
+It supports transparent, evidence-based insights into global health data to help users understand immunisation coverage, infection rates, and their relationships across countries, regions, and economic statuses.
 
-# Building & Running the code
-1. Open this project within VSCode
-2. Allow VSCode to read the pom.xml file
- - Allow the popups to run and "say yes" to VSCode configuring the build
- - Allow VSCode to download the required Java libraries
-3. To Build & Run
- - Select the "Launch App" launcher profile from the VSCode Run/Debugger
- - Alternatively, open the src/main/java/app/App.java source file, and select "Run" from the pop-up above the main function
-4. Go to: http://localhost:7001
+This project forms part of the COSC2803 Java Programming Studio 1 social challenge:  
+“Preventable Infectious Diseases – Global Vaccination Initiatives.”
 
-# Important Notes
-1. ONLY modify the files which you are allowed to edit. The other files are placed in important places to make our "big software project" work.
-1. DO NOT move the Java files from the ```src/main/java/app``` folder. These Java files need to be in this location to ensure our "big software project" works.
-1. These exercises contain examples for *both* pre-req and co-req students. There is no separation of code in these exercises, as all students are able to complete them.
+---
 
-# DEV Container for GitHub Codespaces
-The ```.devcontainer``` folder contains configuration files for GitHub Codespaces.
-This ensures that when the GitHub classroom is cloned, the workspace is correctly configured for Java (V16) and with the required VSCode extensions.
-This folder will not affect a *local* VSCode setup on a computer.
+## Authors
+| Name | Student ID | Role |
+|------|-------------|------|
+| Thomas Young | S3968936 | Sub-Task A: Homepage, Explore Data (Vaccination), Insights |
+| Yukheang Kang | S4055262 | Sub-Task B: Mission Statement, Explore Data (Economic Status), Feedback |
 
-**🚨 DO NOT MODIFY THE CONTENTS OF THIS FOLDER. 🚨**
+---
 
-# Authors
-* Dr. Halil Ali, School of Computing Technologies, STEM College, RMIT University.
-* Dr. Timothy Wiley, School of Computing Technologies, STEM College, RMIT University.
-* Prof. Santha Sumanasekara, School of Computing Technologies, STEM College, RMIT University.
+## Purpose
+The Global Health Dashboard aims to:
+- Present vaccination and infection data in a clear, unbiased, and accessible way.  
+- Support different user groups — from parents and teachers to public health researchers — in exploring global health data.  
+- Enable users to identify trends, patterns, and correlations across regions and economic phases.  
+- Promote transparency and data literacy in the context of global vaccination initiatives.
 
-Copyright RMIT University (c) 2024
+---
+
+## Key Pages
+| Page | Description |
+|------|--------------|
+| Homepage | Provides an overview of the dashboard and key global vaccination facts. |
+| Explore Data | Allows users to view and filter vaccination or infection data by region, country, year, and economic status. |
+| Trending | Displays key global vaccination and infection trends over time. |
+| Insights | Summarises findings, correlations, and visual summaries to support understanding. |
+| Mission Statement | Explains the purpose, audience, and ethical goals of the project. |
+| Feedback | Allows users to share their thoughts or request additional datasets or features. |
+
+---
+
+## Personas
+The dashboard is designed around two main user personas:
+
+1. **Sarah Thomas – Concerned Parent / Teacher**  
+   Needs simple, reliable vaccination summaries to make informed decisions and educate others.  
+   Prefers visual data and clear language.
+
+2. **Dr. Henry Collins – Public Health Researcher**  
+   Requires access to detailed, downloadable datasets for analysis and reporting.  
+   Values accuracy, data transparency, and filtering capabilities.
+
+---
+
+## Technologies Used
+- Java (Javalin Framework)  
+- HTML5 / CSS3  
+- SQLite Database  
+- JDBC for database connectivity  
+- Git / GitHub for version control  
+
+---
+
+## How to Run
+1. Clone or download the project folder.  
+2. Ensure you have Java 17+ and SQLite installed.  
+3. Open the project in your IDE (e.g., IntelliJ or Eclipse).  
+4. Build and run the `App.java` file.  
+5. Open your browser and navigate to:  
+   [[http://localhost:7001/]]
+6. Explore the site using the navigation bar or footer links.
+
+---
+
+## Database
+The provided SQLite database contains tables for:
+- `Country`, `Region`, `Economy`
+- `Infection_Type`, `InfectionData`
+- `Antigen`, `VaccinationData`
+- `Personas` and `PersonaAttributes`
+
+Queries support filtering, aggregation, and comparison of data across time and geography.
+
+---
+
+## Design Considerations
+- Consistent, accessible layout following Nielsen’s UI heuristics.  
+- Inclusive design with high contrast, readable fonts, and accessible navigation.  
+- Footer and navigation bar included on every page for consistency.  
+- Supports visual exploration and textual interpretation of global data.
+
+---
+
+## Academic Acknowledgement
+This project was developed as part of RMIT University’s COSC2803 – Java Programming Studio 1, Semester 2, 2025.  
+All data and figures are for educational purposes only and may not reflect real-world WHO or CDC datasets.
+
+---
+
+## License
+© 2025 RMIT University  
+This project is submitted for academic purposes.  
+Unauthorized reproduction or redistribution is prohibited.
+
+---
+
+## Contact
+For queries or collaboration:  
+Thomas Young – S3968936@student.rmit.edu.au  
+Yukheang Kang – S4055262@student.rmit.edu.au
+
+---
+
+*"Empowering informed global health decisions through accessible, transparent data."*

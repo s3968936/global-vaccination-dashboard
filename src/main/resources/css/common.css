@@ -1,5 +1,9 @@
-/* External CSS style file */
+/* ==============================================
+   Global Health Dashboard - External CSS
+   COSC2803 | Java Programming Studio 1 | S2 2025
+   ============================================== */
 
+/* ---------- NAVIGATION BAR ---------- */
 .simple-topnav {
   background-color: #f8f9fa;
   padding: 12px 40px;
@@ -11,21 +15,18 @@
   gap: 60px;
 }
 
-/* Logo in navigation */
 .nav-logo {
-  height: 40px;
+  height: 100px;
   width: auto;
-  margin-right: 60px; /* This creates space between logo and first nav item */
+  margin-right: 100px;
 }
 
-/* Navigation links - FIXED: Only one rule */
 .nav-links {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-/* Navigation links styling - FIXED: Only one rule */
 .nav-links a {
   display: inline-block;
   color: #333;
@@ -35,17 +36,17 @@
   font-size: 16px;
   font-weight: 500;
   white-space: nowrap;
-  margin-right: 20px; /* Space between nav items */
+  margin-right: 20px;
+  transition: all 0.2s ease;
 }
 
 .nav-links a:last-child {
-  margin-right: 0; /* Remove margin from last item */
+  margin-right: 0;
 }
 
 .nav-links a:hover {
   background-color: #e9ecef;
   transform: translateY(-1px);
-  transition: all 0.2s ease;
 }
 
 .nav-links a.active {
@@ -53,17 +54,19 @@
   color: white;
 }
 
+/* ---------- GLOBAL LAYOUT ---------- */
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
   padding: 10px;
   background: #f1f1f1;
+  color: #000;
 }
 
-/* Header (div) formatting */
+/* ---------- HEADER ---------- */
 .header {
   padding: 10px;
   text-align: center;
@@ -81,27 +84,52 @@ body {
   gap: 20px;
 }
 
-/* Make the logo have a rounded edge */
 img.top-image {
   vertical-align: middle;
   border-radius: 8px;
 }
 
-/* Style the content */
+/* ---------- CONTENT ---------- */
 .content {
   background-color: #ddd;
   padding: 10px;
+  border-radius: 5px;
 }
 
-/* Style the footer */
+/* ---------- FOOTER ---------- */
 .footer {
-  background-color: #cccccc;
-  padding: 10px;
+  background-color: #226ca0;
+  color: #e0e1dd;
+  text-align: center;
+  padding: 1.5em 0;
+  font-size: 0.95em;
+  border-top: 2px solid #226ca0;
+  margin-top: 2em;
 }
 
-/* EXPLORE DATA PAGE STYLES FOR VACCINATION PAGE
+.footer-links {
+  margin: 0.5em 0;
+}
 
-      /* Dataset Selector Tabs */
+.footer a {
+  color: #9ad0ec;
+  text-decoration: none;
+  margin: 0 0.4em;
+  font-weight: 500;
+}
+
+.footer a:hover {
+  color: #f4d35e;
+  text-decoration: underline;
+}
+
+.footer small {
+  color: #cbd5e0;
+}
+
+/* ---------- EXPLORE DATA PAGE ---------- */
+
+/* Dataset Selector Tabs */
 .dataset-selector {
   display: flex;
   margin-bottom: 20px;
@@ -117,10 +145,11 @@ img.top-image {
   cursor: pointer;
   margin-right: 5px;
   font-weight: 500;
+  transition: all 0.3s;
 }
 
 .dataset-tab.active {
-  background-color: white;
+  background-color: #fff;
   border-bottom: 1px solid white;
   margin-bottom: -1px;
   color: #007bff;
@@ -130,7 +159,7 @@ img.top-image {
   background-color: #e9ecef;
 }
 
-/* Simple Combo Box Styles */
+/* Filter Section */
 .filter-section {
   background-color: #f8f9fa;
   padding: 20px;
@@ -163,7 +192,6 @@ img.top-image {
   border: 2px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
-  box-sizing: border-box;
 }
 
 .combo-box-simple input:focus {
@@ -210,6 +238,7 @@ img.top-image {
   background-color: #545b62;
 }
 
+/* Error Messages */
 .error-message {
   background-color: #f8d7da;
   color: #721c24;
@@ -219,19 +248,16 @@ img.top-image {
   border: 1px solid #f5c6cb;
 }
 
-/* Year Range Styles */
+/* Year Range Inputs */
 .year-range {
   display: flex;
   gap: 10px;
   align-items: end;
 }
 
-.year-start {
-  flex: 1;
-}
-
+.year-start,
 .year-end {
-  flex: 2;
+  flex: 1;
 }
 
 .year-separator {
@@ -241,33 +267,90 @@ img.top-image {
   color: #666;
 }
 
-/* INFECTION DESIGN STYLES IN EXPLORE DATA PAGE */
-
-.dataset-selector {
+/* ---------- TABLE STYLES (Mission Page Personas) ---------- */
+.personas-container {
   display: flex;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #ddd;
+  flex-wrap: wrap;
+  gap: 20px; /* space between cards */
 }
 
-.dataset-tab {
-  padding: 12px 24px;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  border-bottom: none;
-  border-radius: 5px 5px 0 0;
-  margin-right: 5px;
-  background-color: #f5f5f5;
-  transition: all 0.3s;
+.persona-card {
+  flex: 1 1 calc(50% - 20px); /* two columns */
+  box-sizing: border-box;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
 }
 
-.dataset-tab:hover {
-  background-color: #e9e9e9;
+/* Make it responsive on smaller screens */
+@media (max-width: 768px) {
+  .persona-card {
+    flex: 1 1 100%; /* single column on mobile */
+  }
 }
 
-.dataset-tab.active {
-  background-color: #fff;
-  border-bottom: 1px solid #fff;
-  margin-bottom: -1px;
-  font-weight: bold;
-  color: #3498db;
+/* ---------- Feedback Form Card ---------- */
+.feedback-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 30px auto; /* center on page */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Spacing for form fields */
+.combo-box-simple {
+    margin-bottom: 20px;
+}
+
+.combo-box-simple label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.combo-box-simple input,
+.combo-box-simple textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Full width submit button */
+.apply-btn {
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 6px;
+}
+
+/* Success message styling */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 12px 16px;
+    border-radius: 5px;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Subtle background for the page */
+body {
+    background: linear-gradient(to bottom, #f1f1f1, #e2e8f0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .feedback-card {
+        padding: 20px;
+        margin: 20px;
+    }
+    .header h1 {
+        font-size: 36px;
+    }
 }

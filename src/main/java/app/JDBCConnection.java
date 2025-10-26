@@ -2,11 +2,15 @@ package app;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import app.model.Persona;
+import app.model.Vaccination;
 
 /**
  * Class for Managing the JDBC Connection to a SQLLite Database.
@@ -143,4 +147,173 @@ public class JDBCConnection {
         String query = "SELECT DISTINCT year as year FROM Vaccination ORDER BY year";
         return executeQuery(query);
     }
+
+    //Get all the fields from the persona table in the database
+    public ArrayList<Persona> getAllPersonas() {
+        ArrayList<Persona> list = new ArrayList<>();
+        String query = "SELECT * FROM Personas ORDER BY persona_id;";
+
+        try (Connection conn = DriverManager.getConnection(DATABASE);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Persona p = new Persona(
+                    rs.getInt("persona_id"),
+                    rs.getString("title"),
+                    rs.getString("name"),
+                    rs.getInt("age"),
+                    rs.getString("occupation"),
+                    rs.getString("education"),
+                    rs.getString("location"),
+                    rs.getString("language"),
+                    rs.getString("disability"),
+                    rs.getString("needs"),
+                    rs.getString("goals"),
+                    rs.getString("skills"),
+                    rs.getString("image"),
+                    rs.getString("image_credit")
+                );
+                list.add(p);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    
+    public void executeUpdate(String sql, Object... params) {
+        try (Connection conn = DriverManager.getConnection(DATABASE);
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Set parameters
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+//===========================
+    // Add methods for the vaccination object in jdbcconnection class
+    //============================
+
+public ArrayList<Vaccination> getVaccinationData(String country, String region, String antigen, String yearStart, String yearEnd) {
+    ArrayList<Vaccination> results = new ArrayList<>();
+    Connection connection = null;
+
+    try {
+        connection = DriverManager.getConnection(DATABASE);
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT ");
+        query.append("c.name as country_name, ");
+        query.append("r.region as region_name, ");
+        query.append("a.name as antigen_name, ");
+        query.append("v.year as year, ");
+        query.append("v.coverage as coverage, ");
+        query.append("v.target_num as target_num, ");
+        query.append("v.doses as doses ");
+        query.append("FROM Vaccination v ");
+        query.append("JOIN Country c ON v.country = c.CountryID ");
+        query.append("JOIN Region r ON c.region = r.RegionID ");
+        query.append("JOIN Antigen a ON v.antigen = a.AntigenID ");
+        query.append("WHERE 1=1 ");
+        
+        // Add filters based on provided parameters
+        if (country != null && !country.isEmpty()) {
+            query.append("AND c.name = '").append(country).append("' ");
+        }
+        if (region != null && !region.isEmpty()) {
+            query.append("AND r.region = '").append(region).append("' ");
+        }
+        if (antigen != null && !antigen.isEmpty()) {
+            query.append("AND a.name = '").append(antigen).append("' ");
+        }
+        if (yearStart != null && !yearStart.isEmpty()) {
+            query.append("AND v.year >= ").append(yearStart).append(" ");
+        }
+        if (yearEnd != null && !yearEnd.isEmpty()) {
+            query.append("AND v.year <= ").append(yearEnd).append(" ");
+        }
+        
+        query.append("ORDER BY v.year");
+
+        Statement statement = connection.createStatement();
+        statement.setQueryTimeout(30);
+        ResultSet resultSet = statement.executeQuery(query.toString());
+
+        while (resultSet.next()) {
+            // Create Vaccination object using the constructor
+            String countryName = resultSet.getString("country_name");
+            String antigenName = resultSet.getString("antigen_name");
+            int year = resultSet.getInt("year");
+            double targetNum = resultSet.getDouble("target_num");
+            double doses = resultSet.getDouble("doses");
+            double coverage = resultSet.getDouble("coverage");
+            
+            // Note: infType is not available in the query, so we'll set it to null or empty
+            Vaccination vaccination = new Vaccination("", antigenName, countryName, year, targetNum, doses, coverage);
+            results.add(vaccination);
+        }
+
+        statement.close();
+    } catch (SQLException e) {
+        System.err.println(e.getMessage());
+    } finally {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    return results;
+}
+
+// Keep the HashMap version as backup
+    public ArrayList<HashMap<String, String>> getVaccinationDataMap(String country, String region, String antigen, String yearStart, String yearEnd) {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT ");
+        query.append("c.name as country_name, ");
+        query.append("r.region as region_name, ");
+        query.append("a.name as antigen_name, ");
+        query.append("v.year as year, ");
+        query.append("v.coverage as coverage, ");
+        query.append("v.target_num as target_num, ");
+        query.append("v.doses as doses ");
+        query.append("FROM Vaccination v ");
+        query.append("JOIN Country c ON v.country = c.CountryID ");
+        query.append("JOIN Region r ON c.region = r.RegionID ");
+        query.append("JOIN Antigen a ON v.antigen = a.AntigenID ");
+        query.append("WHERE 1=1 ");
+        
+        if (country != null && !country.isEmpty()) {
+            query.append("AND c.name = '").append(country).append("' ");
+        }
+        if (region != null && !region.isEmpty()) {
+            query.append("AND r.region = '").append(region).append("' ");
+        }
+        if (antigen != null && !antigen.isEmpty()) {
+            query.append("AND a.name = '").append(antigen).append("' ");
+        }
+        if (yearStart != null && !yearStart.isEmpty()) {
+            query.append("AND v.year >= ").append(yearStart).append(" ");
+        }
+        if (yearEnd != null && !yearEnd.isEmpty()) {
+            query.append("AND v.year <= ").append(yearEnd).append(" ");
+        }
+        
+        query.append("ORDER BY v.year");
+        
+        return executeQuery(query.toString());
+    }
+
 }
