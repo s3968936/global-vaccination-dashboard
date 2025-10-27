@@ -8,6 +8,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Trending - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages':['geochart'],
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+      function drawRegionsMap() {
+        var data = google.visualization.arrayToDataTable(regions);
+
+        var options = {};
+
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
   </head>
   <body>
     <!-- Top Navigation -->
@@ -28,7 +45,7 @@
     <div class="header">
       <h1>Trending</h1>
     </div>
-
+    
     <div class="content">
       <h2>Trending Health Data</h2>
 
