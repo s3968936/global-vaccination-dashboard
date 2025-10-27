@@ -43,7 +43,132 @@
         <div class="dataset-tab active" id="infection-tab">Infection Data</div>
       </div>
 
+      <!-- Filter Form -->
+      <form method="get" action="/infection" id="filter-form">
+          <input
+              type="hidden"
+              name="datasetType"
+              id="datasetType"
+              value="infection"
+          />
 
+          <div class="filter-section">
+              <div class="filter-grid">
+                  <!-- Country Combo Box -->
+                  <div class="combo-box-simple">
+                      <label for="country">Country</label>
+                      <input
+                          type="text"
+                          id="country"
+                          name="country"
+                          placeholder="Type or select country"
+                          list="country-list"
+                          th:if="${selectedCountry != null}"
+                          th:value="${selectedCountry}"
+                      />
+                      <input
+                          type="text"
+                          id="country"
+                          name="country"
+                          placeholder="Type or select country"
+                          list="country-list"
+                          th:unless="${selectedCountry != null}"
+                      />
+                      <datalist id="country-list">
+                          <option
+                              th:each="country : ${countries}"
+                              th:value="${country}"
+                          ></option>
+                      </datalist>
+                  </div>
+
+                  <!-- Infection Type Combo Box -->
+                  <div class="combo-box-simple">
+                      <label for="infectionType">Infection Type</label>
+                      <input
+                          type="text"
+                          id="infectionType"
+                          name="infectionType"
+                          placeholder="Type or select infection type"
+                          list="infectionType-list"
+                          th:if="${selectedInfectionType != null}"
+                          th:value="${selectedInfectionType}"
+                      />
+                      <input
+                          type="text"
+                          id="infectionType"
+                          name="infectionType"
+                          placeholder="Type or select infection type"
+                          list="infectionType-list"
+                          th:unless="${selectedInfectionType != null}"
+                      />
+                      <datalist id="infectionType-list">
+                          <option
+                              th:each="infectionType : ${infectionTypes}"
+                              th:value="${infectionType}"
+                          ></option>
+                      </datalist>
+                  </div>
+
+                  <!-- Year Combo Box -->
+                  <div class="combo-box-simple">
+                      <label for="yearStart">Year Range</label>
+                      <div class="year-range">
+                          <div class="year-start">
+                              <input
+                                  type="text"
+                                  id="yearStart"
+                                  name="yearStart"
+                                  placeholder="From"
+                                  list="year-list"
+                                  th:if="${selectedYearStart != null}"
+                                  th:value="${selectedYearStart}"
+                              />
+                              <input
+                                  type="text"
+                                  id="yearStart"
+                                  name="yearStart"
+                                  placeholder="From"
+                                  list="year-list"
+                                  th:unless="${selectedYearStart != null}"
+                              />
+                          </div>
+                          <div class="year-separator">to</div>
+                          <div class="year-end">
+                              <input
+                                  type="text"
+                                  id="yearEnd"
+                                  name="yearEnd"
+                                  placeholder="To (leave empty for single year)"
+                                  list="year-list"
+                                  th:if="${selectedYearEnd != null}"
+                                  th:value="${selectedYearEnd}"
+                              />
+                              <input
+                                  type="text"
+                                  id="yearEnd"
+                                  name="yearEnd"
+                                  placeholder="To (leave empty for single year)"
+                                  list="year-list"
+                                  th:unless="${selectedYearEnd != null}"
+                              />
+                          </div>
+                      </div>
+                      <datalist id="year-list">
+                          <option th:each="year : ${years}" th:value="${year}"></option>
+                      </datalist>
+                  </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="filter-actions">
+                  <button type="submit" class="apply-btn">Apply Filters</button>
+                  <button type="button" onclick="clearFilters()" class="reset-btn">
+                      Clear All
+                  </button>
+              </div>
+          </div>
+      </form>
       
       <!-- Footer -->
       <footer class="footer">

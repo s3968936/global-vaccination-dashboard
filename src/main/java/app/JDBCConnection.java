@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import app.model.Persona;
 import app.model.Vaccination;
+import app.model.InfectionData;
 
 /**
  * Class for Managing the JDBC Connection to a SQLLite Database.
@@ -316,4 +317,164 @@ public ArrayList<Vaccination> getVaccinationData(String country, String region, 
         return executeQuery(query.toString());
     }
 
+//===========================
+    // Add methods for the infection data object in jdbcconnection class
+    //============================
+    public ArrayList<InfectionData> getInfectionData(String infType, String country, String yearStart, String yearEnd) {
+        ArrayList<InfectionData> results = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT ");
+            query.append("it.description as inf_type, ");
+            query.append("c.name as country_name, ");
+            query.append("id.year as year, ");
+            query.append("id.cases as cases ");
+            query.append("FROM InfectionData id ");
+            query.append("JOIN Infection_Type it ON id.inf_type = it.id ");
+            query.append("JOIN Country c ON id.country = c.CountryID ");
+            query.append("WHERE 1=1 ");
+            
+            if (infType != null && !infType.isEmpty()) {
+                query.append("AND it.description = '").append(infType).append("' ");
+            }
+            if (country != null && !country.isEmpty()) {
+                query.append("AND c.name = '").append(country).append("' ");
+            }
+            if (yearStart != null && !yearStart.isEmpty()) {
+                query.append("AND id.year >= ").append(yearStart).append(" ");
+            }
+            if (yearEnd != null && !yearEnd.isEmpty()) {
+                query.append("AND id.year <= ").append(yearEnd).append(" ");
+            }
+            
+            query.append("ORDER BY id.year");
+
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            ResultSet resultSet = statement.executeQuery(query.toString());
+
+            while (resultSet.next()) {
+                String infectionType = resultSet.getString("inf_type");
+                String countryName = resultSet.getString("country_name");
+                int year = resultSet.getInt("year");
+                double cases = resultSet.getDouble("cases");
+                
+                InfectionData infectionData = new InfectionData(infectionType, countryName, year, cases);
+                results.add(infectionData);
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return results;
+    }
+
+    //keep the HashMap version as backup
+    public ArrayList<HashMap<String, String>> getInfectionDataMap(String infType, String country, String yearStart, String yearEnd) {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT ");
+        query.append("it.description as inf_type, ");
+        query.append("c.name as country_name, ");
+        query.append("id.year as year, ");
+        query.append("id.cases as cases ");
+        query.append("FROM InfectionData id ");
+        query.append("JOIN Infection_Type it ON id.inf_type = it.id ");
+        query.append("JOIN Country c ON id.country = c.CountryID ");
+        query.append("WHERE 1=1 ");
+
+        if (infType != null && !infType.isEmpty()) {
+            query.append("AND it.description = '").append(infType).append("' ");
+        }
+        if (country != null && !country.isEmpty()) {
+            query.append("AND c.name = '").append(country).append("' ");
+        }
+        if (yearStart != null && !yearStart.isEmpty()) {
+            query.append("AND id.year >= ").append(yearStart).append(" ");
+        }
+        if (yearEnd != null && !yearEnd.isEmpty()) {
+            query.append("AND id.year <= ").append(yearEnd).append(" ");
+        }
+
+        query.append("ORDER BY id.year");
+
+        ArrayList<HashMap<String, String>> results = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            ResultSet resultSet = statement.executeQuery(query.toString());
+
+            while (resultSet.next()) {
+                HashMap<String, String> row = new HashMap<>();
+                row.put("inf_type", resultSet.getString("inf_type"));
+                row.put("country_name", resultSet.getString("country_name"));
+                row.put("year", String.valueOf(resultSet.getInt("year")));
+                row.put("cases", String.valueOf(resultSet.getDouble("cases")));
+                results.add(row);
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return results;
+    }
+
+    
+    // Method to get infection types for the dropdown
+        public ArrayList<String> getInfectionTypes() {
+            ArrayList<String> infectionTypes = new ArrayList<>();
+            Connection connection = null;
+            
+            try {
+                connection = DriverManager.getConnection(DATABASE);
+                String query = "SELECT DISTINCT description FROM Infection_Type ORDER BY description";
+                
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
+                ResultSet resultSet = statement.executeQuery(query);
+
+                while (resultSet.next()) {
+                    infectionTypes.add(resultSet.getString("description"));
+                }
+
+                statement.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+            
+            return infectionTypes;
+        }
 }

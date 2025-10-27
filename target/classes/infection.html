@@ -1,15 +1,28 @@
-<!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-   <title>Infection Data - Global Health Dashboard</title>
-   <link rel="stylesheet" type="text/css" href="common.css" />
-</head>
-<body>
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Infection Data - Global Health Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="common.css" />
+    // Google Charts Loader
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+  </head>
+  <body>
     <!-- Top Navigation -->
     <div class="simple-topnav">
       <a href="/" class="nav-logo-link">
-        <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+        <img
+          src="logo.png"
+          class="nav-logo"
+          alt="Global Health Dashboard Logo"
+        />
       </a>
       <div class="nav-links">
         <a href="/">Homepage</a>
@@ -28,8 +41,8 @@
     <div class="content">
       <h2>Explore Global Infection Data</h2>
       <p>
-        Select a dataset and use the filters below to explore infection data from
-        around the world.
+        Select a dataset and use the filters below to explore infection data
+        from around the world.
       </p>
 
       <!-- Error Message -->
@@ -39,33 +52,353 @@
 
       <!-- Dataset Selector Tabs -->
       <div class="dataset-selector">
-        <div class="dataset-tab" id="vaccination-tab" onclick="window.location.href='/explore'">Vaccination Data</div>
+        <div
+          class="dataset-tab"
+          id="vaccination-tab"
+          onclick="window.location.href='/explore'"
+        >
+          Vaccination Data
+        </div>
         <div class="dataset-tab active" id="infection-tab">Infection Data</div>
       </div>
 
+      <!-- Filter Form -->
+      <form method="get" action="/infection" id="filter-form">
+        <input
+          type="hidden"
+          name="datasetType"
+          id="datasetType"
+          value="infection"
+        />
 
-      
-      <!-- Footer -->
-      <footer class="footer">
-        <div class="footer-content">
-          <p><strong>Global Health Dashboard</strong></p>
-          <nav class="footer-links">
-            <a href="/">Homepage</a> |
-            <a href="/explore">Explore Data</a> |
-            <a href="/trending">Trending</a> |
-            <a href="/insights">Insights</a> |
-            <a href="/mission">Mission Statement</a> |
-            <a href="/feedback">Feedback</a> |
-            <a href="/privacy">Privacy Policy</a> <!-- new link -->
-          </nav>
-          <p>
-            <small>
-              © 2025 RMIT University - Global Vaccination Initiatives |
-              Empowering informed global health decisions
-            </small>
-          </p>
+        <div class="filter-section">
+          <div class="filter-grid">
+            <!-- Country Combo Box -->
+            <div class="combo-box-simple">
+              <label for="country">Country</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="Type or select country"
+                list="country-list"
+                th:if="${selectedCountry != null}"
+                th:value="${selectedCountry}"
+              />
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="Type or select country"
+                list="country-list"
+                th:unless="${selectedCountry != null}"
+              />
+              <datalist id="country-list">
+                <option
+                  th:each="country : ${countries}"
+                  th:value="${country}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Infection Type Combo Box -->
+            <div class="combo-box-simple">
+              <label for="infectionType">Infection Type</label>
+              <input
+                type="text"
+                id="infectionType"
+                name="infectionType"
+                placeholder="Type or select infection type"
+                list="infectionType-list"
+                th:if="${selectedInfectionType != null}"
+                th:value="${selectedInfectionType}"
+              />
+              <input
+                type="text"
+                id="infectionType"
+                name="infectionType"
+                placeholder="Type or select infection type"
+                list="infectionType-list"
+                th:unless="${selectedInfectionType != null}"
+              />
+              <datalist id="infectionType-list">
+                <option
+                  th:each="infectionType : ${infectionTypes}"
+                  th:value="${infectionType}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Year Combo Box -->
+            <div class="combo-box-simple">
+              <label for="yearStart">Year Range</label>
+              <div class="year-range">
+                <div class="year-start">
+                  <input
+                    type="text"
+                    id="yearStart"
+                    name="yearStart"
+                    placeholder="From"
+                    list="year-list"
+                    th:if="${selectedYearStart != null}"
+                    th:value="${selectedYearStart}"
+                  />
+                  <input
+                    type="text"
+                    id="yearStart"
+                    name="yearStart"
+                    placeholder="From"
+                    list="year-list"
+                    th:unless="${selectedYearStart != null}"
+                  />
+                </div>
+                <div class="year-separator">to</div>
+                <div class="year-end">
+                  <input
+                    type="text"
+                    id="yearEnd"
+                    name="yearEnd"
+                    placeholder="To (leave empty for single year)"
+                    list="year-list"
+                    th:if="${selectedYearEnd != null}"
+                    th:value="${selectedYearEnd}"
+                  />
+                  <input
+                    type="text"
+                    id="yearEnd"
+                    name="yearEnd"
+                    placeholder="To (leave empty for single year)"
+                    list="year-list"
+                    th:unless="${selectedYearEnd != null}"
+                  />
+                </div>
+              </div>
+              <datalist id="year-list">
+                <option th:each="year : ${years}" th:value="${year}"></option>
+              </datalist>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="filter-actions">
+            <button type="submit" class="apply-btn">Apply Filters</button>
+            <button type="button" onclick="clearFilters()" class="reset-btn">
+              Clear All
+            </button>
+          </div>
         </div>
-      </footer>
+      </form>
 
-</body>
+      <!-- Results Section -->
+      <div th:if="${hasFilters}">
+        <div th:if="${infectionData != null and !infectionData.empty}">
+          <h2>Infection Data Results</h2>
+
+          <!-- Chart Section -->
+          <div class="chart-container" th:if="${hasChartData}">
+            <h3>Infection Trend</h3>
+            <div id="infection_chart" style="width: 100%; height: 400px"></div>
+          </div>
+
+          <div
+            class="chart-container"
+            th:if="${hasChartData != null and !hasChartData}"
+          >
+            <h3>Infection Trend</h3>
+            <div style="text-align: center; padding: 50px; color: #666">
+              <p>No infection data available for chart display</p>
+            </div>
+          </div>
+
+          <!-- Data Table -->
+          <h3>Detailed Data</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Country</th>
+                <th>Infection Type</th>
+                <th>Cases</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="data : ${infectionData}">
+                <td th:text="${data.year}"></td>
+                <td th:text="${data.country}"></td>
+                <td th:text="${data.infType}"></td>
+                <td th:text="${#numbers.formatDecimal(data.cases, 0, 0)}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Show message when no results -->
+        <div th:if="${infectionData == null or infectionData.empty}">
+          <div
+            style="
+              background-color: #fff3cd;
+              padding: 20px;
+              border-radius: 5px;
+              margin: 20px 0;
+            "
+          >
+            <h3>No Results Found</h3>
+            <p>
+              No infection data found for the selected criteria. Please try
+              different filters.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Initial state - no search performed -->
+      <div th:if="${hasFilters == null or !hasFilters}">
+        <div
+          style="
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+          "
+        >
+          <h3>Data Results Will Appear Here</h3>
+          <p>
+            Select <strong>Infection Data</strong> and apply filters to see the
+            results.
+          </p>
+          <p>Data table and charts will appear here once you apply filters.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p><strong>Global Health Dashboard</strong></p>
+        <nav class="footer-links">
+          <a href="/">Homepage</a> | <a href="/explore">Explore Data</a> |
+          <a href="/trending">Trending</a> | <a href="/insights">Insights</a> |
+          <a href="/mission">Mission Statement</a> |
+          <a href="/feedback">Feedback</a> |
+          <a href="/privacy">Privacy Policy</a>
+          <!-- new link -->
+        </nav>
+        <p>
+          <small>
+            © 2025 RMIT University - Global Vaccination Initiatives | Empowering
+            informed global health decisions
+          </small>
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript Section -->
+
+    <script th:inline="javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+
+      google.charts.setOnLoadCallback(function () {
+        const hasFilters = /*[[${hasFilters}]]*/ false;
+        const hasChartData = /*[[${hasChartData}]]*/ false;
+        const chartDataRaw = /*[[${chartDataJson}]]*/ "[]";
+
+        // Parse safely — Thymeleaf replaces variables before rendering
+        let chartData;
+        try {
+          chartData = JSON.parse(chartDataRaw);
+        } catch (e) {
+          console.error("Error parsing chart data:", e);
+          chartData = [];
+        }
+
+        if (hasFilters && hasChartData && chartData.length > 0) {
+          drawInfectionChart(chartData);
+        } else {
+          clearChartArea();
+        }
+      });
+
+      function drawInfectionChart(chartData) {
+        const chartDiv = document.getElementById("infection_chart");
+        if (!chartDiv) return;
+
+        // Get infection type from the first data point (assuming same type for all)
+        const infectionType = /*[[${selectedInfectionType}]]*/ "Infection";
+
+        // Create DataTable with style column
+        const data = new google.visualization.DataTable();
+        data.addColumn("string", "Year");
+        data.addColumn("number", "Cases");
+        data.addColumn({ type: "string", role: "style" });
+
+        // Add data with colors based on case count
+        const rows = chartData.map((row) => {
+          const year = row[0];
+          const cases = row[1];
+
+          // Create label with year and infection type
+          const label = `${year}\n${infectionType}`;
+
+          // insert the color for chart bars
+          const color = "#3498db";
+
+          return [label, cases, `color: ${color}`];
+        });
+
+        data.addRows(rows);
+
+        const options = {
+          title: "Infection Cases by Year",
+          legend: { position: "bottom" },
+          hAxis: {
+            title: "Year and Infection Type",
+            textStyle: {
+              fontSize: 11,
+            },
+          },
+          vAxis: {
+            title: "Number of Cases",
+            viewWindow: { min: 0 },
+          },
+          bar: { groupWidth: "60%" },
+          backgroundColor: "transparent",
+        };
+
+        const chart = new google.visualization.ColumnChart(chartDiv);
+        chart.draw(data, options);
+      }
+
+      function clearChartArea() {
+        const chartDiv = document.getElementById("infection_chart");
+        if (chartDiv) {
+          chartDiv.innerHTML =
+            "<p style='text-align:center; color:#777; padding:60px;'>No data available</p>";
+        }
+      }
+
+      window.addEventListener("resize", function () {
+        const hasFilters = /*[[${hasFilters}]]*/ false;
+        const hasChartData = /*[[${hasChartData}]]*/ false;
+        const chartDataRaw = /*[[${chartDataJson}]]*/ "[]";
+
+        if (hasFilters && hasChartData) {
+          try {
+            const chartData = JSON.parse(chartDataRaw);
+            drawInfectionChart(chartData);
+          } catch (e) {
+            console.error("Resize chart draw failed:", e);
+          }
+        }
+      });
+
+      // click the clear all button to clear all filters and reload the page
+      function clearFilters() {
+        document
+          .querySelectorAll("#filter-form input")
+          .forEach((el) => (el.value = ""));
+        clearChartArea();
+        setTimeout(() => (window.location.href = "/infection"), 300);
+      }
+    </script>
+  </body>
 </html>
