@@ -167,6 +167,26 @@
                       Clear All
                   </button>
               </div>
+
+                    <!-- Initial state - no search performed -->
+      <div th:if="${hasFilters == null or !hasFilters}">
+        <div
+          style="
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+          "
+        >
+          <h3>Data Results Will Appear Here</h3>
+          <p>
+            Select <strong>Vaccination Data</strong> or
+            <strong>Infection Data</strong> and apply filters to see the
+            results.
+          </p>
+          <p>Data table and charts will appear here once you apply filters.</p>
+        </div>
+      </div>
           </div>
       </form>
       

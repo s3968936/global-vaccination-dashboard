@@ -51,13 +51,15 @@
         <div
           class="dataset-tab active"
           id="vaccination-tab"
-          onclick="switchDataset('vaccination')">
+          onclick="switchDataset('vaccination')"
+        >
           Vaccination Data
         </div>
         <div
           class="dataset-tab"
           id="infection-tab"
-          onclick="window.location.href='/infection'">
+          onclick="window.location.href='/infection'"
+        >
           Infection Data
         </div>
       </div>
@@ -73,34 +75,6 @@
 
         <div class="filter-section">
           <div class="filter-grid">
-            <!-- Country Combo Box -->
-            <div class="combo-box-simple">
-              <label for="country">Country</label>
-              <input
-                type="text"
-                id="country"
-                name="country"
-                placeholder="Type or select country"
-                list="country-list"
-                th:if="${selectedCountry != null}"
-                th:value="${selectedCountry}"
-              />
-              <input
-                type="text"
-                id="country"
-                name="country"
-                placeholder="Type or select country"
-                list="country-list"
-                th:unless="${selectedCountry != null}"
-              />
-              <datalist id="country-list">
-                <option
-                  th:each="country : ${countries}"
-                  th:value="${country}"
-                ></option>
-              </datalist>
-            </div>
-
             <!-- Region Combo Box -->
             <div class="combo-box-simple">
               <label for="region">Region</label>
@@ -125,6 +99,34 @@
                 <option
                   th:each="region : ${regions}"
                   th:value="${region}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Country Combo Box -->
+            <div class="combo-box-simple">
+              <label for="country">Country</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="Type or select country"
+                list="country-list"
+                th:if="${selectedCountry != null}"
+                th:value="${selectedCountry}"
+              />
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="Type or select country"
+                list="country-list"
+                th:unless="${selectedCountry != null}"
+              />
+              <datalist id="country-list">
+                <option
+                  th:each="country : ${countries}"
+                  th:value="${country}"
                 ></option>
               </datalist>
             </div>
