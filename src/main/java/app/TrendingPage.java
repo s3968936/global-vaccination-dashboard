@@ -1,6 +1,5 @@
 package app;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +21,10 @@ public class TrendingPage implements Handler {
     @Override
     public void handle(Context context) throws Exception {
         Map<String, Object> model = new HashMap<String, Object>();
+
+        // Add page title
+        model.put("title", "Trending");
+        
         // No data - just render the page
         context.render(TEMPLATE, model);
     }

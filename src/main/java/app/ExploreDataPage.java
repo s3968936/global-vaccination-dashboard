@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.model.Vaccination;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import app.model.Vaccination;
 
 public class ExploreDataPage implements Handler {
 
@@ -22,6 +22,9 @@ public class ExploreDataPage implements Handler {
     @Override
     public void handle(Context context) throws Exception {
         Map<String, Object> model = new HashMap<>();
+
+        // Add page title
+        model.put("title", "Explore Data");
 
         try {
             // Get filter data from database

@@ -8,7 +8,7 @@ import io.javalin.http.Handler;
 
 public class InsightsPage implements Handler {
 
-    private JDBCConnection connection;
+    private final JDBCConnection connection;
 
     public InsightsPage(JDBCConnection connection) {
         this.connection = connection;
@@ -19,8 +19,20 @@ public class InsightsPage implements Handler {
 
     @Override
     public void handle(Context context) throws Exception {
-        Map<String, Object> model = new HashMap<String, Object>();
-        // No data - just render the page
+        Map<String, Object> model = new HashMap<>();
+
+        // Add page title
+        model.put("title", "Insights");
+
+        try {
+            // Fetch map data for GeoChart
+            model.put("mapDataJson", connection.getMapDataJson());
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.put("error", "Error loading map data: " + e.getMessage());
+        }
+
+        // Render the Thymeleaf template
         context.render(TEMPLATE, model);
     }
 }

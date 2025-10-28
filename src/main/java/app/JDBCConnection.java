@@ -386,4 +386,32 @@ public class JDBCConnection {
 
         return infectionTypes;
     }
+
+    public String getMapDataJson() {
+        StringBuilder json = new StringBuilder();
+        json.append("[[\"Country\",\"Coverage\"]"); // header
+
+        try (Connection conn = DriverManager.getConnection(DATABASE);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                "SELECT c.name AS country_name, SUM(v.coverage) AS total_coverage " +
+                "FROM Vaccination v " +
+                "JOIN Country c ON v.country = c.CountryID " +
+                "GROUP BY c.name " +
+                "ORDER BY total_coverage DESC")) {
+
+            while (rs.next()) {
+                String country = rs.getString("country_name");
+                double coverage = rs.getDouble("total_coverage");
+                json.append(",[\"").append(country).append("\",").append(coverage).append("]");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        json.append("]");
+        return json.toString();
+    }
+
 }
