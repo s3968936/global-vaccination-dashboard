@@ -1,5 +1,6 @@
 package app;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,14 @@ public class InsightsPage implements Handler {
 
     @Override
     public void handle(Context context) throws Exception {
-        Map<String, Object> model = new HashMap<String, Object>();
-        // No data - just render the page
+        Map<String, Object> model = new HashMap<>();
+
+        model.put("title", "Insights");
+
+        // Get map data as a simple list of HashMaps
+        ArrayList<HashMap<String, String>> mapData = connection.getAverageVaccinationCoverageByCountry();
+        model.put("mapData", mapData);
+
         context.render(TEMPLATE, model);
     }
 }

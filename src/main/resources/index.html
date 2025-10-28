@@ -26,17 +26,15 @@
     </div>
 
     <div class="header">
-      <h1>
-        Global Health Dashboard
-      </h1>
+      <h1 th:text="${title}"></h1>
+      <p class="subtitle">Empowering informed global health decisions</p>
     </div>
 
     <div class="content">
-      <h2>Global Health Snapshots</h2>
-
-      <!-- Top Vaccinations -->
+    <!-- Top Vaccinations -->
+    <div class="card">
       <h3>Top 3 Vaccination Coverage</h3>
-      <table border="1">
+      <table>
         <tr>
           <th>Country</th>
           <th>Vaccine</th>
@@ -48,10 +46,12 @@
           <td th:text="${vaccination.coverage_percentage} + '%'">Coverage</td>
         </tr>
       </table>
+    </div>
 
-      <!-- Economy Snapshot -->
+    <!-- Economy Snapshot -->
+    <div class="card">
       <h3>Economic Snapshot</h3>
-      <table border="1">
+      <table>
         <tr>
           <th>Economy</th>
           <th>Countries</th>
@@ -66,10 +66,12 @@
           <td th:text="${economy.avg_vaccination} ?: 'N/A'">Coverage</td>
         </tr>
       </table>
+    </div>
 
-      <!-- Regions -->
+    <!-- Regions -->
+    <div class="card">
       <h3>Top Regions by Country Count</h3>
-      <table border="1">
+      <table>
         <tr>
           <th>Region</th>
           <th>Number of Countries</th>
@@ -79,10 +81,12 @@
           <td th:text="${region.country_count}">Country Count</td>
         </tr>
       </table>
+    </div>
 
-      <!-- Top Infections -->
+    <!-- Top Infections -->
+    <div class="card">
       <h3>Top Reported Infections</h3>
-      <table border="1">
+      <table>
         <tr>
           <th>Infection Type</th>
           <th>Total Cases</th>
@@ -96,6 +100,8 @@
         </tr>
       </table>
     </div>
+  </div>
+
 
     <!-- Footer -->
     <footer class="footer">

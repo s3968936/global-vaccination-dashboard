@@ -1,11 +1,6 @@
 package app;
-import app.JDBCConnection;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.sqlite.jdbc3.JDBC3Connection;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
@@ -35,9 +30,12 @@ public class PageIndex implements Handler {
 
     @Override
     public void handle(Context context) throws Exception {
-        Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, Object> model = new HashMap<>();
 
-        // Get data for the 4 snapshots using JDBCConnection methods
+        // Add page title
+        model.put("title", "Global Health Dashboard");
+
+        // Get data for snapshots
         model.put("topVaccinations", connection.getTopVaccinationsByCoverage());
         model.put("economySnapshot", connection.getEconomySnapshot());
         model.put("improvedRegions", connection.getRegions());
@@ -45,5 +43,6 @@ public class PageIndex implements Handler {
 
         context.render(TEMPLATE, model);
     }
+
 
 }

@@ -1,12 +1,12 @@
 package app;
 
-import app.model.Persona;
-import io.javalin.http.Context;
-import io.javalin.http.Handler;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import app.model.Persona;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
 
 public class MissionPage implements Handler {
 
@@ -20,7 +20,7 @@ public class MissionPage implements Handler {
     @Override
     public void handle(Context context) throws Exception {
         Map<String, Object> model = new HashMap<>();
-        model.put("title", "Mission Statement & Personas");
+        model.put("title", "Mission Statement");
 
         try {
             // Fetch all personas as Persona objects
