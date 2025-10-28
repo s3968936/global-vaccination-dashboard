@@ -4,14 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Explore Data - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
-    <!-- Load Google Charts -->
+    <!-- Load Google Charts for data visualization -->
     <script
       type="text/javascript"
       src="https://www.gstatic.com/charts/loader.js"
     ></script>
   </head>
-  <body>
-    <!-- Top Navigation -->
+  <body class="explore-page" xmlns="http://www.thymeleaf.org">
+    <!-- Top Navigation Bar -->
     <div class="simple-topnav">
       <a href="/" class="nav-logo-link">
         <img
@@ -30,24 +30,34 @@
       </div>
     </div>
 
+    <!-- Page Header -->
     <div class="header">
-      <h1 th:text="${title}"></h1>
-      <p class="subtitle">CHANGE THIS</p>
+      <h1>Explore Data</h1>
+      <p class="subtitle">
+        Explore global vaccination and infection data trends
+      </p>
     </div>
 
+    <!-- Main Content Area -->
     <div class="content">
       <h2>Explore Global Vaccination Data</h2>
       <p>
         Select a dataset and use the filters below to explore vaccination data
-        from around the world.
+        from around the world. Filter by country, region, antigen, or year range
+        to see specific trends and patterns.
       </p>
 
-      <!-- Error Message -->
+      <!-- Error Message Display -->
       <div th:if="${error}" class="error-message">
         <strong>Error:</strong> <span th:text="${error}"></span>
       </div>
 
-      <!-- Dataset Selector Tabs -->
+      <!-- Warning Message for Year Validation -->
+      <div th:if="${warning}" class="warning-message">
+        <strong>Warning:</strong> <span th:text="${warning}"></span>
+      </div>
+
+      <!-- Dataset Selector Tabs - Choose between Vaccination and Infection Data -->
       <div class="dataset-selector">
         <div
           class="dataset-tab active"
@@ -65,7 +75,7 @@
         </div>
       </div>
 
-      <!-- Filter Form -->
+      <!-- Filter Form - Users can apply multiple filters to refine their data view -->
       <form method="get" action="/explore" id="filter-form">
         <input
           type="hidden"
@@ -76,35 +86,7 @@
 
         <div class="filter-section">
           <div class="filter-grid">
-            <!-- Region Combo Box -->
-            <div class="combo-box-simple">
-              <label for="region">Region</label>
-              <input
-                type="text"
-                id="region"
-                name="region"
-                placeholder="Type or select region"
-                list="region-list"
-                th:if="${selectedRegion != null}"
-                th:value="${selectedRegion}"
-              />
-              <input
-                type="text"
-                id="region"
-                name="region"
-                placeholder="Type or select region"
-                list="region-list"
-                th:unless="${selectedRegion != null}"
-              />
-              <datalist id="region-list">
-                <option
-                  th:each="region : ${regions}"
-                  th:value="${region}"
-                ></option>
-              </datalist>
-            </div>
-
-            <!-- Country Combo Box -->
+            <!-- Country Filter - Select specific country or leave empty for all -->
             <div class="combo-box-simple">
               <label for="country">Country</label>
               <input
@@ -113,16 +95,7 @@
                 name="country"
                 placeholder="Type or select country"
                 list="country-list"
-                th:if="${selectedCountry != null}"
-                th:value="${selectedCountry}"
-              />
-              <input
-                type="text"
-                id="country"
-                name="country"
-                placeholder="Type or select country"
-                list="country-list"
-                th:unless="${selectedCountry != null}"
+                th:value="${selectedCountry != null} ? ${selectedCountry} : ''"
               />
               <datalist id="country-list">
                 <option
@@ -132,7 +105,26 @@
               </datalist>
             </div>
 
-            <!-- Antigen Combo Box -->
+            <!-- Region Filter - Select geographic region -->
+            <div class="combo-box-simple">
+              <label for="region">Region</label>
+              <input
+                type="text"
+                id="region"
+                name="region"
+                placeholder="Type or select region"
+                list="region-list"
+                th:value="${selectedRegion != null} ? ${selectedRegion} : ''"
+              />
+              <datalist id="region-list">
+                <option
+                  th:each="region : ${regions}"
+                  th:value="${region}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Antigen Filter - Select specific vaccine type -->
             <div class="combo-box-simple">
               <label for="antigen" id="antigen-label">Antigen</label>
               <input
@@ -141,16 +133,7 @@
                 name="antigen"
                 placeholder="Type or select antigen"
                 list="antigen-list"
-                th:if="${selectedAntigen != null}"
-                th:value="${selectedAntigen}"
-              />
-              <input
-                type="text"
-                id="antigen"
-                name="antigen"
-                placeholder="Type or select antigen"
-                list="antigen-list"
-                th:unless="${selectedAntigen != null}"
+                th:value="${selectedAntigen != null} ? ${selectedAntigen} : ''"
               />
               <datalist id="antigen-list">
                 <option
@@ -160,27 +143,18 @@
               </datalist>
             </div>
 
-            <!-- Year Combo Box -->
+            <!-- Year Range Filter - Select start and end years for data range -->
             <div class="combo-box-simple">
-              <label for="yearStart">Year Range</label>
+              <label for="yearStart">Year Range (2000-2024)</label>
               <div class="year-range">
                 <div class="year-start">
                   <input
                     type="text"
                     id="yearStart"
                     name="yearStart"
-                    placeholder="From"
+                    placeholder="From (2000-2024)"
                     list="year-list"
-                    th:if="${selectedYearStart != null}"
-                    th:value="${selectedYearStart}"
-                  />
-                  <input
-                    type="text"
-                    id="yearStart"
-                    name="yearStart"
-                    placeholder="From"
-                    list="year-list"
-                    th:unless="${selectedYearStart != null}"
+                    th:value="${selectedYearStart != null} ? ${selectedYearStart} : ''"
                   />
                 </div>
                 <div class="year-separator">to</div>
@@ -189,18 +163,9 @@
                     type="text"
                     id="yearEnd"
                     name="yearEnd"
-                    placeholder="To (leave empty for single year)"
+                    placeholder="To (2000-2024)"
                     list="year-list"
-                    th:if="${selectedYearEnd != null}"
-                    th:value="${selectedYearEnd}"
-                  />
-                  <input
-                    type="text"
-                    id="yearEnd"
-                    name="yearEnd"
-                    placeholder="To (leave empty for single year)"
-                    list="year-list"
-                    th:unless="${selectedYearEnd != null}"
+                    th:value="${selectedYearEnd != null} ? ${selectedYearEnd} : ''"
                   />
                 </div>
               </div>
@@ -220,17 +185,18 @@
         </div>
       </form>
 
-      <!-- Results Section -->
+      <!-- Results Section - Displayed after filters are applied -->
       <div th:if="${hasFilters}">
         <div th:if="${vaccinationData != null and !vaccinationData.empty}">
           <h2>Vaccination Data Results</h2>
 
-          <!-- Chart Section -->
+          <!-- Chart Section - Visual representation of coverage trends -->
           <div class="chart-container" th:if="${hasChartData}">
             <h3>Coverage Trend</h3>
             <div id="coverage_chart" style="width: 100%; height: 400px"></div>
           </div>
 
+          <!-- Message when no chart data is available -->
           <div
             class="chart-container"
             th:if="${hasChartData != null and !hasChartData}"
@@ -241,7 +207,7 @@
             </div>
           </div>
 
-          <!-- Data Table -->
+          <!-- Data Table - Detailed tabular view of the filtered data -->
           <h3>Detailed Data</h3>
           <table class="data-table">
             <thead>
@@ -271,7 +237,7 @@
           </table>
         </div>
 
-        <!-- Show message when no results -->
+        <!-- Message when no results are found for the selected filters -->
         <div th:if="${vaccinationData == null or vaccinationData.empty}">
           <div
             style="
@@ -284,13 +250,13 @@
             <h3>No Results Found</h3>
             <p>
               No vaccination data found for the selected criteria. Please try
-              different filters.
+              different filters or broaden your search criteria.
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Initial state - no search performed -->
+      <!-- Initial State - Displayed when no filters have been applied yet -->
       <div th:if="${hasFilters == null or !hasFilters}">
         <div
           style="
@@ -311,7 +277,7 @@
       </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer Section -->
     <footer class="footer">
       <div class="footer-content">
         <p><strong>Global Health Dashboard</strong></p>
@@ -331,16 +297,18 @@
       </div>
     </footer>
 
-    <!-- JavaScript for Chart -->
+    <!-- JavaScript for Chart Visualization -->
     <script th:inline="javascript">
+      // Load Google Charts library
       google.charts.load("current", { packages: ["corechart"] });
 
+      // Callback when charts are loaded - check if we have data to display
       google.charts.setOnLoadCallback(function () {
         const hasFilters = /*[[${hasFilters}]]*/ false;
         const hasChartData = /*[[${hasChartData}]]*/ false;
         const chartDataRaw = /*[[${chartDataJson}]]*/ "[]";
 
-        //Parse safely — Thymeleaf replaces variables before rendering
+        // Parse chart data safely - Thymeleaf replaces variables before rendering
         let chartData;
         try {
           chartData = JSON.parse(chartDataRaw);
@@ -349,6 +317,7 @@
           chartData = [];
         }
 
+        // Draw chart if we have data, otherwise clear the area
         if (hasFilters && hasChartData && chartData.length > 0) {
           drawCoverageChart(chartData);
         } else {
@@ -356,36 +325,108 @@
         }
       });
 
+      /**
+       * Draws the vaccination coverage chart using Google Charts
+       * @param {Array} chartData - Array of [year, coverage] pairs
+       */
       function drawCoverageChart(chartData) {
         const chartDiv = document.getElementById("coverage_chart");
         if (!chartDiv) return;
 
-        const data = new google.visualization.DataTable();
-        data.addColumn("string", "Year");
-        data.addColumn("number", "Coverage (%)");
-        data.addRows(chartData);
+        // Get the dynamic chart title from the server (generated based on filters)
+        const chartTitle =
+          /*[[${chartTitle}]]*/ "Vaccination Coverage Over Time";
 
+        // Create data table for Google Charts
+        const data = new google.visualization.DataTable();
+        data.addColumn("number", "Year");
+        data.addColumn("number", "Coverage (%)");
+
+        // Convert string years to numbers and prepare data for chart
+        const numericData = chartData.map((item) => {
+          const year = parseInt(item[0]); // Convert year string to number
+          const coverage = item[1]; // Coverage percentage
+          return [year, coverage];
+        });
+
+        data.addRows(numericData);
+
+        // Chart configuration options
         const options = {
-          title: "Vaccination Coverage Over Time",
-          curveType: "function",
-          legend: { position: "bottom" },
-          hAxis: { title: "Year" },
-          vAxis: { title: "Coverage (%)", viewWindow: { min: 0, max: 150 } },
-          colors: ["#3498db"],
+          title: chartTitle, // Dynamic title based on filters
+          titlePosition: "center", // Center the chart title
+          titleTextStyle: {
+            fontSize: 18,
+            bold: true,
+            color: "#2c3e50",
+          },
+          hAxis: {
+            title: "Year",
+            format: "####", // Show as 4-digit years
+            gridlines: { count: -1 }, // Automatic gridlines
+          },
+          vAxis: {
+            title: "Coverage (%)",
+            viewWindow: {
+              min: 0,
+              max: 150, // Realistic max for coverage percentages
+            },
+            format: "#'%'", // Add percentage symbol to values
+            gridlines: { color: "#f5f5f5" },
+          },
+          legend: {
+            position: "none", // Remove legend since we only have one line
+          },
+          colors: ["#4285F4"], // Google blue color
+          curveType: "function", // Smooth curves for better visualization
+          pointSize: 5,
+          pointShape: "circle",
+          backgroundColor: "transparent",
+          chartArea: {
+            width: "85%",
+            height: "70%",
+            top: 60,
+          },
+          crosshair: {
+            trigger: "both", // Show crosshair on focus and selection
+            orientation: "vertical",
+          },
         };
 
+        // Create and draw the line chart
         const chart = new google.visualization.LineChart(chartDiv);
         chart.draw(data, options);
+
+        // Add interactivity - change cursor on hover
+        google.visualization.events.addListener(
+          chart,
+          "onmouseover",
+          function (e) {
+            chartDiv.style.cursor = "pointer";
+          }
+        );
+
+        google.visualization.events.addListener(
+          chart,
+          "onmouseout",
+          function (e) {
+            chartDiv.style.cursor = "default";
+          }
+        );
       }
 
+      /**
+       * Clears the chart area and shows a message when no data is available
+       */
       function clearChartArea() {
         const chartDiv = document.getElementById("coverage_chart");
         if (chartDiv) {
           chartDiv.innerHTML =
-            "<p style='text-align:center; color:#777; padding:60px;'>No data available</p>";
+            "<p style='text-align:center; color:#777; padding:60px;'>No data available for the selected filters</p>";
         }
       }
 
+      // Redraw chart when window is resized for responsiveness
       window.addEventListener("resize", function () {
         const hasFilters = /*[[${hasFilters}]]*/ false;
         const hasChartData = /*[[${hasChartData}]]*/ false;
@@ -401,11 +442,15 @@
         }
       });
 
+      /**
+       * Clears all filters and resets the form
+       */
       function clearFilters() {
         document
           .querySelectorAll("#filter-form input")
           .forEach((el) => (el.value = ""));
         clearChartArea();
+        // Reload page after short delay to show cleared state
         setTimeout(() => (window.location.href = "/explore"), 300);
       }
     </script>

@@ -26,45 +26,96 @@ public class InfectionPage implements Handler {
         try {
             // Get filter data from database
             ArrayList<String> infectionTypes = connection.getInfectionTypes();
-            ArrayList<HashMap<String, String>> countries = connection.getAllCountries();
-            ArrayList<HashMap<String, String>> years = connection.getAllYears();
-
-            // Convert to simple lists for dropdowns
-            ArrayList<String> countryList = new ArrayList<>();
-            ArrayList<String> yearList = new ArrayList<>();
-
-            for (HashMap<String, String> country : countries) {
-                countryList.add(country.get("country"));
-            }
-            for (HashMap<String, String> year : years) {
-                yearList.add(year.get("year"));
-            }
+            ArrayList<String> economicStatuses = connection.getEconomicStatuses();
+            ArrayList<String> countries = connection.getCountries();
+            ArrayList<String> years = connection.getYears();
 
             model.put("infectionTypes", infectionTypes);
-            model.put("countries", countryList);
-            model.put("years", yearList);
+            model.put("economicStatuses", economicStatuses);
+            model.put("countries", countries);
+            model.put("years", years);
 
             // Get filter parameters from request
             String country = context.queryParam("country");
+            String economicStatus = context.queryParam("economicStatus");
             String infectionType = context.queryParam("infectionType");
             String yearStart = context.queryParam("yearStart");
             String yearEnd = context.queryParam("yearEnd");
 
+            // Year range validation
+            int minYear = 2000;
+            int maxYear = 2024;
+            boolean validYearRange = true;
+            String warningMessage = null;
+
+            try {
+                if (yearStart != null && !yearStart.isEmpty()) {
+                    int start = Integer.parseInt(yearStart);
+                    if (start < minYear || start > maxYear) {
+                        validYearRange = false;
+                        warningMessage = "⚠️ Start year must be between " + minYear + " and " + maxYear + ".";
+                    }
+                }
+                if (yearEnd != null && !yearEnd.isEmpty()) {
+                    int end = Integer.parseInt(yearEnd);
+                    if (end < minYear || end > maxYear) {
+                        validYearRange = false;
+                        warningMessage = "⚠️ End year must be between " + minYear + " and " + maxYear + ".";
+                    }
+                }
+
+                // Check if start year is before end year
+                if (yearStart != null && !yearStart.isEmpty() && yearEnd != null && !yearEnd.isEmpty()) {
+                    int start = Integer.parseInt(yearStart);
+                    int end = Integer.parseInt(yearEnd);
+                    if (start > end) {
+                        validYearRange = false;
+                        warningMessage = "⚠️ Start year cannot be greater than end year.";
+                    }
+                }
+            } catch (NumberFormatException e) {
+                validYearRange = false;
+                warningMessage = "⚠️ Please enter valid numeric years.";
+            }
+
+            // If year range is invalid, show warning and stop processing
+            if (!validYearRange) {
+                model.put("warning", warningMessage);
+
+                // Keep form selections even when there's a warning
+                model.put("selectedCountry", country);
+                model.put("selectedEconomicStatus", economicStatus);
+                model.put("selectedInfectionType", infectionType);
+                model.put("selectedYearStart", yearStart);
+                model.put("selectedYearEnd", yearEnd);
+
+                context.render(TEMPLATE, model);
+                return; // Stop processing to prevent wrong data
+            }
+
+            // Determine chart title
+            String chartTitle = determineChartTitle(country, economicStatus, infectionType);
+            model.put("chartTitle", chartTitle);
+
             // Check if filters are applied
             boolean hasFilters = (country != null && !country.isEmpty()) ||
-                                (infectionType != null && !infectionType.isEmpty()) ||
-                                (yearStart != null && !yearStart.isEmpty()) ||
-                                (yearEnd != null && !yearEnd.isEmpty());
+                    (economicStatus != null && !economicStatus.isEmpty()) ||
+                    (infectionType != null && !infectionType.isEmpty()) ||
+                    (yearStart != null && !yearStart.isEmpty()) ||
+                    (yearEnd != null && !yearEnd.isEmpty());
 
             model.put("hasFilters", hasFilters);
 
             if (hasFilters) {
-                // Get filtered infection data - NOTE: parameter order is (infType, country, yearStart, yearEnd)
-                ArrayList<InfectionData> infectionData = connection.getInfectionData(infectionType, country, yearStart, yearEnd);
+                // Get filtered infection data - NOW WITH 5 PARAMETERS
+                ArrayList<InfectionData> infectionData = connection.getInfectionData(
+                    infectionType, economicStatus, country, yearStart, yearEnd
+                );
                 model.put("infectionData", infectionData);
 
                 // Keep form selections
                 model.put("selectedCountry", country);
+                model.put("selectedEconomicStatus", economicStatus);
                 model.put("selectedInfectionType", infectionType);
                 model.put("selectedYearStart", yearStart);
                 model.put("selectedYearEnd", yearEnd);
@@ -84,8 +135,10 @@ public class InfectionPage implements Handler {
                                 chartDataJson.append(",");
                             }
 
+                            // Create label with year and infection type as requested
+                            String label = year + " - " + data.getInfType();
                             chartDataJson.append("[\"")
-                                        .append(year)
+                                        .append(label)
                                         .append("\", ")
                                         .append(cases)
                                         .append("]");
@@ -98,7 +151,11 @@ public class InfectionPage implements Handler {
                     model.put("hasChartData", validDataCount > 0);
                 } else {
                     model.put("hasChartData", false);
+                    model.put("chartDataJson", "[]");
                 }
+            } else {
+                model.put("hasChartData", false);
+                model.put("chartDataJson", "[]");
             }
 
         } catch (Exception e) {
@@ -107,5 +164,20 @@ public class InfectionPage implements Handler {
         }
 
         context.render(TEMPLATE, model);
+    }
+
+    private String determineChartTitle(String country, String economicStatus, String infectionType) {
+        StringBuilder title = new StringBuilder("Infection Cases Over Time");
+
+        if(country != null && !country.isEmpty()) {
+            title.append(" in ").append(country);
+        } else if(economicStatus != null && !economicStatus.isEmpty()) {
+            title.append(" in ").append(economicStatus).append(" Countries");
+        }
+
+        if(infectionType != null && !infectionType.isEmpty()) {
+            title.append(" for ").append(infectionType);
+        }
+        return title.toString();
     }
 }

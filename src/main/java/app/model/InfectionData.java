@@ -3,14 +3,16 @@ package app.model;
 public class InfectionData {
     private String infType;
     private String country;
+    private String economicStatus;
     private int year;
     private double cases;
 
     public InfectionData() {}
 
-    public InfectionData(String infType, String country, int year, double cases) {
+    public InfectionData(String infType, String country, String economicStatus, int year, double cases) {
         this.infType = infType;
         this.country = country;
+        this.economicStatus = economicStatus;
         this.year = year;
         this.cases = cases;
     }
@@ -31,6 +33,14 @@ public class InfectionData {
         this.country = country; 
     }
 
+    public String getEconomicStatus() { 
+        return economicStatus; 
+    }
+
+    public void setEconomicStatus(String economicStatus) { 
+        this.economicStatus = economicStatus; 
+    }
+    
     public int getYear() { 
         return year; 
     }

@@ -15,10 +15,11 @@ import app.model.Vaccination;
 
 /**
  * Class for Managing the JDBC Connection to a SQLite Database.
+ * Handles all database operations for the Global Health Dashboard.
  */
 public class JDBCConnection {
 
-    // Update this to your actual database path
+    // Database connection path - points to the WHO health database
     private static final String DATABASE = "jdbc:sqlite:database/who.db";
 
     public JDBCConnection() {
@@ -27,19 +28,25 @@ public class JDBCConnection {
 
     /**
      * Generic method to execute any SQL query and return results as ArrayList<HashMap>
+     * This is a reusable method that handles database connections and query execution
      */
     public ArrayList<HashMap<String, String>> executeQuery(String query) {
         ArrayList<HashMap<String, String>> results = new ArrayList<>();
         Connection connection = null;
 
         try {
+            // Connect to JDBC database
             connection = DriverManager.getConnection(DATABASE);
             Statement statement = connection.createStatement();
-            statement.setQueryTimeout(30);
+            statement.setQueryTimeout(30); // Set 30-second timeout
+            
+            // Execute the query and get results
             ResultSet resultSet = statement.executeQuery(query);
 
+            // Get metadata to know column names for dynamic result handling
             int columnCount = resultSet.getMetaData().getColumnCount();
 
+            // Process all rows in the result set
             while (resultSet.next()) {
                 HashMap<String, String> row = new HashMap<>();
                 for (int i = 1; i <= columnCount; i++) {
@@ -52,12 +59,13 @@ public class JDBCConnection {
 
             statement.close();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Database error: " + e.getMessage());
         } finally {
+            // Always close connection to prevent resource leaks
             try {
                 if (connection != null) connection.close();
             } catch (SQLException e) {
-                System.err.println(e.getMessage());
+                System.err.println("Error closing connection: " + e.getMessage());
             }
         }
 
@@ -66,7 +74,12 @@ public class JDBCConnection {
 
     // ===========================
     // Dashboard Query Methods
+    // These methods provide data for the main dashboard visualizations
     // ===========================
+    
+    /**
+     * Gets average vaccination coverage by country for dashboard display
+     */
     public ArrayList<HashMap<String, String>> getAverageVaccinationCoverageByCountry() {
         String query = """
             SELECT 
@@ -83,6 +96,9 @@ public class JDBCConnection {
         return executeQuery(query);
     }
 
+    /**
+     * Gets top vaccination coverage percentages for the dashboard
+     */
     public ArrayList<HashMap<String, String>> getTopVaccinationsByCoverage() {
         String query = """
             SELECT 
@@ -101,6 +117,9 @@ public class JDBCConnection {
         return executeQuery(query);
     }
 
+    /**
+     * Gets economic snapshot data showing vaccination coverage by economic phase
+     */
     public ArrayList<HashMap<String, String>> getEconomySnapshot() {
         String query = """
             SELECT 
@@ -115,6 +134,9 @@ public class JDBCConnection {
         return executeQuery(query);
     }
 
+    /**
+     * Gets region data with country counts for dashboard
+     */
     public ArrayList<HashMap<String, String>> getRegions() {
         String query = """
             SELECT 
@@ -129,6 +151,9 @@ public class JDBCConnection {
         return executeQuery(query);
     }
 
+    /**
+     * Gets top infection types by total cases for dashboard
+     */
     public ArrayList<HashMap<String, String>> getTopInfections() {
         String query = """
             SELECT 
@@ -145,26 +170,45 @@ public class JDBCConnection {
 
     // ===========================
     // Filter Dropdown Methods
+    // These methods populate the filter dropdowns in the explore data page
     // ===========================
+    
+    /**
+     * Gets all unique countries for the country filter dropdown
+     */
     public ArrayList<HashMap<String, String>> getAllCountries() {
         return executeQuery("SELECT DISTINCT name AS country FROM Country ORDER BY name;");
     }
 
+    /**
+     * Gets all unique regions for the region filter dropdown
+     */
     public ArrayList<HashMap<String, String>> getAllRegions() {
         return executeQuery("SELECT DISTINCT region AS region FROM Region ORDER BY region;");
     }
 
+    /**
+     * Gets all unique antigens for the antigen filter dropdown
+     */
     public ArrayList<HashMap<String, String>> getAllAntigens() {
         return executeQuery("SELECT DISTINCT name AS antigen FROM Antigen ORDER BY name;");
     }
 
+    /**
+     * Gets all unique years for the year filter dropdown
+     */
     public ArrayList<HashMap<String, String>> getAllYears() {
         return executeQuery("SELECT DISTINCT year AS year FROM Vaccination ORDER BY year;");
     }
 
     // ===========================
-    // Personas
+    // Persona Methods
+    // Handles user persona data for the mission statement page
     // ===========================
+    
+    /**
+     * Gets all personas from the database for the mission statement page
+     */
     public ArrayList<Persona> getAllPersonas() {
         ArrayList<Persona> list = new ArrayList<>();
         String query = "SELECT * FROM Personas ORDER BY persona_id;";
@@ -200,12 +244,14 @@ public class JDBCConnection {
         return list;
     }
 
-    // This method updates the database from the feedback form
+    /**
+     * Executes database updates - used for feedback form submissions
+     */
     public void executeUpdate(String sql, Object... params) {
         try (Connection conn = DriverManager.getConnection(DATABASE);
             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Set parameters
+            // Set parameters for prepared statement to prevent SQL injection
             for (int i = 0; i < params.length; i++) {
                 stmt.setObject(i + 1, params[i]);
             }
@@ -218,8 +264,13 @@ public class JDBCConnection {
     }
 
     // ===========================
-    // Vaccination Data
+    // Vaccination Data Methods
+    // Handles filtered vaccination data queries for the explore data page
     // ===========================
+    
+    /**
+     * Gets filtered vaccination data based on user selections
+     */
     public ArrayList<Vaccination> getVaccinationData(String country, String region, String antigen, String yearStart, String yearEnd) {
         ArrayList<Vaccination> results = new ArrayList<>();
         Connection connection = null;
@@ -227,6 +278,7 @@ public class JDBCConnection {
         try {
             connection = DriverManager.getConnection(DATABASE);
 
+            // Build dynamic SQL query based on filters
             String query = """
                 SELECT 
                     c.name AS country_name,
@@ -243,6 +295,7 @@ public class JDBCConnection {
                 WHERE 1=1
             """;
 
+            // Add filters to query based on user input
             if (country != null && !country.isEmpty()) {
                 query += " AND c.name = '" + country + "'";
             }
@@ -265,6 +318,7 @@ public class JDBCConnection {
             statement.setQueryTimeout(30);
             ResultSet resultSet = statement.executeQuery(query);
 
+            // Convert result set to Vaccination objects
             while (resultSet.next()) {
                 String countryName = resultSet.getString("country_name");
                 String antigenName = resultSet.getString("antigen_name");
@@ -279,85 +333,209 @@ public class JDBCConnection {
 
             statement.close();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error getting vaccination data: " + e.getMessage());
         } finally {
             try {
                 if (connection != null) connection.close();
             } catch (SQLException e) {
-                System.err.println(e.getMessage());
+                System.err.println("Error closing connection: " + e.getMessage());
             }
         }
 
         return results;
     }
 
+    /**
+     * Gets countries by region for dynamic dropdown filtering
+     */
+    public ArrayList<HashMap<String, String>> getCountriesByRegion(String region) {
+        String query = "SELECT c.name AS country " +
+                    "FROM Country c " +
+                    "JOIN Region r ON c.region = r.RegionID " +
+                    "WHERE r.region = '" + region + "' " +
+                    "ORDER BY c.name";
+        return executeQuery(query);
+    }
+
     // ===========================
-    // Infection Data
+    // Infection Data Methods
+    // Handles filtered infection data queries
     // ===========================
-    public ArrayList<InfectionData> getInfectionData(String infType, String country, String yearStart, String yearEnd) {
-        ArrayList<InfectionData> results = new ArrayList<>();
+
+    /**
+     * Gets filtered infection data based on user selections
+     */
+ public ArrayList<InfectionData> getInfectionData(String infType, String economicStatus, String country, String yearStart, String yearEnd) {
+    ArrayList<InfectionData> results = new ArrayList<>();
+    Connection connection = null;
+
+    try {
+        connection = DriverManager.getConnection(DATABASE);
+
+        // Build dynamic SQL query for infection data - MATCHING YOUR SQL STRUCTURE
+        String query = """
+            SELECT 
+                c.name AS country,
+                e.phase AS economic_status,
+                it.description AS infection_type,
+                yd.YearID AS year,
+                id.cases AS cases
+            FROM InfectionData id
+            JOIN Country c ON id.country = c.CountryID
+            JOIN Economy e ON c.economy = e.economyID
+            JOIN Infection_Type it ON id.inf_type = it.id
+            JOIN YearDate yd ON id.year = yd.YearID
+            WHERE 1=1
+        """;
+
+        // Add filters to query
+        if (infType != null && !infType.isEmpty()) {
+            query += " AND it.description = '" + infType + "'";
+        }
+        if (economicStatus != null && !economicStatus.isEmpty()) {
+            query += " AND e.phase = '" + economicStatus + "'";
+        }
+        if (country != null && !country.isEmpty()) {
+            query += " AND c.name = '" + country + "'";
+        }
+        if (yearStart != null && !yearStart.isEmpty()) {
+            query += " AND yd.YearID >= " + yearStart;
+        }
+        if (yearEnd != null && !yearEnd.isEmpty()) {
+            query += " AND yd.YearID <= " + yearEnd;
+        }
+
+        query += " ORDER BY yd.YearID, id.cases DESC;";
+
+        Statement statement = connection.createStatement();
+        statement.setQueryTimeout(30);
+        ResultSet resultSet = statement.executeQuery(query);
+
+        // Convert result set to InfectionData objects
+        while (resultSet.next()) {
+            String countryName = resultSet.getString("country");
+            String economicStatusResult = resultSet.getString("economic_status");
+            String infectionType = resultSet.getString("infection_type");
+            int year = resultSet.getInt("year");
+            double cases = resultSet.getDouble("cases");
+
+            // Use the constructor that includes economic status
+            results.add(new InfectionData(infectionType, countryName, economicStatusResult, year, cases));
+        }
+
+        statement.close();
+    } catch (SQLException e) {
+        System.err.println("Error getting infection data: " + e.getMessage());
+    } finally {
+        try {
+            if (connection != null) connection.close();
+        } catch (SQLException e) {
+            System.err.println("Error closing connection: " + e.getMessage());
+        }
+    }
+
+    return results;
+}
+
+    /**
+     * Gets all economic statuses for the dropdown filter
+     */
+    public ArrayList<String> getEconomicStatuses() {
+        ArrayList<String> economicStatuses = new ArrayList<>();
         Connection connection = null;
 
         try {
             connection = DriverManager.getConnection(DATABASE);
-
-            String query = """
-                SELECT 
-                    it.description AS inf_type,
-                    c.name AS country_name,
-                    id.year AS year,
-                    id.cases AS cases
-                FROM InfectionData id
-                JOIN Infection_Type it ON id.inf_type = it.id
-                JOIN Country c ON id.country = c.CountryID
-                WHERE 1=1
-            """;
-
-            if (infType != null && !infType.isEmpty()) {
-                query += " AND it.description = '" + infType + "'";
-            }
-            if (country != null && !country.isEmpty()) {
-                query += " AND c.name = '" + country + "'";
-            }
-            if (yearStart != null && !yearStart.isEmpty()) {
-                query += " AND id.year >= " + yearStart;
-            }
-            if (yearEnd != null && !yearEnd.isEmpty()) {
-                query += " AND id.year <= " + yearEnd;
-            }
-
-            query += " ORDER BY id.year;";
-
+            String query = "SELECT DISTINCT phase FROM Economy ORDER BY phase;";
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                String infectionType = resultSet.getString("inf_type");
-                String countryName = resultSet.getString("country_name");
-                int year = resultSet.getInt("year");
-                double cases = resultSet.getDouble("cases");
-
-                results.add(new InfectionData(infectionType, countryName, year, cases));
+                economicStatuses.add(resultSet.getString("phase"));
             }
 
             statement.close();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error getting economic statuses: " + e.getMessage());
         } finally {
             try {
                 if (connection != null) connection.close();
             } catch (SQLException e) {
-                System.err.println(e.getMessage());
+                System.err.println("Error closing connection: " + e.getMessage());
             }
         }
 
-        return results;
+        return economicStatuses;
     }
 
-    // ===========================
-    // Infection Type Dropdown
-    // ===========================
+    /**
+     * Gets all countries for the dropdown filter
+     */
+    public ArrayList<String> getCountries() {
+        ArrayList<String> countries = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            String query = "SELECT DISTINCT name FROM Country ORDER BY name;";
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                countries.add(resultSet.getString("name"));
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error getting countries: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+            }
+        }
+
+        return countries;
+    }
+
+        /**
+     * Gets all available years from YearDate table
+     */
+    public ArrayList<String> getYears() {
+        ArrayList<String> years = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            String query = "SELECT DISTINCT YearID FROM YearDate ORDER BY YearID;";
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                years.add(String.valueOf(resultSet.getInt("YearID")));
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error getting years: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+            }
+        }
+
+        return years;
+    }
+
+    /**
+     * Gets all infection types for the dropdown filter
+     */
     public ArrayList<String> getInfectionTypes() {
         ArrayList<String> infectionTypes = new ArrayList<>();
         Connection connection = null;
@@ -375,12 +553,12 @@ public class JDBCConnection {
 
             statement.close();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error getting infection types: " + e.getMessage());
         } finally {
             try {
                 if (connection != null) connection.close();
             } catch (SQLException e) {
-                System.err.println(e.getMessage());
+                System.err.println("Error closing connection: " + e.getMessage());
             }
         }
 
