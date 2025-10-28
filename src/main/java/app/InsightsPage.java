@@ -1,5 +1,6 @@
 package app;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import io.javalin.http.Handler;
 
 public class InsightsPage implements Handler {
 
-    private final JDBCConnection connection;
+    private JDBCConnection connection;
 
     public InsightsPage(JDBCConnection connection) {
         this.connection = connection;
@@ -21,18 +22,12 @@ public class InsightsPage implements Handler {
     public void handle(Context context) throws Exception {
         Map<String, Object> model = new HashMap<>();
 
-        // Add page title
         model.put("title", "Insights");
 
-        try {
-            // Fetch map data for GeoChart
-            model.put("mapDataJson", connection.getMapDataJson());
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.put("error", "Error loading map data: " + e.getMessage());
-        }
+        // Get map data as a simple list of HashMaps
+        ArrayList<HashMap<String, String>> mapData = connection.getAverageVaccinationCoverageByCountry();
+        model.put("mapData", mapData);
 
-        // Render the Thymeleaf template
         context.render(TEMPLATE, model);
     }
 }

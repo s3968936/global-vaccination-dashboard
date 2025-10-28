@@ -1,107 +1,75 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org"
->
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Insights - Global Health Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="common.css" />
-
-    <!-- Google Charts Script -->
-    <script type="text/javascript">
-    // Convert Thymeleaf mapData into JavaScript array
-    var mapData = [
-      /*[[${mapData}]]*/
-      /* Thymeleaf will output a list of Object[] here */
-    ];
-
-    // Helper: transform Thymeleaf ArrayList<Object[]> into JS-friendly array
-    var chartArray = [];
-    if (mapData.length > 0) {
-      mapData.forEach(function(row) {
-        chartArray.push([row[0], parseFloat(row[1])]);
-      });
-      // Insert header row
-      chartArray.unshift(['Country', 'Coverage']);
-    }
-
-    google.charts.load('current', { packages: ['geochart'] });
-    google.charts.setOnLoadCallback(drawRegionsMap);
-
-    function drawRegionsMap() {
-      var data = google.visualization.arrayToDataTable(chartArray);
-
-      var options = {
-        colorAxis: { colors: ['#f7fbff', '#08306b'] }, // light → dark
-        backgroundColor: '#f0f0f0'
-      };
-
-      var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
-      chart.draw(data, options);
-    }
-  </script>
-
-  </head>
-  <body>
-    <!-- Top Navigation -->
-    <div class="simple-topnav">
-      <a href="/" class="nav-logo-link">
-        <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
-      </a>
-      <div class="nav-links">
-        <a href="/">Homepage</a>
-        <a href="/explore">Explore Data</a>
-        <a href="/trending">Trending</a>
-        <a href="/insights" class="active">Insights</a>
-        <a href="/mission">Mission Statement</a>
-        <a href="/feedback">Feedback</a>
-      </div>
-    </div>
-
-    <!-- Page Header -->
-    <div class="header">
-      <h1 th:text="${title}"></h1>
-      <p class="subtitle">Turning global health data into actionable insights</p>
-    </div>
-
-    <!-- Page Content -->
-    <div class="content">
-    <p>
-      This page provides detailed insights and analysis of global health data.
-      Use the visualizations below to explore trends in global vaccination coverage
-      and infection reports.
-    </p>
-
-      <!-- GeoChart inside a card -->
-    <div class="card-insights">
-      <h3>Global Vaccination Popularity</h3>
-      <div id="regions_div" style="width: 100%; height: 500px;"></div>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Insights - Global Health Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="common.css" />
+</head>
+<body>
+  <!-- Top Navigation -->
+  <div class="simple-topnav">
+    <a href="/" class="nav-logo-link">
+      <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+    </a>
+    <div class="nav-links">
+      <a href="/">Homepage</a>
+      <a href="/explore">Explore Data</a>
+      <a href="/trending">Trending</a>
+      <a href="/insights" class="active">Insights</a>
+      <a href="/mission">Mission Statement</a>
+      <a href="/feedback">Feedback</a>
     </div>
   </div>
 
+  <!-- Page Header -->
+  <div class="header">
+    <h1 th:text="${title}"></h1>
+    <p class="subtitle">Turning global health data into actionable insights</p>
+  </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-content">
-        <p><strong>Global Health Dashboard</strong></p>
-        <nav class="footer-links">
-          <a href="/">Homepage</a> |
-          <a href="/explore">Explore Data</a> |
-          <a href="/trending">Trending</a> |
-          <a href="/insights">Insights</a> |
-          <a href="/mission">Mission Statement</a> |
-          <a href="/feedback">Feedback</a> |
-          <a href="/privacy">Privacy Policy</a>
-        </nav>
-        <p>
-          <small>
-            © 2025 RMIT University - Global Vaccination Initiatives |
-            Empowering informed global health decisions
-          </small>
-        </p>
-      </div>
-    </footer>
-  </body>
+  <!-- Content -->
+  <div class="content">
+    <p>This page provides detailed insights and analysis of global health data.</p>
+
+    <!-- Card with Table -->
+    <div class="card-insights">
+      <h3>Global Vaccination Coverage</h3>
+      <table>
+        <tr>
+          <th>Country</th>
+          <th>Average Coverage</th>
+          <th>Visual</th>
+        </tr>
+        <tr th:each="row : ${mapData}">
+          <td th:text="${row.country_name}"></td>
+          <td th:text="${row.avg_coverage}"></td>
+          <td>
+            <div class="bar" th:style="'width:' + ${row.avg_coverage} + '%;'"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><strong>Global Health Dashboard</strong></p>
+      <nav class="footer-links">
+        <a href="/">Homepage</a> |
+        <a href="/explore">Explore Data</a> |
+        <a href="/trending">Trending</a> |
+        <a href="/insights">Insights</a> |
+        <a href="/mission">Mission Statement</a> |
+        <a href="/feedback">Feedback</a>
+      </nav>
+      <p>
+        <small>
+          © 2025 RMIT University - Global Vaccination Initiatives |
+          Empowering informed global health decisions
+        </small>
+      </p>
+    </div>
+  </footer>
+</body>
 </html>
