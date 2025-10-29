@@ -27,27 +27,9 @@ public class InfectionPage implements Handler {
         try {
             // Get filter data from database
             ArrayList<String> infectionTypes = connection.getInfectionTypes();
-<<<<<<< HEAD
-            ArrayList<HashMap<String, String>> countries = connection.getAllCountries();
-            ArrayList<HashMap<String, String>> years = connection.getAllYears();
-
-            // Convert to simple lists for dropdowns
-            ArrayList<String> countryList = new ArrayList<>();
-            ArrayList<String> yearList = new ArrayList<>();
-
-            
-
-            for (HashMap<String, String> country : countries) {
-                countryList.add(country.get("country"));
-            }
-            for (HashMap<String, String> year : years) {
-                yearList.add(year.get("year"));
-            }
-=======
             ArrayList<String> economicStatuses = connection.getEconomicStatuses();
             ArrayList<String> countries = connection.getCountries();
             ArrayList<String> years = connection.getYears();
->>>>>>> 401cd61ba4f272bd18c35e79a33df3c809758db7
 
             model.put("infectionTypes", infectionTypes);
             model.put("economicStatuses", economicStatuses);
