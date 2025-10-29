@@ -59,10 +59,10 @@
 
             <!-- Image column -->
             <td style="vertical-align: top; width: 40%; text-align: center;">
-              <img th:src="@{/images/{file}(file=${p.image})}" 
+              <img th:src="@{/{file}(file=${p.image})}" 
                   alt="Profile Image" 
                   style="max-width:100%; border-radius:8px;">
-              <p style="font-size: 0.8em; color: #666;" th:text="${p.imageCredit}"></p>
+              <p style="font-size: 0.6em; color: #666;" th:text="${p.imageCredit}"></p>
             </td>
           </tr>
         </table>
@@ -85,6 +85,36 @@
       </div>
     </div>
   </div>
+
+  <!-- Student Info -->
+  <div class="student-info" style="margin-top: 40px; padding: 10px; background-color: #f9f9f9; border-radius: 8px;">
+    <h3>Project Contributors</h3>
+    <table style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ccc;">Student ID</th>
+          <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ccc;">First Name</th>
+          <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ccc;">Last Name</th>
+          <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ccc;">Sub-Tasks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 8px;">S3968936</td>
+          <td style="padding: 8px;">Thomas</td>
+          <td style="padding: 8px;">Young</td>
+          <td style="padding: 8px;">B</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px;">S4055262</td>
+          <td style="padding: 8px;">Yukheang</td>
+          <td style="padding: 8px;">Kang</td>
+          <td style="padding: 8px;">A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 
   <!-- Footer -->
   <footer class="footer">

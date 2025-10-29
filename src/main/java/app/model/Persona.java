@@ -44,47 +44,116 @@ public class Persona {
     public Persona() { }
 
     // --- Getters and Setters ---
-    public int getPersonaId() { return personaId; }
-    public void setPersonaId(int personaId) { this.personaId = personaId; }
+    public int getPersonaId() { 
+        return personaId; 
+    }
+    
+    public void setPersonaId(int personaId) { 
+        this.personaId = personaId; 
+    }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public String getTitle() { 
+        return title; 
+    }
+    
+    public void setTitle(String title) { 
+        this.title = title; 
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getName() { 
+        return name; 
+    }
+   
+    public void setName(String name) { 
+        this.name = name; 
+    }
 
-    public int getAge() { return age; }
-    public void setAge(int age) { this.age = age; }
+    public int getAge() { 
+        return age; 
+    }
+    
+    public void setAge(int age) { 
+        this.age = age; 
+    }
 
-    public String getOccupation() { return occupation; }
-    public void setOccupation(String occupation) { this.occupation = occupation; }
+    public String getOccupation() { 
+        return occupation; 
+    }
+    
+    public void setOccupation(String occupation) { 
+        this.occupation = occupation; 
+    }
 
-    public String getEducation() { return education; }
-    public void setEducation(String education) { this.education = education; }
+    public String getEducation() { 
+        return education; 
+    }
+    
+    public void setEducation(String education) { 
+        this.education = education; 
+    }
 
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
+    public String getLocation() { 
+        return location; 
+    }
+   
+    public void setLocation(String location) { 
+        this.location = location; 
+    }
 
-    public String getLanguage() { return language; }
-    public void setLanguage(String language) { this.language = language; }
+    public String getLanguage() { 
+        return language; 
+    }
 
-    public String getDisability() { return disability; }
-    public void setDisability(String disability) { this.disability = disability; }
+    public void setLanguage(String language) { 
+        this.language = language; 
+    }
 
-    public String getNeeds() { return needs; }
-    public void setNeeds(String needs) { this.needs = needs; }
+    public String getDisability() { 
+        return disability; 
+    }
+    public void setDisability(String disability) {
+        this.disability = disability; 
+    }
 
-    public String getGoals() { return goals; }
-    public void setGoals(String goals) { this.goals = goals; }
+    public String getNeeds() { 
+        return needs; 
+    }
+    
+    public void setNeeds(String needs) { 
+        this.needs = needs; 
+    }
 
-    public String getSkills() { return skills; }
-    public void setSkills(String skills) { this.skills = skills; }
+    public String getGoals() { 
+        return goals; 
+    }
+    
+    public void setGoals(String goals) { 
+        this.goals = goals; 
+    }
 
-    public String getImage() { return image; }
-    public void setImage(String image) { this.image = image; }
+    public String getSkills() { 
+        return skills; 
+    }
+    
+    public void setSkills(String skills) { 
+        this.skills = skills; 
+    }
 
-    public String getImageCredit() { return imageCredit; }
-    public void setImageCredit(String imageCredit) { this.imageCredit = imageCredit; }
+    public String getImage() { 
+        return image; 
+    }
+    
+    public void setImage(String image) { 
+        this.image = image; 
+    }
+
+    public String getImageCredit() { 
+        return imageCredit; 
+    }
+    
+    public void setImageCredit(String imageCredit) { 
+        this.imageCredit = imageCredit; 
+    }
 
     // --- Derived lists for Thymeleaf ---
     public List<String> getNeedsList() {
