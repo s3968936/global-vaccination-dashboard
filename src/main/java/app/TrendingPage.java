@@ -111,12 +111,14 @@ public class TrendingPage implements Handler {
                     HashMap<String, String> row = summaryData.get(i);
                     if (i > 0) chartJson.append(",");
 
-                    // Remove commas from total_cases for chart
+                    // Remove commas from total_cases and avg_cases for chart
                     String totalCasesStr = row.get("total_cases").replace(",", "");
+                    String avgCasesStr = row.get("avg_cases").replace(",", "");
 
                     chartJson.append("{")
                         .append("\"economic_status\":\"").append(row.get("economic_status")).append("\",")
-                        .append("\"total_cases\":").append(totalCasesStr)
+                        .append("\"total_cases\":").append(totalCasesStr).append(",")
+                        .append("\"avg_cases\":").append(avgCasesStr)
                         .append("}");
                 }
                 chartJson.append("]");

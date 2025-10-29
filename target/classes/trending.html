@@ -203,9 +203,7 @@
           </table>
 
           <!-- Chart Container -->
-          <div class="chart-container">
-            <div id="economic_comparison_chart" style="width: 100%; height: 400px"></div>
-          </div>
+          <div id="economic_comparison_chart" style="width: 100%; height: 500px"></div>
         </div>
 
         <!-- Visual Analytics Section -->
@@ -219,9 +217,7 @@
                 Filtered for: <strong th:text="${selectedCountry}"></strong>
               </span>
             </p>
-            <div class="chart-container">
-              <div id="timeline_chart" style="width: 100%; height: 400px"></div>
-            </div>
+            <div id="timeline_chart" style="width: 100%; height: 500px"></div>
           </div>
 
           <!-- Top Countries Bar Chart -->
@@ -230,9 +226,7 @@
             <p>
               Comparison of the top countries with the highest infection cases in the selected economic group.
             </p>
-            <div class="chart-container">
-              <div id="top_countries_chart" style="width: 100%; height: 450px"></div>
-            </div>
+            <div id="top_countries_chart" style="width: 100%; height: 550px"></div>
           </div>
 
           <!-- Distribution Pie Chart -->
@@ -241,9 +235,7 @@
             <p>
               Proportional distribution of infection cases across different countries (top 10 shown).
             </p>
-            <div class="chart-container">
-              <div id="distribution_chart" style="width: 100%; height: 400px"></div>
-            </div>
+            <div id="distribution_chart" style="width: 100%; height: 500px"></div>
           </div>
 
           <!-- Additional Chart Placeholder -->
@@ -252,9 +244,7 @@
             <p>
               Comparison of average infection cases per country across different economic groups, showing normalized impact.
             </p>
-            <div class="chart-container">
-              <div id="average_cases_chart" style="width: 100%; height: 400px"></div>
-            </div>
+            <div id="average_cases_chart" style="width: 100%; height: 500px"></div>
           </div>
         </div>
       </div>
@@ -334,15 +324,15 @@
         const chartDiv = document.getElementById("economic_comparison_chart");
         if (!chartDiv) return;
 
-        // Define colors for different economic statuses
+        // Define colors for different economic statuses (case-insensitive matching)
         const colorMap = {
-          "High income": "#27ae60",           // Green
-          "Upper middle income": "#3498db",    // Blue
-          "Lower middle income": "#f39c12",    // Orange
-          "Low income": "#e74c3c",             // Red
-          "Least developed": "#c0392b",        // Dark Red
-          "Developing": "#e67e22",             // Dark Orange
-          "Developed": "#16a085"               // Teal
+          "high income": "#27ae60",           // Green
+          "upper middle income": "#3498db",    // Blue
+          "lower middle income": "#f39c12",    // Orange
+          "low income": "#e74c3c",             // Red
+          "least developed": "#c0392b",        // Dark Red
+          "developing": "#e67e22",             // Dark Orange
+          "developed": "#16a085"               // Teal
         };
 
         // Prepare data for Google Charts with color role
@@ -354,28 +344,34 @@
         // Add rows from summary data with colors
         summaryData.forEach((item) => {
           const economicStatus = item.economic_status;
-          const totalCases = parseFloat(item.total_cases.replace(/,/g, ""));
-          const color = colorMap[economicStatus] || "#95a5a6"; // Default grey if not found
+          const totalCases = typeof item.total_cases === 'number' ? item.total_cases : parseFloat(String(item.total_cases).replace(/,/g, ""));
+          const color = colorMap[economicStatus.toLowerCase()] || "#95a5a6"; // Case-insensitive lookup
           data.addRow([economicStatus, totalCases, "color: " + color]);
         });
 
         const options = {
           title: "Total Infection Cases by Economic Status",
+          titleTextStyle: { fontSize: 16, bold: true },
           hAxis: {
             title: "Economic Status",
             textStyle: { fontSize: 12 },
+            slantedText: true,
+            slantedTextAngle: 30,
           },
           vAxis: {
             title: "Total Cases",
             format: "short",
             minValue: 0,
+            textStyle: { fontSize: 12 },
           },
           backgroundColor: "transparent",
           legend: { position: "none" },
           chartArea: {
-            width: "80%",
-            height: "70%",
-            top: 60,
+            width: "85%",
+            height: "65%",
+            top: 80,
+            left: 100,
+            bottom: 80,
           },
         };
 
@@ -409,15 +405,18 @@
 
         const options = {
           title: "Infection Cases Trend Over Time",
+          titleTextStyle: { fontSize: 16, bold: true },
           hAxis: {
             title: "Year",
             format: "####",
             gridlines: { count: -1 },
+            textStyle: { fontSize: 12 },
           },
           vAxis: {
             title: "Total Cases",
             format: "short",
             minValue: 0,
+            textStyle: { fontSize: 12 },
           },
           colors: ["#e74c3c"],
           backgroundColor: "transparent",
@@ -426,7 +425,9 @@
           chartArea: {
             width: "85%",
             height: "70%",
-            top: 60,
+            top: 80,
+            left: 100,
+            bottom: 60,
           },
         };
 
@@ -461,21 +462,26 @@
 
         const options = {
           title: "Top 10 Countries by Total Cases",
+          titleTextStyle: { fontSize: 16, bold: true },
           hAxis: {
             title: "Total Cases",
             format: "short",
             minValue: 0,
+            textStyle: { fontSize: 11 },
           },
           vAxis: {
             title: "Country",
+            textStyle: { fontSize: 11 },
           },
           colors: ["#3498db"],
           backgroundColor: "transparent",
           legend: { position: "none" },
           chartArea: {
-            width: "70%",
+            width: "65%",
             height: "75%",
-            top: 60,
+            top: 80,
+            left: 180,
+            bottom: 40,
           },
         };
 
@@ -510,18 +516,20 @@
 
         const options = {
           title: "Distribution of Cases Across Top Countries",
+          titleTextStyle: { fontSize: 16, bold: true },
           pieHole: 0.4,
           colors: ["#e74c3c", "#3498db", "#f39c12", "#27ae60", "#9b59b6", "#1abc9c", "#34495e", "#e67e22", "#c0392b", "#16a085"],
           backgroundColor: "transparent",
           chartArea: {
             width: "90%",
-            height: "80%",
-            top: 60,
+            height: "85%",
+            top: 80,
+            left: 40,
           },
           pieSliceText: "percentage",
           legend: {
             position: "right",
-            textStyle: { fontSize: 12 },
+            textStyle: { fontSize: 11 },
           },
         };
 
@@ -533,15 +541,15 @@
         const chartDiv = document.getElementById("average_cases_chart");
         if (!chartDiv) return;
 
-        // Define colors for different economic statuses (same as comparison chart)
+        // Define colors for different economic statuses (case-insensitive matching)
         const colorMap = {
-          "High income": "#27ae60",
-          "Upper middle income": "#3498db",
-          "Lower middle income": "#f39c12",
-          "Low income": "#e74c3c",
-          "Least developed": "#c0392b",
-          "Developing": "#e67e22",
-          "Developed": "#16a085"
+          "high income": "#27ae60",
+          "upper middle income": "#3498db",
+          "lower middle income": "#f39c12",
+          "low income": "#e74c3c",
+          "least developed": "#c0392b",
+          "developing": "#e67e22",
+          "developed": "#16a085"
         };
 
         // Prepare data for Google Charts
@@ -553,28 +561,34 @@
         // Add rows from summary data with colors
         summaryData.forEach((item) => {
           const economicStatus = item.economic_status;
-          const avgCases = parseFloat(item.avg_cases.replace(/,/g, ""));
-          const color = colorMap[economicStatus] || "#95a5a6";
+          const avgCases = typeof item.avg_cases === 'number' ? item.avg_cases : parseFloat(String(item.avg_cases).replace(/,/g, ""));
+          const color = colorMap[economicStatus.toLowerCase()] || "#95a5a6"; // Case-insensitive lookup
           data.addRow([economicStatus, avgCases, "color: " + color]);
         });
 
         const options = {
           title: "Average Cases Per Country by Economic Status",
+          titleTextStyle: { fontSize: 16, bold: true },
           hAxis: {
             title: "Economic Status",
             textStyle: { fontSize: 12 },
+            slantedText: true,
+            slantedTextAngle: 30,
           },
           vAxis: {
             title: "Average Cases Per Country",
             format: "short",
             minValue: 0,
+            textStyle: { fontSize: 12 },
           },
           backgroundColor: "transparent",
           legend: { position: "none" },
           chartArea: {
-            width: "80%",
-            height: "70%",
-            top: 60,
+            width: "85%",
+            height: "65%",
+            top: 80,
+            left: 100,
+            bottom: 80,
           },
         };
 

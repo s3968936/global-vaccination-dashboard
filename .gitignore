@@ -24,4 +24,7 @@ out/
 
 #Ignore pom files
 .xml
+
+#Ignore lst files
+.lst
 >>>>>>> d8d7a75d44afab1efcc09d5f3b5e523916ac8b1d
