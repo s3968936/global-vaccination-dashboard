@@ -257,7 +257,6 @@
         Vaccination coverage rates by country with interactive world map
       </p>
     </div>
-<<<<<<< HEAD
 
     <!-- Content -->
     <div class="content">
@@ -396,33 +395,4 @@
       }
     </script>
   </body>
-=======
-  </footer>
-      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script th:inline="javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        // Thymeleaf injects chartDataJS here
-        var data = google.visualization.arrayToDataTable([[$chartDataJS]]);
-        
-        var options = {
-          title: 'Top 10 Countries by Average Vaccination Coverage',
-          legend: { position: 'none' },
-          colors: ['#2e86de'],
-          hAxis: { title: 'Coverage (%)', viewWindow: { min: 0, max: 120 } },
-          chartArea: { width: '70%' }
-        };
-
-        var chart = new google.visualization.BarChart(document.getElementById('coverage_chart'));
-        chart.draw(data, options);
-      }
-    </script>
-
-    <div id="coverage_chart" style="width: 100%; height: 500px; margin-top: 40px;"></div>
-
-
-</body>
->>>>>>> 62313232ac4dd5960e85b343ab3a6067da7790fb
 </html>
