@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.model.InfectionData;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import app.model.InfectionData;
 
 public class InfectionPage implements Handler {
 
@@ -22,6 +22,7 @@ public class InfectionPage implements Handler {
     @Override
     public void handle(Context context) throws Exception {
         Map<String, Object> model = new HashMap<String, Object>();
+        model.put("title", "Infection Data");
         
         try {
             // Get filter data from database

@@ -9,18 +9,18 @@ import io.javalin.http.Handler;
 
 public class InsightsPage implements Handler {
 
+    public static final String URL = "/insights";
+    private static final String TEMPLATE = "insights.html";
+
     private JDBCConnection connection;
 
     public InsightsPage(JDBCConnection connection) {
         this.connection = connection;
     }
-
-    public static final String URL = "/insights";
-    private static final String TEMPLATE = "insights.html";
-
     @Override
     public void handle(Context context) throws Exception {
         Map<String, Object> model = new HashMap<>();
+<<<<<<< HEAD
 
         try {
             // Get vaccination coverage data for the geo chart
@@ -83,10 +83,41 @@ public class InsightsPage implements Handler {
             e.printStackTrace();
             model.put("error", "Error loading geo chart data: " + e.getMessage());
         }
+=======
+        model.put("title", "Insights");
 
-        context.render(TEMPLATE, model);
+        // Fetch data
+        ArrayList<HashMap<String, String>> mapData = connection.getAverageVaccinationCoverageByCountry();
+        model.put("mapData", mapData);
+>>>>>>> 62313232ac4dd5960e85b343ab3a6067da7790fb
+
+        // ---- Convert to Google Charts JS array format ----
+        StringBuilder chartDataJS = new StringBuilder();
+        chartDataJS.append("[['Country', 'Coverage'],"); // header row
+
+        for (HashMap<String, String> row : mapData) {
+            String country = row.get("country_name");
+            String coverage = row.get("avg_coverage");
+
+            // escape quotes in names (for countries like Iran, Islamic Rep.)
+            country = country.replace("'", "\\'");
+
+            chartDataJS.append("['").append(country).append("', ").append(coverage).append("],");
+        }
+
+        // Remove trailing comma and close array
+        if (chartDataJS.charAt(chartDataJS.length() - 1) == ',') {
+            chartDataJS.setLength(chartDataJS.length() - 1);
+        }
+        chartDataJS.append("]");
+
+        model.put("chartDataJS", chartDataJS.toString());
+
+        // Render to the insights.html template
+        context.render("insights.html", model);
     }
 
+<<<<<<< HEAD
     /**
      * Safe JSON conversion without manual string building
      */
@@ -164,3 +195,6 @@ public class InsightsPage implements Handler {
         return countryMappings.getOrDefault(countryName, countryName);
     }
 }
+=======
+}
+>>>>>>> 62313232ac4dd5960e85b343ab3a6067da7790fb
