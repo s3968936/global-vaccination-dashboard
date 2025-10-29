@@ -149,8 +149,11 @@ img.top-image {
 /* Main Content Area for Infection Data Page */
 .infection-page .content {
   display: block !important;
+<<<<<<< HEAD
   width: 90%;
   max-width: 1800px;
+=======
+>>>>>>> ffc24375219418eeaefa3dfbbd976a2cf7a419bd
   margin: 0 auto;
   background-color: white;
   padding: 30px;
@@ -399,9 +402,9 @@ img.top-image {
 }
 
 .student-section {
-  width: 80%;          /* section width */
-  margin: 0 auto;      /* centers the section */
-  text-align: center;  /* centers inline/block elements inside */
+  width: 80%; /* section width */
+  margin: 0 auto; /* centers the section */
+  text-align: center; /* centers inline/block elements inside */
 }
 
 .student-section h3 {
@@ -411,8 +414,8 @@ img.top-image {
 }
 
 .student-table {
-  width: 100%;             /* table fills container */
-  margin: 0 auto;          /* ensures table is centered */
+  width: 100%; /* table fills container */
+  margin: 0 auto; /* ensures table is centered */
   border-collapse: collapse;
 }
 
@@ -432,7 +435,6 @@ img.top-image {
 .student-table tr:nth-child(even) {
   background-color: #fafafa;
 }
-
 
 /* ---------- Feedback Form Card ---------- */
 .feedback-card {

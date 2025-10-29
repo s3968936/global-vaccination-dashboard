@@ -52,6 +52,10 @@ public class App {
         app.get(MissionPage.URL, new MissionPage(connection));
         app.get(Feedback.URL, new Feedback(connection));
         app.get(PrivacyPage.URL, new PrivacyPage());
+        app.get(PDFExport.URL, new PDFExport(connection));
+        app.get(CSVExport.URL, new CSVExport(connection));
+        app.get(InfectionPDFExport.URL, new InfectionPDFExport(connection));
+        app.get(InfectionCSVExport.URL, new InfectionCSVExport(connection));
 
         // POST pages can accept form data
         app.post(Feedback.URL, new Feedback(connection));
