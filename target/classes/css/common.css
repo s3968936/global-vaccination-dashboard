@@ -128,10 +128,12 @@ img.top-image {
   color: #cbd5e0;
 }
 
-/* ---------- EXPLORE DATA PAGE ---------- */
+/* ---------- EXPLORE DATA PAGE & INFECTION DATA PAGE ---------- */
 /* Main Content Area for Explore Data Page */
 .explore-page .content {
   display: block !important;
+  width: 90%;
+  max-width: 1800px;
   margin: 0 auto;
   background-color: white;
   padding: 30px;
@@ -144,10 +146,11 @@ img.top-image {
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* Main Content Area for infection data Page */
+/* Main Content Area for Infection Data Page */
 .infection-page .content {
   display: block !important;
-  max-width: 1200px;
+  width: 90%;
+  max-width: 1800px;
   margin: 0 auto;
   background-color: white;
   padding: 30px;
@@ -155,9 +158,50 @@ img.top-image {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Filter Grid for infection data Page */
+/* Filter Grid for Infection Data Page */
 .infection-page .filter-grid {
   grid-template-columns: repeat(4, 1fr);
+}
+
+/* Main Content Area for Trending Page */
+.trending-page .content {
+  display: block !important;
+  width: 90%;
+  max-width: 1800px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter Grid for Trending Page */
+.trending-page .filter-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Data Card Styling for Trending Page */
+.data-card {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 25px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.data-card h3 {
+  color: #0078d7;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #0078d7;
+  padding-bottom: 8px;
+}
+
+.data-card p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  line-height: 1.6;
 }
 
 /* Dataset Selector Tabs */
@@ -480,15 +524,44 @@ img.top-image {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
 }
 .data-table th,
 .data-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 12px 16px;
   text-align: left;
 }
 .data-table th {
-  background-color: #f2f2f2;
+  background-color: #0078d7;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+.data-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+.data-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+.data-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+.data-table tbody tr:hover {
+  background-color: #e3f2fd;
+  cursor: default;
+}
+.data-table td {
+  color: #333;
+  font-size: 14px;
+}
+.data-table td:last-child {
+  font-weight: 600;
+  color: #0078d7;
 }
 /* Filter Section */
 .filter-section {

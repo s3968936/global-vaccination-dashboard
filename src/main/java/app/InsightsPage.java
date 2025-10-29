@@ -26,12 +26,12 @@ public class InsightsPage implements Handler {
             // Get vaccination coverage data for the geo chart
             ArrayList<HashMap<String, String>> geoData = connection.getTopVaccinationsByCoverage();
             
-            System.out.println("Retrieved " + geoData.size() + " countries for geo chart");
+            /*System.out.println("Retrieved " + geoData.size() + " countries for geo chart");
             
             if (!geoData.isEmpty()) {
                 System.out.println("First country: " + geoData.get(0).get("country_name") + 
                                  " - " + geoData.get(0).get("coverage_percentage") + "%");
-            }
+            }*/
 
             // FIXED: Proper JSON formatting without manual string building
             ArrayList<ArrayList<Object>> chartData = new ArrayList<>();
@@ -70,8 +70,8 @@ public class InsightsPage implements Handler {
             // Convert to JSON for the geo chart
             String geoChartData = convertToJson(chartData);
             
-            System.out.println("Final data has " + count + " valid countries");
-            System.out.println("First few rows: " + geoChartData.substring(0, Math.min(200, geoChartData.length())) + "...");
+            //System.out.println("Final data has " + count + " valid countries");
+            //System.out.println("First few rows: " + geoChartData.substring(0, Math.min(200, geoChartData.length())) + "...");
             
             // Add all data to model
             model.put("geoChartData", geoChartData);

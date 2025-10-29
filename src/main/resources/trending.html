@@ -8,8 +8,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Trending - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
+    <!-- Google Charts Loader -->
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
   </head>
-  <body>
+  <body class="trending-page">
     <!-- Top Navigation -->
     <div class="simple-topnav">
       <a href="/" class="nav-logo-link">
@@ -27,42 +32,579 @@
 
     <div class="header">
       <h1 th:text="${title}"></h1>
-      <p class="subtitle">CHANGE THIS</p>
+      <p class="subtitle">Analyse infection trends across economic groups</p>
     </div>
 
     <div class="content">
-      <h2>Trending Health Data</h2>
+      <h2>Infection Trends by Economic Status</h2>
+      <p>
+        Explore how infectious diseases affect different economic groups. Filter by economic status,
+        infection type, and time period to compare disease burden across developed, developing, and
+        least developed countries. The data shows both detailed country-level information and aggregated
+        summaries by economic phase.
+      </p>
 
-      <h3>Current Health Trends</h3>
-      <p>This page will show trending health statistics and patterns.</p>
-      <p>Content coming soon...</p>
+      <!-- Error Message -->
+      <div th:if="${error}" class="error-message">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+      </div>
 
-      <div style="margin: 20px 0">
-        <h4>Trending Page is Working!</h4>
-        <p>This confirms the Trending page is successfully loaded.</p>
+      <!-- Warning Message -->
+      <div
+        th:if="${warning}"
+        class="warning-message"
+        style="
+          background-color: #fff3cd;
+          border: 1px solid #ffeeba;
+          color: #856404;
+          padding: 12px;
+          border-radius: 4px;
+          margin: 20px auto;
+          max-width: 600px;
+          text-align: center;
+        "
+      >
+        <strong>Warning:</strong> <span th:text="${warning}"></span>
+      </div>
+
+      <!-- Filter Form -->
+      <form method="get" action="/trending" id="filter-form">
+        <div class="filter-section">
+          <div class="filter-grid">
+            <!-- Economic Status Filter (Required) -->
+            <div class="combo-box-simple">
+              <label for="economicStatus">Economic Status <span style="color: red;">*</span></label>
+              <input
+                type="text"
+                id="economicStatus"
+                name="economicStatus"
+                placeholder="Select economic status"
+                list="economicStatus-list"
+                th:value="${selectedEconomicStatus}"
+                required
+              />
+              <datalist id="economicStatus-list">
+                <option
+                  th:each="status : ${economicStatuses}"
+                  th:value="${status}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Infection Type Filter (Required) -->
+            <div class="combo-box-simple">
+              <label for="infectionType">Infection Type <span style="color: red;">*</span></label>
+              <input
+                type="text"
+                id="infectionType"
+                name="infectionType"
+                placeholder="Select infection type"
+                list="infectionType-list"
+                th:value="${selectedInfectionType}"
+                required
+              />
+              <datalist id="infectionType-list">
+                <option
+                  th:each="type : ${infectionTypes}"
+                  th:value="${type}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Country Filter (Optional) -->
+            <div class="combo-box-simple">
+              <label for="country">Country (Optional)</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="All countries in economic group"
+                list="country-list"
+                th:value="${selectedCountry}"
+              />
+              <datalist id="country-list">
+                <option
+                  th:each="country : ${countries}"
+                  th:value="${country}"
+                ></option>
+              </datalist>
+            </div>
+
+            <!-- Year Range Filter -->
+            <div class="combo-box-simple">
+              <label>Year Range (Optional)</label>
+              <div class="year-range">
+                <div class="year-start">
+                  <input
+                    type="number"
+                    id="yearStart"
+                    name="yearStart"
+                    placeholder="2000"
+                    min="2000"
+                    max="2024"
+                    th:value="${selectedYearStart}"
+                  />
+                </div>
+                <span class="year-separator">to</span>
+                <div class="year-end">
+                  <input
+                    type="number"
+                    id="yearEnd"
+                    name="yearEnd"
+                    placeholder="2024"
+                    min="2000"
+                    max="2024"
+                    th:value="${selectedYearEnd}"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter Actions -->
+          <div class="filter-actions">
+            <button type="submit" class="apply-btn">Apply Filters</button>
+            <button type="button" class="reset-btn" onclick="window.location.href='/trending'">
+              Reset
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Data Display Section -->
+      <div th:if="${summaryData != null && !summaryData.empty}">
+        <!-- Summary Table: Aggregated by Economic Status -->
+        <div class="data-card">
+          <h3>Economic Status Comparison</h3>
+          <p>
+            Summary of infection data across all economic groups. This shows which economic phases
+            are most affected by the selected disease.
+          </p>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Economic Status</th>
+                <th>Infection Type</th>
+                <th>Countries</th>
+                <th>Total Cases</th>
+                <th>Average Cases</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="row : ${summaryData}">
+                <td th:text="${row.economic_status}">Economic Status</td>
+                <td th:text="${row.infection_type}">Infection Type</td>
+                <td th:text="${row.country_count}">Count</td>
+                <td th:text="${row.total_cases}">Total</td>
+                <td th:text="${row.avg_cases}">Average</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Chart Container -->
+          <div class="chart-container">
+            <div id="economic_comparison_chart" style="width: 100%; height: 400px"></div>
+          </div>
+        </div>
+
+        <!-- Visual Analytics Section -->
+        <div th:if="${detailedData != null && !detailedData.empty}">
+          <!-- Cases Over Time Chart -->
+          <div class="data-card">
+            <h3>Infection Cases Over Time</h3>
+            <p>
+              Trend analysis showing how infection cases have changed over the selected time period.
+              <span th:if="${selectedCountry != null && !selectedCountry.isEmpty()}">
+                Filtered for: <strong th:text="${selectedCountry}"></strong>
+              </span>
+            </p>
+            <div class="chart-container">
+              <div id="timeline_chart" style="width: 100%; height: 400px"></div>
+            </div>
+          </div>
+
+          <!-- Top Countries Bar Chart -->
+          <div class="data-card">
+            <h3>Most Affected Countries</h3>
+            <p>
+              Comparison of the top countries with the highest infection cases in the selected economic group.
+            </p>
+            <div class="chart-container">
+              <div id="top_countries_chart" style="width: 100%; height: 450px"></div>
+            </div>
+          </div>
+
+          <!-- Distribution Pie Chart -->
+          <div class="data-card">
+            <h3>Cases Distribution</h3>
+            <p>
+              Proportional distribution of infection cases across different countries (top 10 shown).
+            </p>
+            <div class="chart-container">
+              <div id="distribution_chart" style="width: 100%; height: 400px"></div>
+            </div>
+          </div>
+
+          <!-- Additional Chart Placeholder -->
+          <div class="data-card">
+            <h3>Average Cases Per Country by Economic Status</h3>
+            <p>
+              Comparison of average infection cases per country across different economic groups, showing normalized impact.
+            </p>
+            <div class="chart-container">
+              <div id="average_cases_chart" style="width: 100%; height: 400px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Data Message -->
+      <div
+        th:if="${summaryData == null || summaryData.empty}"
+        class="no-data-message"
+        style="
+          background-color: #e9ecef;
+          padding: 30px;
+          border-radius: 10px;
+          text-align: center;
+          margin: 30px 0;
+        "
+      >
+        <p style="font-size: 1.1rem; color: #666;">
+          Select an <strong>Economic Status</strong> and <strong>Infection Type</strong> to view trending data.
+        </p>
       </div>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-          <p><strong>Global Health Dashboard</strong></p>
-          <nav class="footer-links">
-            <a href="/">Homepage</a> |
-            <a href="/explore">Explore Data</a> |
-            <a href="/trending">Trending</a> |
-            <a href="/insights">Insights</a> |
-            <a href="/mission">Mission Statement</a> |
-            <a href="/feedback">Feedback</a> |
-            <a href="/privacy">Privacy Policy</a>
-          </nav>
-          <p>
-            <small>
-              © 2025 RMIT University - Global Vaccination Initiatives |
-              Empowering informed global health decisions
-            </small>
-          </p>
-        </div>
-      </footer>
+      <div class="footer-content">
+        <p><strong>Global Health Dashboard</strong></p>
+        <nav class="footer-links">
+          <a href="/">Homepage</a> |
+          <a href="/explore">Explore Data</a> |
+          <a href="/trending">Trending</a> |
+          <a href="/insights">Insights</a> |
+          <a href="/mission">Mission Statement</a> |
+          <a href="/feedback">Feedback</a> |
+          <a href="/privacy">Privacy Policy</a>
+        </nav>
+        <p>
+          <small>
+            © 2025 RMIT University - Global Vaccination Initiatives |
+            Empowering informed global health decisions
+          </small>
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script th:inline="javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+
+      google.charts.setOnLoadCallback(function () {
+        const summaryDataRaw = /*[[${chartDataJson}]]*/ "[]";
+        const detailedDataRaw = /*[[${detailedDataJson}]]*/ "[]";
+
+        // Parse safely — Thymeleaf replaces variables before rendering
+        let summaryData, detailedData;
+        try {
+          summaryData = JSON.parse(summaryDataRaw);
+          detailedData = JSON.parse(detailedDataRaw);
+        } catch (e) {
+          console.error("Error parsing chart data:", e);
+          summaryData = [];
+          detailedData = [];
+        }
+
+        if (summaryData.length > 0) {
+          drawEconomicComparisonChart(summaryData);
+          drawAverageCasesChart(summaryData);
+        }
+
+        if (detailedData.length > 0) {
+          drawTimelineChart(detailedData);
+          drawTopCountriesChart(detailedData);
+          drawDistributionChart(detailedData);
+        }
+      });
+
+      function drawEconomicComparisonChart(summaryData) {
+        const chartDiv = document.getElementById("economic_comparison_chart");
+        if (!chartDiv) return;
+
+        // Define colors for different economic statuses
+        const colorMap = {
+          "High income": "#27ae60",           // Green
+          "Upper middle income": "#3498db",    // Blue
+          "Lower middle income": "#f39c12",    // Orange
+          "Low income": "#e74c3c",             // Red
+          "Least developed": "#c0392b",        // Dark Red
+          "Developing": "#e67e22",             // Dark Orange
+          "Developed": "#16a085"               // Teal
+        };
+
+        // Prepare data for Google Charts with color role
+        const data = new google.visualization.DataTable();
+        data.addColumn("string", "Economic Status");
+        data.addColumn("number", "Total Cases");
+        data.addColumn({ type: "string", role: "style" });
+
+        // Add rows from summary data with colors
+        summaryData.forEach((item) => {
+          const economicStatus = item.economic_status;
+          const totalCases = parseFloat(item.total_cases.replace(/,/g, ""));
+          const color = colorMap[economicStatus] || "#95a5a6"; // Default grey if not found
+          data.addRow([economicStatus, totalCases, "color: " + color]);
+        });
+
+        const options = {
+          title: "Total Infection Cases by Economic Status",
+          hAxis: {
+            title: "Economic Status",
+            textStyle: { fontSize: 12 },
+          },
+          vAxis: {
+            title: "Total Cases",
+            format: "short",
+            minValue: 0,
+          },
+          backgroundColor: "transparent",
+          legend: { position: "none" },
+          chartArea: {
+            width: "80%",
+            height: "70%",
+            top: 60,
+          },
+        };
+
+        const chart = new google.visualization.ColumnChart(chartDiv);
+        chart.draw(data, options);
+      }
+
+      function drawTimelineChart(detailedData) {
+        const chartDiv = document.getElementById("timeline_chart");
+        if (!chartDiv) return;
+
+        // Aggregate data by year
+        const yearMap = {};
+        detailedData.forEach((item) => {
+          const year = item.year;
+          if (!yearMap[year]) {
+            yearMap[year] = 0;
+          }
+          yearMap[year] += item.cases;
+        });
+
+        // Convert to array and sort by year
+        const yearData = Object.keys(yearMap)
+          .map((year) => [parseInt(year), yearMap[year]])
+          .sort((a, b) => a[0] - b[0]);
+
+        const data = new google.visualization.DataTable();
+        data.addColumn("number", "Year");
+        data.addColumn("number", "Cases");
+        data.addRows(yearData);
+
+        const options = {
+          title: "Infection Cases Trend Over Time",
+          hAxis: {
+            title: "Year",
+            format: "####",
+            gridlines: { count: -1 },
+          },
+          vAxis: {
+            title: "Total Cases",
+            format: "short",
+            minValue: 0,
+          },
+          colors: ["#e74c3c"],
+          backgroundColor: "transparent",
+          legend: { position: "none" },
+          curveType: "function",
+          chartArea: {
+            width: "85%",
+            height: "70%",
+            top: 60,
+          },
+        };
+
+        const chart = new google.visualization.LineChart(chartDiv);
+        chart.draw(data, options);
+      }
+
+      function drawTopCountriesChart(detailedData) {
+        const chartDiv = document.getElementById("top_countries_chart");
+        if (!chartDiv) return;
+
+        // Aggregate data by country
+        const countryMap = {};
+        detailedData.forEach((item) => {
+          const country = item.country;
+          if (!countryMap[country]) {
+            countryMap[country] = 0;
+          }
+          countryMap[country] += item.cases;
+        });
+
+        // Convert to array, sort by cases, and take top 10
+        const topCountries = Object.keys(countryMap)
+          .map((country) => [country, countryMap[country]])
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10);
+
+        const data = new google.visualization.DataTable();
+        data.addColumn("string", "Country");
+        data.addColumn("number", "Total Cases");
+        data.addRows(topCountries);
+
+        const options = {
+          title: "Top 10 Countries by Total Cases",
+          hAxis: {
+            title: "Total Cases",
+            format: "short",
+            minValue: 0,
+          },
+          vAxis: {
+            title: "Country",
+          },
+          colors: ["#3498db"],
+          backgroundColor: "transparent",
+          legend: { position: "none" },
+          chartArea: {
+            width: "70%",
+            height: "75%",
+            top: 60,
+          },
+        };
+
+        const chart = new google.visualization.BarChart(chartDiv);
+        chart.draw(data, options);
+      }
+
+      function drawDistributionChart(detailedData) {
+        const chartDiv = document.getElementById("distribution_chart");
+        if (!chartDiv) return;
+
+        // Aggregate data by country
+        const countryMap = {};
+        detailedData.forEach((item) => {
+          const country = item.country;
+          if (!countryMap[country]) {
+            countryMap[country] = 0;
+          }
+          countryMap[country] += item.cases;
+        });
+
+        // Convert to array, sort by cases, and take top 10
+        const topCountries = Object.keys(countryMap)
+          .map((country) => [country, countryMap[country]])
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 10);
+
+        const data = new google.visualization.DataTable();
+        data.addColumn("string", "Country");
+        data.addColumn("number", "Cases");
+        data.addRows(topCountries);
+
+        const options = {
+          title: "Distribution of Cases Across Top Countries",
+          pieHole: 0.4,
+          colors: ["#e74c3c", "#3498db", "#f39c12", "#27ae60", "#9b59b6", "#1abc9c", "#34495e", "#e67e22", "#c0392b", "#16a085"],
+          backgroundColor: "transparent",
+          chartArea: {
+            width: "90%",
+            height: "80%",
+            top: 60,
+          },
+          pieSliceText: "percentage",
+          legend: {
+            position: "right",
+            textStyle: { fontSize: 12 },
+          },
+        };
+
+        const chart = new google.visualization.PieChart(chartDiv);
+        chart.draw(data, options);
+      }
+
+      function drawAverageCasesChart(summaryData) {
+        const chartDiv = document.getElementById("average_cases_chart");
+        if (!chartDiv) return;
+
+        // Define colors for different economic statuses (same as comparison chart)
+        const colorMap = {
+          "High income": "#27ae60",
+          "Upper middle income": "#3498db",
+          "Lower middle income": "#f39c12",
+          "Low income": "#e74c3c",
+          "Least developed": "#c0392b",
+          "Developing": "#e67e22",
+          "Developed": "#16a085"
+        };
+
+        // Prepare data for Google Charts
+        const data = new google.visualization.DataTable();
+        data.addColumn("string", "Economic Status");
+        data.addColumn("number", "Average Cases Per Country");
+        data.addColumn({ type: "string", role: "style" });
+
+        // Add rows from summary data with colors
+        summaryData.forEach((item) => {
+          const economicStatus = item.economic_status;
+          const avgCases = parseFloat(item.avg_cases.replace(/,/g, ""));
+          const color = colorMap[economicStatus] || "#95a5a6";
+          data.addRow([economicStatus, avgCases, "color: " + color]);
+        });
+
+        const options = {
+          title: "Average Cases Per Country by Economic Status",
+          hAxis: {
+            title: "Economic Status",
+            textStyle: { fontSize: 12 },
+          },
+          vAxis: {
+            title: "Average Cases Per Country",
+            format: "short",
+            minValue: 0,
+          },
+          backgroundColor: "transparent",
+          legend: { position: "none" },
+          chartArea: {
+            width: "80%",
+            height: "70%",
+            top: 60,
+          },
+        };
+
+        const chart = new google.visualization.ColumnChart(chartDiv);
+        chart.draw(data, options);
+      }
+
+      // Redraw charts on window resize for responsiveness
+      window.addEventListener("resize", function () {
+        const summaryDataRaw = /*[[${chartDataJson}]]*/ "[]";
+        const detailedDataRaw = /*[[${detailedDataJson}]]*/ "[]";
+
+        try {
+          const summaryData = JSON.parse(summaryDataRaw);
+          const detailedData = JSON.parse(detailedDataRaw);
+
+          if (summaryData.length > 0) {
+            drawEconomicComparisonChart(summaryData);
+            drawAverageCasesChart(summaryData);
+          }
+
+          if (detailedData.length > 0) {
+            drawTimelineChart(detailedData);
+            drawTopCountriesChart(detailedData);
+            drawDistributionChart(detailedData);
+          }
+        } catch (e) {
+          console.error("Resize chart draw failed:", e);
+        }
+      });
+    </script>
   </body>
 </html>

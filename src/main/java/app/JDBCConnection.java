@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -373,7 +374,7 @@ public class JDBCConnection {
 
         // Build dynamic SQL query for infection data - MATCHING YOUR SQL STRUCTURE
         String query = """
-            SELECT 
+            SELECT
                 c.name AS country,
                 e.phase AS economic_status,
                 it.description AS infection_type,
@@ -387,21 +388,21 @@ public class JDBCConnection {
             WHERE 1=1
         """;
 
-        // Add filters to query
-        if (infType != null && !infType.isEmpty()) {
-            query += " AND it.description = '" + infType + "'";
+        // Add filters to query - trim whitespace and handle case
+        if (infType != null && !infType.trim().isEmpty()) {
+            query += " AND TRIM(it.description) = '" + infType.trim() + "'";
         }
-        if (economicStatus != null && !economicStatus.isEmpty()) {
-            query += " AND e.phase = '" + economicStatus + "'";
+        if (economicStatus != null && !economicStatus.trim().isEmpty()) {
+            query += " AND TRIM(e.phase) = '" + economicStatus.trim() + "'";
         }
-        if (country != null && !country.isEmpty()) {
-            query += " AND c.name = '" + country + "'";
+        if (country != null && !country.trim().isEmpty()) {
+            query += " AND TRIM(c.name) = '" + country.trim() + "'";
         }
-        if (yearStart != null && !yearStart.isEmpty()) {
-            query += " AND yd.YearID >= " + yearStart;
+        if (yearStart != null && !yearStart.trim().isEmpty()) {
+            query += " AND yd.YearID >= " + yearStart.trim();
         }
-        if (yearEnd != null && !yearEnd.isEmpty()) {
-            query += " AND yd.YearID <= " + yearEnd;
+        if (yearEnd != null && !yearEnd.trim().isEmpty()) {
+            query += " AND yd.YearID <= " + yearEnd.trim();
         }
 
         query += " ORDER BY yd.YearID, id.cases DESC;";
@@ -562,5 +563,73 @@ public class JDBCConnection {
         }
 
         return infectionTypes;
+    }
+
+    /**
+     * Gets aggregated infection data by economic status
+     * Used for trending page to show summary by economic phase
+     */
+    public ArrayList<HashMap<String, String>> getInfectionDataByEconomicStatus(String infType, String yearStart, String yearEnd) {
+        ArrayList<HashMap<String, String>> results = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+
+            String query = """
+                SELECT
+                    e.phase AS economic_status,
+                    it.description AS infection_type,
+                    COUNT(DISTINCT c.CountryID) AS country_count,
+                    SUM(id.cases) AS total_cases,
+                    AVG(id.cases) AS avg_cases
+                FROM InfectionData id
+                JOIN Country c ON id.country = c.CountryID
+                JOIN Economy e ON c.economy = e.economyID
+                JOIN Infection_Type it ON id.inf_type = it.id
+                JOIN YearDate yd ON id.year = yd.YearID
+                WHERE 1=1
+            """;
+
+            if (infType != null && !infType.trim().isEmpty()) {
+                query += " AND TRIM(it.description) = '" + infType.trim() + "'";
+            }
+            if (yearStart != null && !yearStart.trim().isEmpty()) {
+                query += " AND yd.YearID >= " + yearStart.trim();
+            }
+            if (yearEnd != null && !yearEnd.trim().isEmpty()) {
+                query += " AND yd.YearID <= " + yearEnd.trim();
+            }
+
+            query += " GROUP BY e.phase, it.description ORDER BY total_cases DESC;";
+
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            ResultSet resultSet = statement.executeQuery(query);
+
+            DecimalFormat formatter = new DecimalFormat("#,###");
+
+            while (resultSet.next()) {
+                HashMap<String, String> row = new HashMap<>();
+                row.put("economic_status", resultSet.getString("economic_status"));
+                row.put("infection_type", resultSet.getString("infection_type"));
+                row.put("country_count", String.valueOf(resultSet.getInt("country_count")));
+                row.put("total_cases", formatter.format(resultSet.getDouble("total_cases")));
+                row.put("avg_cases", formatter.format(resultSet.getDouble("avg_cases")));
+                results.add(row);
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error getting aggregated infection data: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+            }
+        }
+
+        return results;
     }
 }
