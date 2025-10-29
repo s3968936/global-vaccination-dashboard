@@ -43,73 +43,72 @@
     </div>
 
     <!-- Personas Container -->
-    <div class="personas-container" th:if="${personas}">
-      <div class="persona-card" th:each="p : ${personas}">
-        <h3 th:text="|${p.title} ${p.name} (${p.age})|"></h3>
-        <table style="width:100%; border-collapse: collapse;">
-          <tr>
-            <!-- Text column -->
-            <td style="vertical-align: top; padding-right: 20px; width: 60%;">
-              <p><strong>Occupation:</strong> <span th:text="${p.occupation}"></span></p>
-              <p><strong>Education:</strong> <span th:text="${p.education}"></span></p>
-              <p><strong>Location:</strong> <span th:text="${p.location}"></span></p>
-              <p><strong>Language:</strong> <span th:text="${p.language}"></span></p>
-              <p><strong>Disability:</strong> <span th:text="${p.disability}"></span></p>
-            </td>
+    <div class="personas-container" th:if="${personas}" 
+        style="display:grid; grid-template-columns: repeat(3, 1fr); gap:30px; margin-bottom:50px;">
 
-            <!-- Image column -->
-            <td style="vertical-align: top; width: 40%; text-align: center;">
-              <img th:src="@{/{file}(file=${p.image})}" 
-                  alt="Profile Image" 
-                  style="max-width:100%; border-radius:8px;">
-              <p style="font-size: 0.6em; color: #666;" th:text="${p.imageCredit}"></p>
-            </td>
-          </tr>
-        </table>
+      <div class="persona-card" th:each="p : ${personas}" 
+          style="display:flex; flex-direction:column; align-items:center; padding:20px; border:1px solid #ddd; border-radius:8px; background-color:#fefefe; height:100%; box-sizing:border-box;">
 
+        <!-- Image -->
+        <div style="width:100%; text-align:center; margin-bottom:15px;">
+          <img th:src="@{/{file}(file=${p.image})}" 
+              alt="Profile Image" 
+              style="max-width:100%; max-height:200px; border-radius:8px;">
+          <p style="font-size: 0.6em; color: #666; margin-top:5px;" th:text="${p.imageCredit}"></p>
+        </div>
 
-        <p><strong>Needs:</strong></p>
-        <ul>
-          <li th:each="n : ${p.needsList}" th:text="${n}"></li>
-        </ul>
+        <!-- Text Content -->
+        <div style="width:100%; flex:1;">
+          <h3 th:text="|${p.title} ${p.name} (${p.age})|"></h3>
+          <p><strong>Occupation:</strong> <span th:text="${p.occupation}"></span></p>
+          <p><strong>Education:</strong> <span th:text="${p.education}"></span></p>
+          <p><strong>Location:</strong> <span th:text="${p.location}"></span></p>
+          <p><strong>Language:</strong> <span th:text="${p.language}"></span></p>
+          <p><strong>Disability:</strong> <span th:text="${p.disability}"></span></p>
 
-        <p><strong>Goals:</strong></p>
-        <ul>
-          <li th:each="g : ${p.goalsList}" th:text="${g}"></li>
-        </ul>
+          <p><strong>Needs:</strong></p>
+          <ul>
+            <li th:each="n : ${p.needsList}" th:text="${n}"></li>
+          </ul>
 
-        <p><strong>Skills:</strong></p>
-        <ul>
-          <li th:each="s : ${p.skillsList}" th:text="${s}"></li>
-        </ul>
+          <p><strong>Goals:</strong></p>
+          <ul>
+            <li th:each="g : ${p.goalsList}" th:text="${g}"></li>
+          </ul>
+
+          <p><strong>Skills:</strong></p>
+          <ul>
+            <li th:each="s : ${p.skillsList}" th:text="${s}"></li>
+          </ul>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- Student Info -->
-  <div class="student-info" style="margin-top: 40px; padding: 10px; background-color: #f9f9f9; border-radius: 8px;">
+    
+    <!--Student Contribution -->
+    <div class="student-section">
     <h3>Project Contributors</h3>
-    <table style="width:100%; border-collapse: collapse;">
+    <table class="student-table">
       <thead>
         <tr>
-          <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ccc;">Student ID</th>
-          <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ccc;">First Name</th>
-          <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ccc;">Last Name</th>
-          <th style="text-align:left; padding: 8px; border-bottom: 1px solid #ccc;">Sub-Tasks</th>
+          <th>Student ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Sub-Tasks</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td style="padding: 8px;">S3968936</td>
-          <td style="padding: 8px;">Thomas</td>
-          <td style="padding: 8px;">Young</td>
-          <td style="padding: 8px;">B</td>
+          <td>S3968936</td>
+          <td>Thomas</td>
+          <td>Young</td>
+          <td>B</td>
         </tr>
         <tr>
-          <td style="padding: 8px;">S4055262</td>
-          <td style="padding: 8px;">Yukheang</td>
-          <td style="padding: 8px;">Kang</td>
-          <td style="padding: 8px;">A</td>
+          <td>S4055262</td>
+          <td>Yukheang</td>
+          <td>Kang</td>
+          <td>A</td>
         </tr>
       </tbody>
     </table>
@@ -136,6 +135,5 @@
       </p>
     </div>
   </footer>
-
 </body>
 </html>
