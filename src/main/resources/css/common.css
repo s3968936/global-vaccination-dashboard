@@ -91,12 +91,11 @@ img.top-image {
 
 .content {
   background-color: #ddd;
-  padding: 10px;          /* optional */
+  padding: 10px; /* optional */
   border-radius: 5px;
-  width: 100%;            /* ensures it can contain wide cards */
+  width: 100%; /* ensures it can contain wide cards */
   box-sizing: border-box; /* includes padding in width */
 }
-
 
 /* ---------- FOOTER ---------- */
 .footer {
@@ -130,6 +129,37 @@ img.top-image {
 }
 
 /* ---------- EXPLORE DATA PAGE ---------- */
+/* Main Content Area for Explore Data Page */
+.explore-page .content {
+  display: block !important;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter Grid for Explore Data Page */
+.explore-page .filter-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Main Content Area for infection data Page */
+.infection-page .content {
+  display: block !important;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter Grid for infection data Page */
+.infection-page .filter-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
 
 /* Dataset Selector Tabs */
 .dataset-selector {
@@ -292,82 +322,82 @@ img.top-image {
   }
 }
 
-    /* ---------- Feedback Form Card ---------- */
-    .feedback-card {
-      background-color: #ffffff;
-      padding: 40px 50px;          /* more padding for spacious look */
-      border-radius: 10px;
-      max-width: 1000px;           /* wider card */
-      width: 90%;                   /* responsive */
-      margin: 30px auto;           /* center horizontally */
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* subtle shadow */
-    }
+/* ---------- Feedback Form Card ---------- */
+.feedback-card {
+  background-color: #ffffff;
+  padding: 40px 50px; /* more padding for spacious look */
+  border-radius: 10px;
+  max-width: 1000px; /* wider card */
+  width: 90%; /* responsive */
+  margin: 30px auto; /* center horizontally */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* subtle shadow */
+}
 
-    /* Inputs & Textarea */
-    .feedback-card input,
-    .feedback-card textarea {
-      width: 100%;                 /* fill the card width */
-      padding: 16px;               /* larger padding */
-      border: 2px solid #ddd;
-      border-radius: 6px;
-      font-size: 18px;             /* larger, easier to read */
-      margin-top: 5px;
-      margin-bottom: 20px;         /* spacing between fields */
-      box-sizing: border-box;
-    }
+/* Inputs & Textarea */
+.feedback-card input,
+.feedback-card textarea {
+  width: 100%; /* fill the card width */
+  padding: 16px; /* larger padding */
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 18px; /* larger, easier to read */
+  margin-top: 5px;
+  margin-bottom: 20px; /* spacing between fields */
+  box-sizing: border-box;
+}
 
-    /* Textarea specific height */
-    .feedback-card textarea {
-      min-height: 150px;           /* taller textarea */
-      resize: vertical;
-    }
+/* Textarea specific height */
+.feedback-card textarea {
+  min-height: 150px; /* taller textarea */
+  resize: vertical;
+}
 
-    /* Submit Button */
-    .apply-btn {
-      background-color: var(--primary);
-      color: white;
-      padding: 14px 40px;
-      font-size: 18px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-    }
+/* Submit Button */
+.apply-btn {
+  background-color: var(--primary);
+  color: white;
+  padding: 14px 40px;
+  font-size: 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
 
-    .apply-btn:hover {
-      background-color: #0056b3;
-    }
+.apply-btn:hover {
+  background-color: #0056b3;
+}
 
-    /* Success Message */
-    .success-message {
-      background-color: #d4edda;
-      color: #155724;
-      padding: 14px 16px;
-      border-radius: 6px;
-      border: 1px solid #c3e6cb;
-      margin-bottom: 25px;
-      text-align: center;
-      font-weight: 500;
-    }
+/* Success Message */
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 14px 16px;
+  border-radius: 6px;
+  border: 1px solid #c3e6cb;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 500;
+}
 
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .feedback-card {
-        padding: 25px 20px;
-        width: 95%;
-      }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .feedback-card {
+    padding: 25px 20px;
+    width: 95%;
+  }
 
-      .feedback-card input,
-      .feedback-card textarea {
-        font-size: 16px;
-        padding: 12px;
-      }
+  .feedback-card input,
+  .feedback-card textarea {
+    font-size: 16px;
+    padding: 12px;
+  }
 
-      .apply-btn {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-      }
-    }
+  .apply-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
 
 /* ---------- Vaccination chart styles ---------- */
 .chart-container {
@@ -473,7 +503,6 @@ body {
   }
 }
 
-
 /* --- Card Layout --- */
 .content {
   display: flex;
@@ -488,7 +517,7 @@ body {
 .card {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 420px;
   padding: 20px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -501,12 +530,12 @@ body {
   margin: 20px auto;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Card headings */
@@ -525,7 +554,8 @@ body {
   margin-top: 10px;
 }
 
-.card th, .card td {
+.card th,
+.card td {
   text-align: left;
   padding: 8px;
 }
@@ -553,14 +583,18 @@ body {
 .header {
   text-align: center;
   padding: 40px 20px;
-  background: linear-gradient(to right, #f7f9fb, #e2e8f0); /* matches card theme */
+  background: linear-gradient(
+    to right,
+    #f7f9fb,
+    #e2e8f0
+  ); /* matches card theme */
   border-radius: 10px;
   margin-bottom: 30px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* subtle card shadow */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle card shadow */
 }
 
 .header h1 {
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   font-size: 3rem;
   font-weight: 700;
   color: var(--primary); /* your theme color */
@@ -593,4 +627,3 @@ body {
 .content h4 {
   margin-bottom: 20px; /* Adjust spacing */
 }
-
