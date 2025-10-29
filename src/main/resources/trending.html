@@ -202,8 +202,23 @@
             </tbody>
           </table>
 
-          <!-- Chart Container -->
-          <div id="economic_comparison_chart" style="width: 100%; height: 500px"></div>
+          <!-- Chart and Data Table Container -->
+          <div class="chart-table-container">
+            <div id="economic_comparison_chart" class="chart-area"></div>
+            <div class="data-table-container">
+              <table id="economic_comparison_table" class="chart-data-table">
+                <thead>
+                  <tr>
+                    <th>Economic Status</th>
+                    <th>Total Cases</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="2" style="text-align: center; padding: 20px; color: #999;">Loading data...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         <!-- Visual Analytics Section -->
@@ -217,7 +232,22 @@
                 Filtered for: <strong th:text="${selectedCountry}"></strong>
               </span>
             </p>
-            <div id="timeline_chart" style="width: 100%; height: 500px"></div>
+            <div class="chart-table-container">
+              <div id="timeline_chart" class="chart-area"></div>
+              <div class="data-table-container">
+                <table id="timeline_table" class="chart-data-table">
+                  <thead>
+                    <tr>
+                      <th>Year</th>
+                      <th>Cases</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td colspan="2" style="text-align: center; padding: 20px; color: #999;">Loading data...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           <!-- Top Countries Bar Chart -->
@@ -226,7 +256,22 @@
             <p>
               Comparison of the top countries with the highest infection cases in the selected economic group.
             </p>
-            <div id="top_countries_chart" style="width: 100%; height: 550px"></div>
+            <div class="chart-table-container">
+              <div id="top_countries_chart" class="chart-area"></div>
+              <div class="data-table-container">
+                <table id="top_countries_table" class="chart-data-table">
+                  <thead>
+                    <tr>
+                      <th>Country</th>
+                      <th>Total Cases</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td colspan="2" style="text-align: center; padding: 20px; color: #999;">Loading data...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           <!-- Distribution Pie Chart -->
@@ -235,7 +280,23 @@
             <p>
               Proportional distribution of infection cases across different countries (top 10 shown).
             </p>
-            <div id="distribution_chart" style="width: 100%; height: 500px"></div>
+            <div class="chart-table-container">
+              <div id="distribution_chart" class="chart-area"></div>
+              <div class="data-table-container">
+                <table id="distribution_table" class="chart-data-table">
+                  <thead>
+                    <tr>
+                      <th>Country</th>
+                      <th>Cases</th>
+                      <th>Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td colspan="3" style="text-align: center; padding: 20px; color: #999;">Loading data...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           <!-- Additional Chart Placeholder -->
@@ -244,7 +305,22 @@
             <p>
               Comparison of average infection cases per country across different economic groups, showing normalized impact.
             </p>
-            <div id="average_cases_chart" style="width: 100%; height: 500px"></div>
+            <div class="chart-table-container">
+              <div id="average_cases_chart" class="chart-area"></div>
+              <div class="data-table-container">
+                <table id="average_cases_table" class="chart-data-table">
+                  <thead>
+                    <tr>
+                      <th>Economic Status</th>
+                      <th>Avg Cases/Country</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td colspan="2" style="text-align: center; padding: 20px; color: #999;">Loading data...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -377,6 +453,18 @@
 
         const chart = new google.visualization.ColumnChart(chartDiv);
         chart.draw(data, options);
+
+        // Populate the table
+        const tableBody = document.querySelector("#economic_comparison_table tbody");
+        if (tableBody) {
+          tableBody.innerHTML = "";
+          summaryData.forEach((item) => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).textContent = item.economic_status;
+            const totalCases = typeof item.total_cases === 'number' ? item.total_cases : parseFloat(String(item.total_cases).replace(/,/g, ""));
+            row.insertCell(1).textContent = totalCases.toLocaleString();
+          });
+        }
       }
 
       function drawTimelineChart(detailedData) {
@@ -433,6 +521,17 @@
 
         const chart = new google.visualization.LineChart(chartDiv);
         chart.draw(data, options);
+
+        // Populate the table
+        const tableBody = document.querySelector("#timeline_table tbody");
+        if (tableBody) {
+          tableBody.innerHTML = "";
+          yearData.forEach((item) => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).textContent = item[0];
+            row.insertCell(1).textContent = item[1].toLocaleString();
+          });
+        }
       }
 
       function drawTopCountriesChart(detailedData) {
@@ -487,6 +586,17 @@
 
         const chart = new google.visualization.BarChart(chartDiv);
         chart.draw(data, options);
+
+        // Populate the table
+        const tableBody = document.querySelector("#top_countries_table tbody");
+        if (tableBody) {
+          tableBody.innerHTML = "";
+          topCountries.forEach((item) => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).textContent = item[0];
+            row.insertCell(1).textContent = item[1].toLocaleString();
+          });
+        }
       }
 
       function drawDistributionChart(detailedData) {
@@ -535,6 +645,20 @@
 
         const chart = new google.visualization.PieChart(chartDiv);
         chart.draw(data, options);
+
+        // Populate the table with percentages
+        const tableBody = document.querySelector("#distribution_table tbody");
+        if (tableBody) {
+          tableBody.innerHTML = "";
+          const total = topCountries.reduce((sum, item) => sum + item[1], 0);
+          topCountries.forEach((item) => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).textContent = item[0];
+            row.insertCell(1).textContent = item[1].toLocaleString();
+            const percentage = ((item[1] / total) * 100).toFixed(1);
+            row.insertCell(2).textContent = percentage + "%";
+          });
+        }
       }
 
       function drawAverageCasesChart(summaryData) {
@@ -594,6 +718,18 @@
 
         const chart = new google.visualization.ColumnChart(chartDiv);
         chart.draw(data, options);
+
+        // Populate the table
+        const tableBody = document.querySelector("#average_cases_table tbody");
+        if (tableBody) {
+          tableBody.innerHTML = "";
+          summaryData.forEach((item) => {
+            const row = tableBody.insertRow();
+            row.insertCell(0).textContent = item.economic_status;
+            const avgCases = typeof item.avg_cases === 'number' ? item.avg_cases : parseFloat(String(item.avg_cases).replace(/,/g, ""));
+            row.insertCell(1).textContent = avgCases.toLocaleString();
+          });
+        }
       }
 
       // Redraw charts on window resize for responsiveness
