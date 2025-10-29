@@ -132,7 +132,6 @@ img.top-image {
 /* Main Content Area for Explore Data Page */
 .explore-page .content {
   display: block !important;
-  max-width: 1200px;
   margin: 0 auto;
   background-color: white;
   padding: 30px;

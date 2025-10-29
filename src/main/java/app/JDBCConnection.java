@@ -97,22 +97,21 @@ public class JDBCConnection {
     }
 
     /**
-     * Gets top vaccination coverage percentages for the dashboard
+     * Gets top vaccination coverage percentages for the dashboard Geo chart
      */
     public ArrayList<HashMap<String, String>> getTopVaccinationsByCoverage() {
         String query = """
-            SELECT 
-                c.name AS country_name,
-                a.name AS vaccine_name,
-                ROUND((v.doses / v.target_num) * 10, 2) AS coverage_percentage
-            FROM Vaccination v
-            JOIN Country c ON v.country = c.CountryID
-            JOIN Antigen a ON v.antigen = a.AntigenID
-            WHERE v.doses IS NOT NULL
-              AND v.target_num IS NOT NULL
-              AND v.target_num > 0
-            ORDER BY coverage_percentage DESC
-            LIMIT 5;
+        SELECT 
+            c.name AS country_name,
+            ROUND(AVG(v.coverage), 2) AS coverage_percentage
+        FROM Vaccination v
+        JOIN Country c ON v.country = c.CountryID
+        WHERE v.coverage IS NOT NULL 
+          AND v.coverage > 0
+        GROUP BY c.name
+        HAVING coverage_percentage > 0
+        ORDER BY coverage_percentage DESC
+        LIMIT 10;
         """;
         return executeQuery(query);
     }

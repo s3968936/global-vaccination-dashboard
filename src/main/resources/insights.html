@@ -1,75 +1,398 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8" />
-  <title>Insights - Global Health Dashboard</title>
-  <link rel="stylesheet" type="text/css" href="common.css" />
-</head>
-<body>
-  <!-- Top Navigation -->
-  <div class="simple-topnav">
-    <a href="/" class="nav-logo-link">
-      <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
-    </a>
-    <div class="nav-links">
-      <a href="/">Homepage</a>
-      <a href="/explore">Explore Data</a>
-      <a href="/trending">Trending</a>
-      <a href="/insights" class="active">Insights</a>
-      <a href="/mission">Mission Statement</a>
-      <a href="/feedback">Feedback</a>
-    </div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Insights - Global Health Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="common.css" />
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <style>
+      .insights-container {
+        display: flex;
+        gap: 30px;
+        margin: 20px 0;
+        min-height: 550px;
+        align-items: stretch;
+      }
 
-  <!-- Page Header -->
-  <div class="header">
-    <h1 th:text="${title}"></h1>
-    <p class="subtitle">Turning global health data into actionable insights</p>
-  </div>
+      .country-table {
+        flex: 0 0 380px; /* Fixed width for table */
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        max-height: 550px;
+        overflow-y: auto;
+        border: 1px solid #e1e5e9;
+      }
 
-  <!-- Content -->
-  <div class="content">
-    <p>This page provides detailed insights and analysis of global health data.</p>
+      .chart-container {
+        flex: 1; /* Takes remaining space */
+        min-height: 550px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        border: 1px solid #e1e5e9;
+      }
 
-    <!-- Card with Table -->
-    <div class="card-insights">
-      <h3>Global Vaccination Coverage</h3>
-      <table>
-        <tr>
-          <th>Country</th>
-          <th>Average Coverage</th>
-          <th>Visual</th>
-        </tr>
-        <tr th:each="row : ${mapData}">
-          <td th:text="${row.country_name}"></td>
-          <td th:text="${row.avg_coverage}"></td>
-          <td>
-            <div class="bar" th:style="'width:' + ${row.avg_coverage} + '%;'"></div>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
+      .country-table h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #2c3e50;
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #4285f4;
+      }
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <p><strong>Global Health Dashboard</strong></p>
-      <nav class="footer-links">
-        <a href="/">Homepage</a> |
-        <a href="/explore">Explore Data</a> |
-        <a href="/trending">Trending</a> |
-        <a href="/insights">Insights</a> |
-        <a href="/mission">Mission Statement</a> |
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .data-table th {
+        background: linear-gradient(135deg, #4285f4, #34a853);
+        color: white;
+        padding: 14px 16px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .data-table th:first-child {
+        border-radius: 6px 0 0 0;
+      }
+
+      .data-table th:last-child {
+        border-radius: 0 6px 0 0;
+        text-align: right;
+      }
+
+      .data-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #edf2f7;
+        transition: background-color 0.2s ease;
+      }
+
+      .data-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .data-table tr:hover td {
+        background: #f8fafc;
+      }
+
+      .country-name {
+        font-weight: 500;
+        color: #2d3748;
+      }
+
+      .coverage-cell {
+        font-weight: 700;
+        text-align: right;
+        font-size: 13px;
+        padding-right: 8px;
+      }
+
+      .coverage-high {
+        color: #0d652d;
+        background: #e6f4ea;
+        padding: 4px 10px;
+        border-radius: 12px;
+        display: inline-block;
+        min-width: 70px;
+        text-align: center;
+      }
+
+      .coverage-medium {
+        color: #b06000;
+        background: #fef7e0;
+        padding: 4px 10px;
+        border-radius: 12px;
+        display: inline-block;
+        min-width: 70px;
+        text-align: center;
+      }
+
+      .coverage-low {
+        color: #a50e0e;
+        background: #fce8e6;
+        padding: 4px 10px;
+        border-radius: 12px;
+        display: inline-block;
+        min-width: 70px;
+        text-align: center;
+      }
+
+      /* Custom scrollbar for table */
+      .country-table::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .country-table::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      .country-table::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+      }
+
+      .country-table::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+      }
+
+      /* Header improvements */
+      .header h1 {
+        color: #1a365d;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        color: #4a5568;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      @media (max-width: 1024px) {
+        .insights-container {
+          gap: 20px;
+        }
+
+        .country-table {
+          flex: 0 0 340px;
+          padding: 20px;
+        }
+
+        .chart-container {
+          padding: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .insights-container {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .country-table {
+          flex: none;
+          width: 100%;
+          max-height: 350px;
+          order: 2;
+        }
+
+        .chart-container {
+          min-height: 450px;
+          order: 1;
+        }
+
+        .data-table th,
+        .data-table td {
+          padding: 10px 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .country-table {
+          padding: 15px;
+          max-height: 300px;
+        }
+
+        .chart-container {
+          padding: 15px;
+          min-height: 400px;
+        }
+
+        .data-table {
+          font-size: 13px;
+        }
+
+        .data-table th,
+        .data-table td {
+          padding: 8px 10px;
+        }
+      }
+
+      /* Ensure chart fills its container */
+      #regions_div {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 450px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <div class="simple-topnav">
+      <a href="/" class="nav-logo-link">
+        <img
+          src="logo.png"
+          class="nav-logo"
+          alt="Global Health Dashboard Logo"
+        />
+      </a>
+      <div class="nav-links">
+        <a href="/">Homepage</a>
+        <a href="/explore">Explore Data</a>
+        <a href="/trending">Trending</a>
+        <a href="/insights" class="active">Insights</a>
+        <a href="/mission">Mission Statement</a>
         <a href="/feedback">Feedback</a>
-      </nav>
-      <p>
-        <small>
-          © 2025 RMIT University - Global Vaccination Initiatives |
-          Empowering informed global health decisions
-        </small>
+      </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="header">
+      <h1>Global Vaccination Insights</h1>
+      <p class="subtitle">
+        Vaccination coverage rates by country with interactive world map
       </p>
     </div>
-  </footer>
-</body>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Main Content: Country Table + Map -->
+      <div th:if="${hasData}" class="insights-container">
+        <!-- Country Table -->
+        <div class="country-table">
+          <h3>Country Coverage Data</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th style="text-align: right">Coverage %</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="item : ${geoData}">
+                <td th:text="${item.country_name}">Country</td>
+                <td
+                  class="coverage-cell"
+                  th:classappend="${item.coverage_percentage >= 80} ? 'coverage-high' : 
+                                  (${item.coverage_percentage >= 50} ? 'coverage-medium' : 'coverage-low')"
+                  th:text="${item.coverage_percentage} + '%'"
+                >
+                  0%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Geo Chart -->
+        <div class="chart-container">
+          <div id="regions_div" style="width: 100%; height: 100%"></div>
+        </div>
+      </div>
+
+      <!-- No Data Message -->
+      <div th:unless="${hasData}" class="no-data-message">
+        <h3>No data available</h3>
+        <p>Unable to load vaccination coverage data.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p><strong>Global Health Dashboard</strong></p>
+        <nav class="footer-links">
+          <a href="/">Homepage</a> | <a href="/explore">Explore Data</a> |
+          <a href="/trending">Trending</a> | <a href="/insights">Insights</a> |
+          <a href="/mission">Mission Statement</a> |
+          <a href="/feedback">Feedback</a>
+        </nav>
+        <p>
+          <small>
+            © 2025 RMIT University - Global Vaccination Initiatives | Empowering
+            informed global health decisions
+          </small>
+        </p>
+      </div>
+    </footer>
+
+    <!-- Google Charts Script -->
+    <script th:inline="javascript">
+      console.log("=== GEO CHART ===");
+
+      google.charts.load("current", {
+        packages: ["geochart"],
+      });
+
+      google.charts.setOnLoadCallback(function () {
+        console.log("Google Charts loaded");
+        drawChart();
+      });
+
+      function drawChart() {
+        const chartDiv = document.getElementById("regions_div");
+        if (!chartDiv) {
+          console.error("Chart container not found");
+          return;
+        }
+
+        try {
+          const geoChartData = /*[[${geoChartData}]]*/ "[]";
+          console.log("Raw data:", geoChartData);
+
+          // Parse the data
+          const dataArray = JSON.parse(geoChartData);
+          console.log("Parsed data array with", dataArray.length, "rows");
+
+          // Create data table
+          const data = google.visualization.arrayToDataTable(dataArray);
+
+          // Chart options
+          const options = {
+            title: "Global Vaccination Coverage (%)",
+            colorAxis: {
+              colors: ["#E8F0FE", "#D2E3FC", "#9BC1F9", "#5E9AF9", "#2E68CF"],
+              minValue: 0,
+              maxValue: 100,
+            },
+            backgroundColor: "#ffffff",
+            datalessRegionColor: "#f5f5f5",
+            defaultColor: "#f5f5f5",
+            legend: {
+              textStyle: {
+                color: "#333",
+                fontSize: 12,
+              },
+            },
+            tooltip: {
+              textStyle: {
+                color: "#333",
+                fontSize: 14,
+              },
+              showTitle: true,
+            },
+            region: "world",
+          };
+
+          // Draw chart
+          const chart = new google.visualization.GeoChart(chartDiv);
+          chart.draw(data, options);
+          console.log("✅ Chart successfully drawn!");
+        } catch (error) {
+          console.error("Chart error:", error);
+          chartDiv.innerHTML = `
+                <div style="text-align: center; padding: 50px; color: #666;">
+                    <h3>Map Loading Issue</h3>
+                    <p>${error.message}</p>
+                    <p>Please check the browser console for details.</p>
+                </div>
+            `;
+        }
+      }
+    </script>
+  </body>
 </html>
