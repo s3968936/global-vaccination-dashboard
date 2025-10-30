@@ -166,10 +166,6 @@ img.top-image {
 }
 
 /* Chart Container Styling */
-.chart-container {
-  width: 100%;
-  height: 400px;
-}
 
 .chart-container-tall {
   width: 100%;
@@ -516,9 +512,11 @@ img.top-image {
   margin: 20px 0;
   padding: 20px;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
 }
+
 /* ---------- UNIFIED TABLE STYLES ---------- */
 /* Base table class - common styles for all tables */
 .table-base {
@@ -571,14 +569,31 @@ img.top-image {
 
 /* Data table variant - adds shadow and border radius */
 .data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  margin-top: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   overflow: hidden;
 }
 
-.data-table th,
+.data-table th {
+  background: #3498db;
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
 .data-table td {
-  border: 1px solid #e0e0e0;
+  padding: 10px 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.data-table tr:hover {
+  background: #f5f9ff;
 }
 
 .filter-actions {
@@ -804,7 +819,8 @@ body {
 }
 
 /* Individual section classes now extend the base (keep for specificity if needed) */
-.welcome-section {}
+.welcome-section {
+}
 
 /* ---------- SECTION HEADER ---------- */
 .section-header {
@@ -823,11 +839,13 @@ body {
 
 /* Placeholder classes for mission and personas sections - now use .page-section */
 .mission-section,
-.personas-intro-section {}
+.personas-intro-section {
+}
 
 /* ---------- CONTRIBUTORS SECTION ---------- */
 /* Now uses .page-section base class, keep only unique styles */
-.contributors-section {}
+.contributors-section {
+}
 
 /* Sub-Task Explanation Cards */
 .subtask-explanation {
@@ -921,7 +939,8 @@ body {
 
 /* ---------- PRIVACY POLICY SECTION ---------- */
 /* Now uses .page-section base class */
-.privacy-section {}
+.privacy-section {
+}
 
 /* ---------- CHART-TABLE LAYOUT ---------- */
 .chart-table-container {
