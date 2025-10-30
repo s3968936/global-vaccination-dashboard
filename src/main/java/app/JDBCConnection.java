@@ -117,6 +117,26 @@ public class JDBCConnection {
     }
 
     /**
+     * Gets top 5 countries by vaccination coverage for snapshot display
+     */
+    public ArrayList<HashMap<String, String>> getVaccinationCoverage() {
+        String query = """
+        SELECT 
+            c.name AS country_name,
+            ROUND(AVG(v.coverage), 2) AS coverage_percentage
+        FROM Vaccination v
+        JOIN Country c ON v.country = c.CountryID
+        WHERE v.coverage IS NOT NULL 
+          AND v.coverage > 0
+        GROUP BY c.name
+        HAVING coverage_percentage > 0
+        ORDER BY coverage_percentage DESC
+        LIMIT 5;
+        """;
+        return executeQuery(query);
+    }
+
+    /**
      * Gets economic snapshot data showing vaccination coverage by economic phase
      */
     public ArrayList<HashMap<String, String>> getEconomySnapshot() {
@@ -134,7 +154,7 @@ public class JDBCConnection {
     }
 
     /**
-     * Gets region data with country counts for dashboard
+     * Gets region data with country counts for snapshot display
      */
     public ArrayList<HashMap<String, String>> getRegions() {
         String query = """
@@ -151,7 +171,7 @@ public class JDBCConnection {
     }
 
     /**
-     * Gets top infection types by total cases for dashboard
+     * Gets top infection types by total cases for snapshot display
      */
     public ArrayList<HashMap<String, String>> getTopInfections() {
         String query = """

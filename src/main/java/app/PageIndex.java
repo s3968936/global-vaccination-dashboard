@@ -36,7 +36,7 @@ public class PageIndex implements Handler {
         model.put("title", "Global Health Dashboard");
 
         // Get data for snapshots
-        model.put("topVaccinations", connection.getTopVaccinationsByCoverage());
+        model.put("topVaccinations", connection.getVaccinationCoverage());
         model.put("economySnapshot", connection.getEconomySnapshot());
         model.put("improvedRegions", connection.getRegions());
         model.put("topInfections", connection.getTopInfections());
