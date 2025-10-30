@@ -32,7 +32,7 @@
 
     <div class="content">
     <!-- Welcome Section -->
-    <div class="welcome-section">
+    <div class="welcome-section page-section">
       <h2>Welcome to the Global Health Dashboard</h2>
       <p>
         Vaccination has been instrumental in eradicating diseases like smallpox and achieving global herd immunity for others, such as polio.
@@ -51,6 +51,41 @@
       <p>
         Explore the data below to discover key insights, or use our navigation menu to dive deeper into specific areas of interest.
       </p>
+    </div>
+
+    <!-- Summary Statistics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card stat-card-blue">
+        <div class="stat-icon">🌍</div>
+        <div class="stat-content">
+          <h3 class="stat-number" th:text="${summary.totalCountries}">0</h3>
+          <p class="stat-label">Countries Tracked</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-green">
+        <div class="stat-icon">💉</div>
+        <div class="stat-content">
+          <h3 class="stat-number" th:text="${summary.totalVaccines}">0</h3>
+          <p class="stat-label">Vaccine Types</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-purple">
+        <div class="stat-icon">🗺️</div>
+        <div class="stat-content">
+          <h3 class="stat-number" th:text="${summary.totalRegions}">0</h3>
+          <p class="stat-label">Global Regions</p>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-orange">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+          <h3 class="stat-number" th:text="${summary.totalInfectionCases}">0</h3>
+          <p class="stat-label">Total Infection Cases</p>
+        </div>
+      </div>
     </div>
 
     <!-- Data Snapshot -->

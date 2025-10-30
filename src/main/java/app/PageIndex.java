@@ -35,6 +35,9 @@ public class PageIndex implements Handler {
         // Add page title
         model.put("title", "Global Health Dashboard");
 
+        // Get summary statistics for highlight cards
+        model.put("summary", connection.getDashboardSummary());
+
         // Get data for snapshots
         model.put("topVaccinations", connection.getTopVaccinationsByCoverage());
         model.put("economySnapshot", connection.getEconomySnapshot());

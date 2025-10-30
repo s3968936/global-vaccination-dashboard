@@ -62,14 +62,14 @@ public class TrendingPage implements Handler {
                     int start = Integer.parseInt(yearStart);
                     if (start < minYear || start > maxYear) {
                         validYearRange = false;
-                        warningMessage = "⚠️ Start year must be between " + minYear + " and " + maxYear + ".";
+                        warningMessage = "Start year must be between " + minYear + " and " + maxYear + ".";
                     }
                 }
                 if (yearEnd != null && !yearEnd.isEmpty()) {
                     int end = Integer.parseInt(yearEnd);
                     if (end < minYear || end > maxYear) {
                         validYearRange = false;
-                        warningMessage = "⚠️ End year must be between " + minYear + " and " + maxYear + ".";
+                        warningMessage = "End year must be between " + minYear + " and " + maxYear + ".";
                     }
                 }
 
@@ -78,12 +78,12 @@ public class TrendingPage implements Handler {
                     int end = Integer.parseInt(yearEnd);
                     if (start > end) {
                         validYearRange = false;
-                        warningMessage = "⚠️ Start year cannot be greater than end year.";
+                        warningMessage = "Start year cannot be greater than end year.";
                     }
                 }
             } catch (NumberFormatException e) {
                 validYearRange = false;
-                warningMessage = "⚠️ Please enter valid numeric years.";
+                warningMessage = "Please enter valid numeric years.";
             }
 
             if (warningMessage != null) {

@@ -35,7 +35,7 @@
       <p class="subtitle">Analyse infection trends across economic groups</p>
     </div>
 
-    <div class="content">
+    <div class="content data-page-content">
       <h2>Infection Trends by Economic Status</h2>
       <p>
         Explore how infectious diseases affect different economic groups. Filter by economic status,
@@ -510,6 +510,13 @@
           backgroundColor: "transparent",
           legend: { position: "none" },
           curveType: "function",
+          tooltip: {
+            trigger: 'both',
+            isHtml: false,
+            textStyle: { fontSize: 12 }
+          },
+          pointSize: 5,
+          pointShape: 'circle',
           chartArea: {
             width: "85%",
             height: "70%",

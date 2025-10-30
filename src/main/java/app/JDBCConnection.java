@@ -77,13 +77,63 @@ public class JDBCConnection {
     // Dashboard Query Methods
     // These methods provide data for the main dashboard visualizations
     // ===========================
-    
+
+    /**
+     * Gets summary statistics for the dashboard highlight cards
+     */
+    public HashMap<String, String> getDashboardSummary() {
+        HashMap<String, String> summary = new HashMap<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            Statement statement = connection.createStatement();
+
+            // Get total countries
+            ResultSet rs1 = statement.executeQuery("SELECT COUNT(DISTINCT CountryID) AS total FROM Country");
+            if (rs1.next()) {
+                summary.put("totalCountries", String.valueOf(rs1.getInt("total")));
+            }
+
+            // Get total regions
+            ResultSet rs2 = statement.executeQuery("SELECT COUNT(DISTINCT RegionID) AS total FROM Region");
+            if (rs2.next()) {
+                summary.put("totalRegions", String.valueOf(rs2.getInt("total")));
+            }
+
+            // Get total vaccine types (Antigens)
+            ResultSet rs3 = statement.executeQuery("SELECT COUNT(DISTINCT AntigenID) AS total FROM Antigen");
+            if (rs3.next()) {
+                summary.put("totalVaccines", String.valueOf(rs3.getInt("total")));
+            }
+
+            // Get total infection cases
+            ResultSet rs4 = statement.executeQuery("SELECT SUM(cases) AS total FROM InfectionData");
+            if (rs4.next()) {
+                long totalCases = rs4.getLong("total");
+                summary.put("totalInfectionCases", String.format("%,d", totalCases));
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error getting dashboard summary: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+            }
+        }
+
+        return summary;
+    }
+
     /**
      * Gets average vaccination coverage by country for dashboard display
      */
     public ArrayList<HashMap<String, String>> getAverageVaccinationCoverageByCountry() {
         String query = """
-            SELECT 
+            SELECT
                 c.name AS country_name,
                 ROUND(AVG(v.coverage), 2) AS avg_coverage
             FROM Vaccination v
@@ -622,6 +672,48 @@ public class JDBCConnection {
             statement.close();
         } catch (SQLException e) {
             System.err.println("Error getting aggregated infection data: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+            }
+        }
+
+        return results;
+    }
+
+    // ===========================
+    // Feedback Methods
+    // ===========================
+
+    /**
+     * Retrieves all feedback messages from the database
+     * @return ArrayList of HashMaps containing feedback data (name, email, feedback, submitted_at)
+     */
+    public ArrayList<HashMap<String, String>> getAllFeedback() {
+        ArrayList<HashMap<String, String>> results = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            String query = "SELECT name, email, feedback, submitted_at FROM Feedback ORDER BY submitted_at DESC";
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                HashMap<String, String> row = new HashMap<>();
+                row.put("name", resultSet.getString("name"));
+                row.put("email", resultSet.getString("email"));
+                row.put("feedback", resultSet.getString("feedback"));
+                row.put("submitted_at", resultSet.getString("submitted_at"));
+                results.add(row);
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error retrieving feedback: " + e.getMessage());
         } finally {
             try {
                 if (connection != null) connection.close();
