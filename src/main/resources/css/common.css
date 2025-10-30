@@ -702,10 +702,6 @@ img.top-image {
   gap: 10px;
 }
 
-/* Subtle background for the page */
-body {
-  background: linear-gradient(to bottom, #f1f1f1, #e2e8f0);
-}
 /* --- Card Layout --- */
 /* Homepage card grid layout*/
 .content-cards,
@@ -716,6 +712,7 @@ body {
   gap: 30px;
   padding: 20px;
   background-color: #f7f9fb;
+  background: linear-gradient(to bottom, #f1f1f1, #e2e8f0);
 }
 
 /* ---------- UNIFIED CARD STYLES ---------- */
@@ -820,46 +817,6 @@ body {
   .data-snapshot-grid {
     grid-template-columns: 1fr;
     max-width: 95%;
-  }
-}
-
-.header {
-  text-align: center;
-  padding: 40px 20px;
-  background: linear-gradient(
-    to right,
-    #f7f9fb,
-    #e2e8f0
-  ); /* matches card theme */
-  border-radius: 10px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle card shadow */
-}
-
-.header h1 {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--primary); /* your theme color */
-  margin: 0;
-  line-height: 1.2;
-}
-
-.header .subtitle {
-  font-size: 1.2rem;
-  color: #555;
-  margin-top: 8px;
-  font-weight: 400;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .header h1 {
-    font-size: 2rem;
-  }
-
-  .header .subtitle {
-    font-size: 1rem;
   }
 }
 
