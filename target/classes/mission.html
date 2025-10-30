@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<<<<<<< HEAD
   <head>
     <meta charset="UTF-8" />
     <title>Mission Statement & Personas - Global Health Dashboard</title>
@@ -29,6 +30,78 @@
       <h1 th:text="${title}"></h1>
       <p class="subtitle">
         Promoting global health awareness through data-driven insights.
+=======
+<head>
+  <meta charset="UTF-8" />
+  <title>Mission Statement & Personas - Global Health Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="common.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <div class="simple-topnav">
+    <a href="/" class="nav-logo-link">
+      <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+    </a>
+    <div class="nav-links">
+      <a href="/">Homepage</a>
+      <a href="/explore">Explore Data</a>
+      <a href="/trending">Trending</a>
+      <a href="/insights">Insights</a>
+      <a href="/mission" class="active">Mission Statement</a>
+      <a href="/feedback">Feedback</a>
+    </div>
+  </div>
+
+  <div class="header">
+    <h1 th:text="${title}"></h1>
+    <p class="subtitle">Promoting global health awareness through data-driven insights.</p>
+  </div>
+
+  <div class="content">
+    <!-- Mission Statement Section -->
+    <div class="mission-section page-section">
+      <h2>Our Mission</h2>
+      <p>
+        The Global Health Dashboard is dedicated to promoting awareness and understanding of vaccination and infection trends
+        through accessible, data-driven insights. Our mission is to address the critical social challenge of preventable
+        infectious diseases by providing comprehensive, unbiased information that empowers diverse stakeholders.
+      </p>
+
+      <h3>How This Website Addresses the Social Challenge</h3>
+      <p>
+        Vaccination has been instrumental in eradicating diseases like smallpox and achieving global herd immunity for
+        others, such as polio. However, understanding global immunisation efforts requires access to detailed, trustworthy
+        data. Our platform bridges this gap by:
+      </p>
+      <ul>
+        <li><strong>Presenting unbiased data:</strong> We provide comprehensive WHO data in an informative and respectful manner</li>
+        <li><strong>Supporting diverse users:</strong> From healthcare professionals to concerned citizens, our platform caters to various levels of expertise</li>
+        <li><strong>Enabling informed decisions:</strong> Through both high-level summaries and in-depth analysis tools, users can explore data that matters to them</li>
+        <li><strong>Promoting transparency:</strong> Clear visualisations and accessible filters help users understand vaccination coverage, disease trends, and health outcomes</li>
+      </ul>
+
+      <h3>How to Use This Website</h3>
+      <p>
+        Navigate through our platform to discover insights tailored to your needs:
+      </p>
+      <ul>
+        <li><strong>Homepage:</strong> View key statistics at a glance to understand global vaccination trends</li>
+        <li><strong>Explore Data:</strong> Filter and analyse vaccination rates by country, region, and time period</li>
+        <li><strong>Trending:</strong> Discover patterns in infection data across different economic groups</li>
+        <li><strong>Insights:</strong> Access deep-dive analyses including vaccination improvements and infection rate comparisons</li>
+        <li><strong>Feedback:</strong> Share your thoughts and help us improve the platform</li>
+      </ul>
+    </div>
+
+    <!-- Personas Section -->
+    <div class="personas-intro-section page-section">
+      <h2>Understanding Our Target Users</h2>
+      <p>
+        To ensure this platform meets the needs of real people, we've developed <strong>personas</strong>—detailed profiles
+        representing our target user groups. These personas guide our design decisions and help us create a user experience
+        that serves diverse needs effectively.
+>>>>>>> 41ad3485d66d6862631721e9ee6f607163451ef7
       </p>
     </div>
 
@@ -208,7 +281,7 @@
     </div>
 
     <!-- Project Contributors Section -->
-    <div class="contributors-section">
+    <div class="contributors-section page-section">
       <h2>Project Contributors</h2>
       <p>
         This project was developed as part of COSC2803 Java Programming Studio 1
@@ -288,6 +361,7 @@
       </table>
     </div>
 
+<<<<<<< HEAD
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-content">
@@ -307,4 +381,29 @@
       </div>
     </footer>
   </body>
+=======
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><strong>Global Health Dashboard</strong></p>
+      <nav class="footer-links">
+        <a href="/">Homepage</a> |
+        <a href="/explore">Explore Data</a> |
+        <a href="/trending">Trending</a> |
+        <a href="/insights">Insights</a> |
+        <a href="/mission">Mission Statement</a> |
+        <a href="/feedback">Feedback</a> |
+        <a href="/privacy">Privacy Policy</a>
+      </nav>
+      <p>
+        <small>
+          © 2025 RMIT University - Global Vaccination Initiatives |
+          Empowering informed global health decisions
+        </small>
+      </p>
+    </div>
+  </footer>
+</body>
+>>>>>>> 41ad3485d66d6862631721e9ee6f607163451ef7
 </html>

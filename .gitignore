@@ -1,6 +1,3 @@
-*.class
-<<<<<<< HEAD
-=======
 # Ignore compiled Java class files
 *.class
 
@@ -24,4 +21,9 @@ out/
 
 #Ignore pom files
 .xml
->>>>>>> d8d7a75d44afab1efcc09d5f3b5e523916ac8b1d
+
+#Ignore lst files
+.lst
+
+target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst

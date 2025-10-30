@@ -12,7 +12,7 @@ public class InsightsPage implements Handler {
     public static final String URL = "/insights";
     private static final String TEMPLATE = "insights.html";
 
-    private JDBCConnection connection;
+    final private JDBCConnection connection;
 
     public InsightsPage(JDBCConnection connection) {
         this.connection = connection;
@@ -26,12 +26,12 @@ public class InsightsPage implements Handler {
             // Get vaccination coverage data for the geo chart
             ArrayList<HashMap<String, String>> geoData = connection.getTopVaccinationsByCoverage();
             
-            System.out.println("Retrieved " + geoData.size() + " countries for geo chart");
+            /*System.out.println("Retrieved " + geoData.size() + " countries for geo chart");
             
             if (!geoData.isEmpty()) {
                 System.out.println("First country: " + geoData.get(0).get("country_name") + 
                                  " - " + geoData.get(0).get("coverage_percentage") + "%");
-            }
+            }*/
 
             // FIXED: Proper JSON formatting without manual string building
             ArrayList<ArrayList<Object>> chartData = new ArrayList<>();
@@ -61,8 +61,7 @@ public class InsightsPage implements Handler {
                         count++;
                         
                     } catch (NumberFormatException e) {
-                        // Skip invalid coverage values
-                        continue;
+
                     }
                 }
             }
@@ -70,8 +69,8 @@ public class InsightsPage implements Handler {
             // Convert to JSON for the geo chart
             String geoChartData = convertToJson(chartData);
             
-            System.out.println("Final data has " + count + " valid countries");
-            System.out.println("First few rows: " + geoChartData.substring(0, Math.min(200, geoChartData.length())) + "...");
+            //System.out.println("Final data has " + count + " valid countries");
+            //System.out.println("First few rows: " + geoChartData.substring(0, Math.min(200, geoChartData.length())) + "...");
             
             // Add all data to model
             model.put("geoChartData", geoChartData);
@@ -80,7 +79,6 @@ public class InsightsPage implements Handler {
             model.put("dataCount", count);
 
         } catch (Exception e) {
-            e.printStackTrace();
             model.put("error", "Error loading geo chart data: " + e.getMessage());
         }
 
@@ -104,9 +102,9 @@ public class InsightsPage implements Handler {
                 if (j > 0) json.append(",");
                 
                 Object value = row.get(j);
-                if (value instanceof String) {
+                if (value instanceof String string) {
                     // Properly escape strings for JSON
-                    json.append("\"").append(escapeJsonString((String) value)).append("\"");
+                    json.append("\"").append(escapeJsonString(string)).append("\"");
                 } else {
                     json.append(value);
                 }

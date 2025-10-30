@@ -51,6 +51,7 @@ public class App {
         app.get(InfectionPage.URL,  new InfectionPage(connection));
         app.get(MissionPage.URL, new MissionPage(connection));
         app.get(Feedback.URL, new Feedback(connection));
+        app.get(ViewFeedbackPage.URL, new ViewFeedbackPage(connection));
         app.get(PrivacyPage.URL, new PrivacyPage());
         app.get(PDFExport.URL, new PDFExport(connection));
         app.get(CSVExport.URL, new CSVExport(connection));

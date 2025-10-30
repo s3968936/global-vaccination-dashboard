@@ -131,10 +131,12 @@ img.top-image {
   color: #cbd5e0;
 }
 
-/* ---------- EXPLORE DATA PAGE ---------- */
-/* Main Content Area for Explore Data Page */
-.explore-page .content {
+/* ---------- DATA PAGES (EXPLORE, INFECTION, TRENDING) ---------- */
+/* Consolidated content area for all data pages */
+.data-page-content {
   display: block !important;
+  width: 90%;
+  max-width: 1800px;
   margin: 0 auto;
   background-color: white;
   padding: 30px;
@@ -142,24 +144,98 @@ img.top-image {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Filter Grid for Explore Data Page */
-.explore-page .filter-grid {
+/* Consolidated filter grid - 4 column layout */
+.data-page-filter-grid {
   grid-template-columns: repeat(4, 1fr);
 }
 
-/* Main Content Area for infection data Page */
-.infection-page .content {
-  display: block !important;
-  margin: 0 auto;
-  background-color: white;
+/* Data card heading and paragraph styles (base properties consolidated above) */
+.data-card h3 {
+  color: #0078d7;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #0078d7;
+  padding-bottom: 8px;
+}
+
+.data-card p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+/* Chart Container Styling */
+.chart-container {
+  width: 100%;
+  height: 400px;
+}
+
+.chart-container-tall {
+  width: 100%;
+  height: 450px;
+}
+
+/* ---------- UNIFIED MESSAGE/ALERT SYSTEM ---------- */
+/* Base message class */
+.message {
+  border-radius: 4px;
+  padding: 12px;
+  margin: 20px 0;
+  border: 1px solid;
+}
+
+/* Message variants */
+.message-error,
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+.message-warning,
+.warning-message {
+  background-color: #fff3cd;
+  color: #856404;
+  border-color: #ffeeba;
+}
+
+.message-success,
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+.message-info,
+.no-data-message {
+  background-color: #e9ecef;
+  color: #666;
+  border-color: #ddd;
+}
+
+/* Centered message variant */
+.message-centered,
+.warning-message,
+.no-data-message {
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.no-data-message {
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Filter Grid for infection data Page */
-.infection-page .filter-grid {
-  grid-template-columns: repeat(4, 1fr);
+.no-data-message p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Required Field Indicator */
+.required-field {
+  color: red;
 }
 
 /* Dataset Selector Tabs */
@@ -271,15 +347,7 @@ img.top-image {
   background-color: #545b62;
 }
 
-/* Error Messages */
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  border: 1px solid #f5c6cb;
-}
+/* Error Messages - removed duplicate, using unified message system above */
 
 /* Year Range Inputs */
 .year-range {
@@ -368,26 +436,18 @@ img.top-image {
   color: #0078d7;
 }
 
+/* Student table variant - lighter header style, now extends .table-base */
 .student-table {
-  width: 100%; /* table fills container */
-  margin: 0 auto; /* ensures table is centered */
-  border-collapse: collapse;
-}
-
-.student-table th,
-.student-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  margin: 0 auto;
 }
 
 .student-table th {
   background-color: #f2f2f2;
-  font-weight: 600;
   color: #0078d7;
+  text-transform: none;
 }
 
-.student-table tr:nth-child(even) {
+.student-table tbody tr:nth-child(even) {
   background-color: #fafafa;
 }
 
@@ -421,38 +481,17 @@ img.top-image {
   resize: vertical;
 }
 
-/* Submit Button */
-.apply-btn {
-  background-color: var(--primary);
-  color: white;
-  padding: 14px 40px;
-  font-size: 18px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-}
+/* Submit Button - removed duplicate, using base definition above */
 
-.apply-btn:hover {
-  background-color: #0056b3;
-}
-
-/* Success Message */
-.success-message {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 14px 16px;
-  border-radius: 6px;
-  border: 1px solid #c3e6cb;
-  margin-bottom: 25px;
-  text-align: center;
-  font-weight: 500;
-}
+/* Success Message - removed duplicate, using unified message system above */
 
 /* Responsive adjustments */
+/* Consolidated 768px responsive rules */
 @media (max-width: 768px) {
   .feedback-card {
-    padding: 25px 20px;
+    padding: 20px;
     width: 95%;
+    margin: 20px;
   }
 
   .feedback-card input,
@@ -466,6 +505,10 @@ img.top-image {
     padding: 12px;
     font-size: 16px;
   }
+
+  .header h1 {
+    font-size: 36px;
+  }
 }
 
 /* ---------- Vaccination chart styles ---------- */
@@ -476,103 +519,80 @@ img.top-image {
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-/* ---------- Data Table and Filter Styles ---------- */
-.data-table {
+/* ---------- UNIFIED TABLE STYLES ---------- */
+/* Base table class - common styles for all tables */
+.table-base {
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
 }
+
+.table-base th,
+.table-base td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.table-base th {
+  background-color: #0078d7;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.table-base tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table-base tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.table-base tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table-base tbody tr:hover {
+  background-color: #e3f2fd;
+}
+
+.table-base td {
+  color: #333;
+  font-size: 14px;
+}
+
+.table-base td:last-child {
+  font-weight: 600;
+  color: #0078d7;
+}
+
+/* Data table variant - adds shadow and border radius */
+.data-table {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
 .data-table th,
 .data-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+  border: 1px solid #e0e0e0;
 }
-.data-table th {
-  background-color: #f2f2f2;
-}
-/* Filter Section */
-.filter-section {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 5px;
-  margin: 20px 0;
-}
-.filter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
-}
-/* Combo Box Simple */
-.combo-box-simple label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-.combo-box-simple input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-.year-range {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.year-start,
-.year-end {
-  flex: 1;
-}
-.year-separator {
-  color: #666;
-}
+
 .filter-actions {
   display: flex;
   gap: 10px;
-}
-.apply-btn,
-.reset-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.apply-btn {
-  background-color: #007bff;
-  color: white;
-}
-.reset-btn {
-  background-color: #6c757d;
-  color: white;
-}
-/* Error Message */
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  border-radius: 4px;
-  margin: 10px 0;
 }
 
 /* Subtle background for the page */
 body {
   background: linear-gradient(to bottom, #f1f1f1, #e2e8f0);
 }
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .feedback-card {
-    padding: 20px;
-    margin: 20px;
-  }
-  .header h1 {
-    font-size: 36px;
-  }
-}
-
 /* --- Card Layout --- */
+/* Homepage card grid layout*/
+.content-cards,
 .content {
   display: flex;
   flex-wrap: wrap;
@@ -582,24 +602,37 @@ body {
   background-color: #f7f9fb;
 }
 
-/* Each card */
-.card {
+/* ---------- UNIFIED CARD STYLES ---------- */
+/* Base card class - common properties */
+.card-base,
+.card,
+.card-insights,
+.data-card {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 420px;
   padding: 20px;
+}
+
+/* Homepage card variant - fixed width with hover */
+.card {
+  width: 420px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Insights page card variant - full width */
 .card-insights {
   width: calc(100% - 20px);
   max-width: 1200px;
-  padding: 20px;
   margin: 20px auto;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Data card variant - lighter background, more padding */
+.data-card {
+  background-color: #f8f9fa;
+  padding: 25px;
+  margin: 25px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .card:hover {
@@ -697,8 +730,9 @@ body {
   margin-bottom: 20px; /* Adjust spacing */
 }
 
-/* ---------- WELCOME SECTION ---------- */
-.welcome-section {
+/* ---------- PAGE SECTIONS (CONSOLIDATED) ---------- */
+/* Base class for all content sections: welcome, mission, privacy, contributors, personas-intro */
+.page-section {
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -710,7 +744,7 @@ body {
   margin-right: auto;
 }
 
-.welcome-section h2 {
+.page-section h2 {
   color: #0078d7;
   font-size: 2rem;
   margin-bottom: 20px;
@@ -718,45 +752,59 @@ body {
   padding-bottom: 10px;
 }
 
-.welcome-section p {
+.page-section h3 {
+  color: #0078d7;
+  font-size: 1.4rem;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+.page-section p {
   font-size: 1.05rem;
   line-height: 1.7;
   color: #333;
   margin-bottom: 15px;
 }
 
-.welcome-section ul {
-  margin: 15px 0 15px 20px;
+.page-section ul {
+  margin: 15px 0 20px 20px;
   padding-left: 20px;
   list-style-type: none;
 }
 
-.welcome-section li {
+.page-section li {
   margin-bottom: 12px;
   line-height: 1.6;
   font-size: 1.02rem;
 }
 
-.welcome-section strong {
+.page-section strong {
   color: #0078d7;
   font-weight: 600;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for all page sections */
 @media (max-width: 768px) {
-  .welcome-section {
+  .page-section {
     padding: 20px;
   }
 
-  .welcome-section h2 {
+  .page-section h2 {
     font-size: 1.5rem;
   }
 
-  .welcome-section p,
-  .welcome-section li {
+  .page-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .page-section p,
+  .page-section li {
     font-size: 1rem;
   }
 }
+
+/* Individual section classes now extend the base (keep for specificity if needed) */
+.welcome-section {}
 
 /* ---------- SECTION HEADER ---------- */
 .section-header {
@@ -773,124 +821,13 @@ body {
   margin: 0;
 }
 
-/* ---------- MISSION STATEMENT SECTION ---------- */
+/* Placeholder classes for mission and personas sections - now use .page-section */
 .mission-section,
-.personas-intro-section {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  margin-bottom: 30px;
-  width: calc(100% - 20px);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.mission-section h2,
-.personas-intro-section h2 {
-  color: #0078d7;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #0078d7;
-  padding-bottom: 10px;
-}
-
-.mission-section h3,
-.personas-intro-section h3 {
-  color: #0078d7;
-  font-size: 1.4rem;
-  margin-top: 25px;
-  margin-bottom: 15px;
-}
-
-.mission-section p,
-.personas-intro-section p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.mission-section ul,
-.personas-intro-section ul {
-  margin: 15px 0 20px 20px;
-  padding-left: 20px;
-  list-style-type: none;
-}
-
-.mission-section li,
-.personas-intro-section li {
-  margin-bottom: 12px;
-  line-height: 1.6;
-  font-size: 1.02rem;
-}
-
-.mission-section strong,
-.personas-intro-section strong {
-  color: #0078d7;
-  font-weight: 600;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .mission-section,
-  .personas-intro-section {
-    padding: 20px;
-  }
-
-  .mission-section h2,
-  .personas-intro-section h2 {
-    font-size: 1.5rem;
-  }
-
-  .mission-section h3,
-  .personas-intro-section h3 {
-    font-size: 1.2rem;
-  }
-
-  .mission-section p,
-  .mission-section li,
-  .personas-intro-section p,
-  .personas-intro-section li {
-    font-size: 1rem;
-  }
-}
+.personas-intro-section {}
 
 /* ---------- CONTRIBUTORS SECTION ---------- */
-.contributors-section {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  margin-bottom: 30px;
-  width: calc(100% - 20px);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.contributors-section h2 {
-  color: #0078d7;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #0078d7;
-  padding-bottom: 10px;
-}
-
-.contributors-section h3 {
-  color: #0078d7;
-  font-size: 1.4rem;
-  margin-top: 30px;
-  margin-bottom: 15px;
-}
-
-.contributors-section > p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #333;
-  margin-bottom: 20px;
-}
+/* Now uses .page-section base class, keep only unique styles */
+.contributors-section {}
 
 /* Sub-Task Explanation Cards */
 .subtask-explanation {
@@ -966,20 +903,8 @@ body {
   background-color: #e9ecef;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for contributors-specific elements */
 @media (max-width: 768px) {
-  .contributors-section {
-    padding: 20px;
-  }
-
-  .contributors-section h2 {
-    font-size: 1.5rem;
-  }
-
-  .contributors-section h3 {
-    font-size: 1.2rem;
-  }
-
   .subtask-grid {
     grid-template-columns: 1fr;
   }
@@ -995,73 +920,169 @@ body {
 }
 
 /* ---------- PRIVACY POLICY SECTION ---------- */
-.privacy-section {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  margin-bottom: 30px;
-  width: calc(100% - 20px);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+/* Now uses .page-section base class */
+.privacy-section {}
+
+/* ---------- CHART-TABLE LAYOUT ---------- */
+.chart-table-container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin: 20px 0;
 }
 
-.privacy-section h2 {
+.chart-area {
+  flex: 1;
+  min-width: 0;
+  height: 500px;
+}
+
+.data-table-container {
+  flex: 0 0 300px;
+  min-width: 300px;
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #0078d7;
+}
+
+/* Chart data table variant - sticky header for scrolling, now extends .table-base */
+.chart-data-table {
+  font-size: 13px;
+}
+
+.chart-data-table thead {
+  position: sticky;
+  top: 0;
+  background-color: #0078d7;
+  z-index: 10;
+}
+
+.chart-data-table th {
+  border-bottom: 2px solid #005a9e;
+  padding: 10px 12px;
+}
+
+.chart-data-table td {
+  padding: 8px 12px;
+}
+
+/* Responsive layout for charts and tables */
+@media (max-width: 1200px) {
+  .chart-table-container {
+    flex-direction: column;
+  }
+
+  .data-table-container {
+    flex: 1;
+    max-width: 100%;
+    max-height: 400px;
+  }
+
+  .chart-area {
+    width: 100%;
+  }
+}
+
+/* ---------- SUMMARY STATISTICS CARDS ---------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin: 30px auto;
+  width: calc(100% - 40px);
+  max-width: 1800px;
+  padding: 0 20px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 12px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #0078d7;
+  cursor: default;
+}
+
+.stat-card-blue {
+  border-left-color: #3498db;
+}
+
+.stat-card-green {
+  border-left-color: #27ae60;
+}
+
+.stat-card-purple {
+  border-left-color: #9b59b6;
+}
+
+.stat-card-orange {
+  border-left-color: #f39c12;
+}
+
+.stat-icon {
+  font-size: 3.5rem;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.stat-content {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.stat-number {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
   color: #0078d7;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #0078d7;
-  padding-bottom: 10px;
+  line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
-.privacy-section h3 {
-  color: #0078d7;
-  font-size: 1.4rem;
-  margin-top: 25px;
-  margin-bottom: 15px;
+.stat-label {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 5px 0 0 0;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.privacy-section p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #333;
-  margin-bottom: 15px;
+/* Responsive adjustments for stat cards */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.privacy-section ul {
-  margin: 15px 0 20px 20px;
-  padding-left: 20px;
-  list-style-type: none;
-}
-
-.privacy-section li {
-  margin-bottom: 12px;
-  line-height: 1.6;
-  font-size: 1.02rem;
-}
-
-.privacy-section strong {
-  color: #0078d7;
-  font-weight: 600;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  .privacy-section {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .stat-card {
     padding: 20px;
   }
 
-  .privacy-section h2 {
-    font-size: 1.5rem;
+  .stat-icon {
+    font-size: 2.5rem;
   }
 
-  .privacy-section h3 {
-    font-size: 1.2rem;
+  .stat-number {
+    font-size: 1.6rem;
   }
 
-  .privacy-section p,
-  .privacy-section li {
-    font-size: 1rem;
+  .stat-label {
+    font-size: 0.85rem;
   }
 }
