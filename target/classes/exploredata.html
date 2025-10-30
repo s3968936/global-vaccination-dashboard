@@ -210,17 +210,69 @@
             </div>
           </div>
 
-          <div class="data-table-header">
+          <div
+            class="data-table-header"
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              margin-bottom: 20px;
+              padding: 20px;
+              background-color: #f8f9fa;
+              border-radius: 8px;
+              border-left: 4px solid #3498db;
+            "
+          >
             <!-- Data Table - Detailed tabular view of the filtered data -->
             <h3>Detailed Data</h3>
             <!-- Export Buttons -->
-            <div class="export-section">
-              <button onclick="exportToPDF()" class="export-btn export-btn-pdf">
-                Export Data to PDF
-              </button>
-              <button onclick="exportToCSV()" class="export-btn export-btn-csv">
-                Export to CSV
-              </button>
+            <div
+              class="export-section"
+              style="
+                text-align: right;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+              "
+            >
+              <div style="display: flex; gap: 10px; margin-bottom: 8px">
+                <button
+                  onclick="exportToPDF()"
+                  class="export-btn export-btn-pdf"
+                  style="
+                    background-color: #dc3545;
+                    color: white;
+                    border: none;
+                    padding: 12px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: bold;
+                    transition: background-color 0.3s;
+                    min-width: 140px;
+                  "
+                >
+                  Export Data to PDF
+                </button>
+                <button
+                  onclick="exportToCSV()"
+                  class="export-btn export-btn-csv"
+                  style="
+                    background-color: #28a745;
+                    color: white;
+                    border: none;
+                    padding: 12px 20px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: bold;
+                    transition: background-color 0.3s;
+                    min-width: 140px;
+                  "
+                >
+                  Export to CSV
+                </button>
+              </div>
               <p class="export-note">
                 Download the filtered data in your preferred format.
               </p>
