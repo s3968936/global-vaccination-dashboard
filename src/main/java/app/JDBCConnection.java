@@ -168,19 +168,20 @@ public class JDBCConnection {
     }
 
     /**
-     * Gets top 5 countries by vaccination coverage for snapshot display
+     * Gets top 5 countries by overall average vaccination coverage for snapshot display
      */
     public ArrayList<HashMap<String, String>> getVaccinationCoverage() {
         String query = """
-        SELECT 
+        SELECT
             c.name AS country_name,
-            ROUND(AVG(v.coverage), 2) AS coverage_percentage
+            ROUND(AVG(v.coverage), 2) AS coverage_percentage,
+            COUNT(DISTINCT v.antigen) AS vaccine_count
         FROM Vaccination v
         JOIN Country c ON v.country = c.CountryID
-        WHERE v.coverage IS NOT NULL 
+        WHERE v.coverage IS NOT NULL
           AND v.coverage > 0
         GROUP BY c.name
-        HAVING coverage_percentage > 0
+        HAVING AVG(v.coverage) > 0
         ORDER BY coverage_percentage DESC
         LIMIT 5;
         """;
@@ -192,31 +193,35 @@ public class JDBCConnection {
      */
     public ArrayList<HashMap<String, String>> getEconomySnapshot() {
         String query = """
-            SELECT 
-                e.phase AS economy, 
-                COUNT(c.CountryID) AS country_count, 
-                AVG(v.coverage) AS avg_vaccination
+            SELECT
+                e.phase AS economy,
+                COUNT(DISTINCT c.CountryID) AS country_count,
+                ROUND(AVG(v.coverage), 2) AS avg_vaccination
             FROM Economy e
             JOIN Country c ON e.economyID = c.economy
             LEFT JOIN Vaccination v ON c.CountryID = v.country
-            GROUP BY e.phase;
+            GROUP BY e.phase
+            ORDER BY e.phase;
         """;
         return executeQuery(query);
     }
 
     /**
-     * Gets region data with country counts for snapshot display
+     * Gets region data with vaccination coverage for snapshot display
      */
     public ArrayList<HashMap<String, String>> getRegions() {
         String query = """
-            SELECT 
-                r.region, 
-                COUNT(c.CountryID) AS country_count
+            SELECT
+                r.region,
+                COUNT(DISTINCT c.CountryID) AS country_count,
+                ROUND(AVG(v.coverage), 2) AS avg_coverage
             FROM Region r
             LEFT JOIN Country c ON r.RegionID = c.region
+            LEFT JOIN Vaccination v ON c.CountryID = v.country
+            WHERE v.coverage IS NOT NULL AND v.coverage > 0
             GROUP BY r.region
-            ORDER BY country_count DESC
-            LIMIT 5;
+            ORDER BY avg_coverage DESC
+            LIMIT 6;
         """;
         return executeQuery(query);
     }
@@ -226,9 +231,9 @@ public class JDBCConnection {
      */
     public ArrayList<HashMap<String, String>> getTopInfections() {
         String query = """
-            SELECT 
-                it.description AS infection_type, 
-                SUM(id.cases) AS total_cases
+            SELECT
+                it.description AS infection_type,
+                CAST(SUM(id.cases) AS INTEGER) AS total_cases
             FROM InfectionData id
             JOIN Infection_Type it ON id.inf_type = it.id
             GROUP BY it.description

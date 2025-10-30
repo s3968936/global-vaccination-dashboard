@@ -39,14 +39,12 @@
         This platform provides comprehensive, unbiased data from the World Health Organisation (WHO) to help diverse stakeholders—researchers,
         policymakers, healthcare professionals, and concerned citizens—make informed decisions about global immunisation efforts.
       </p>
-      <p>
-        <strong>What you can explore:</strong>
-      </p>
+      <h3 class="explore-heading">What you can explore:</h3>
       <ul>
-        <li><strong>Vaccination Coverage:</strong> Track immunisation rates across countries, regions, and economic groups</li>
-        <li><strong>Disease Trends:</strong> Monitor infection rates and outbreaks of preventable diseases worldwide</li>
-        <li><strong>Regional Comparisons:</strong> Analyse vaccination progress across different geographical areas</li>
-        <li><strong>Economic Impact:</strong> Understand how economic status affects vaccination rates and health outcomes</li>
+        <li><strong>Explore Data:</strong> Filter and analyse vaccination rates by country, vaccine type, region, and time period with interactive charts</li>
+        <li><strong>Trending:</strong> Discover infection data patterns across different economic development levels and disease types</li>
+        <li><strong>Insights:</strong> View global vaccination coverage on an interactive world map with detailed country-level data</li>
+        <li><strong>Mission Statement:</strong> Learn about our target users, project goals, and the team behind this platform</li>
       </ul>
       <p>
         Explore the data below to discover key insights, or use our navigation menu to dive deeper into specific areas of interest.
@@ -88,82 +86,103 @@
       </div>
     </div>
 
-    <!-- Data Snapshot -->
+    <!-- Data Snapshot Section -->
     <div class="section-header">
       <h2>Key Statistics at a Glance</h2>
+      <p class="section-subtitle">Explore detailed vaccination and infection data across multiple dimensions</p>
     </div>
+
+    <div class="data-snapshot-grid">
 
     <!-- Top Vaccinations -->
     <div class="card">
-      <h3>Top 5 Vaccination Coverage</h3>
-      <table>
-        <tr>
-          <th>Country</th>
-          <th>Vaccine</th>
-          <th>Coverage Percentage</th>
-        </tr>
-        <tr th:each="vaccination : ${topVaccinations}">
-          <td th:text="${vaccination.country_name}">Country</td>
-          <td th:text="${vaccination.vaccine_name}">Vaccine</td>
-          <td th:text="${vaccination.coverage_percentage} + '%'">Coverage</td>
-        </tr>
+      <h3>Top 5 Countries by Vaccination Coverage</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Country Name</th>
+            <th>Average Coverage (%)</th>
+            <th>Vaccines Tracked</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="vaccination : ${topVaccinations}">
+            <td th:text="${vaccination.country_name}">Country</td>
+            <td th:text="${vaccination.coverage_percentage} + '%'">Coverage</td>
+            <td th:text="${vaccination.vaccine_count}">Vaccines</td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
     <!-- Economy Snapshot -->
     <div class="card">
-      <h3>Economic Snapshot</h3>
-      <table>
-        <tr>
-          <th>Economy</th>
-          <th>Countries</th>
-          <th>Avg Coverage</th>
-        </tr>
-        <tr th:if="${economySnapshot.empty}">
-          <td colspan="3">No economy data available</td>
-        </tr>
-        <tr th:each="economy : ${economySnapshot}">
-          <td th:text="${economy.economy}">Economy</td>
-          <td th:text="${economy.country_count}">Count</td>
-          <td th:text="${economy.avg_vaccination} ?: 'N/A'">Coverage</td>
-        </tr>
+      <h3>Economic Development Overview</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Economic Level</th>
+            <th>Number of Countries</th>
+            <th>Average Coverage (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${economySnapshot.empty}">
+            <td colspan="3" class="table-loading">No economy data available</td>
+          </tr>
+          <tr th:each="economy : ${economySnapshot}">
+            <td th:text="${economy.economy}">Economy</td>
+            <td th:text="${economy.country_count}">Count</td>
+            <td th:text="${economy.avg_vaccination} ?: 'N/A'">Coverage</td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
     <!-- Regions -->
     <div class="card">
-      <h3>Top Regions by Country Count</h3>
-      <table>
-        <tr>
-          <th>Region</th>
-          <th>Number of Countries</th>
-        </tr>
-        <tr th:each="region : ${improvedRegions}">
-          <td th:text="${region.region}">Region Name</td>
-          <td th:text="${region.country_count}">Country Count</td>
-        </tr>
+      <h3>Regional Vaccination Performance</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Region Name</th>
+            <th>Countries</th>
+            <th>Avg Coverage (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="region : ${improvedRegions}">
+            <td th:text="${region.region}">Region Name</td>
+            <td th:text="${region.country_count}">Country Count</td>
+            <td th:text="${region.avg_coverage} + '%'">Coverage</td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
     <!-- Top Infections -->
     <div class="card">
-      <h3>Top Reported Infections</h3>
-      <table>
-        <tr>
-          <th>Infection Type</th>
-          <th>Total Cases</th>
-        </tr>
-        <tr th:if="${topInfections.empty}">
-          <td colspan="2">No infection data available</td>
-        </tr>
-        <tr th:each="infection : ${topInfections}">
-          <td th:text="${infection.infection_type}">Infection</td>
-          <td th:text="${infection.total_cases} ?: 'N/A'">Cases</td>
-        </tr>
+      <h3>Disease Burden by Infection Type</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Disease Type</th>
+            <th>Total Reported Cases</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${topInfections.empty}">
+            <td colspan="2" class="table-loading">No infection data available</td>
+          </tr>
+          <tr th:each="infection : ${topInfections}">
+            <td th:text="${infection.infection_type}">Infection</td>
+            <td th:text="${infection.total_cases} ?: 'N/A'">Cases</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
-
+  </div>
 
     <!-- Footer -->
     <footer class="footer">

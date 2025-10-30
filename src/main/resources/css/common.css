@@ -68,23 +68,29 @@ body {
 
 /* ---------- HEADER ---------- */
 body .header {
-  padding: 20px 0;
+  padding: 40px 20px;
   text-align: center;
-  background-color: #cccccc;
+  background: linear-gradient(135deg, #226ca0 0%, #1a5380 100%);
   margin-top: 10px;
-  border-radius: 1px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 body .header h1 {
-  font-size: 30px;
+  font-size: 2.5rem;
   margin: 0;
-  line-height: 1;
+  line-height: 1.2;
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 body .header .subtitle {
-  font-size: 16px;
-  margin-top: 10px;
-  color: #333333;
+  font-size: 1.1rem;
+  margin-top: 12px;
+  color: #f0f0f0;
+  font-weight: 400;
+  letter-spacing: 0.3px;
 }
 
 img.top-image {
@@ -158,6 +164,22 @@ img.top-image {
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.data-page-content h2 {
+  color: #0078d7;
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  border-left: 5px solid #0078d7;
+  padding-left: 15px;
+  position: relative;
+}
+
+.data-page-content > p {
+  color: #495057;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 30px;
 }
 
 /* Consolidated filter grid - 4 column layout */
@@ -248,6 +270,13 @@ img.top-image {
 /* Required Field Indicator */
 .required-field {
   color: red;
+}
+
+/* Table Loading State */
+.table-loading {
+  text-align: center;
+  padding: 20px;
+  color: #999;
 }
 
 /* Dataset Selector Tabs */
@@ -626,15 +655,20 @@ img.top-image {
 .data-table {
   width: 100%;
   border-collapse: collapse;
+<<<<<<< HEAD
   background-color: white;
   border-radius: 8px;
   margin-top: 20px;
+=======
+  margin: 20px 0;
+>>>>>>> ad3cae94fed3aab6061b0731f5a4be719095d5b8
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   overflow: hidden;
 }
 
 .data-table th {
+<<<<<<< HEAD
   background: #3498db;
   color: white;
   padding: 12px 15px;
@@ -649,6 +683,41 @@ img.top-image {
 
 .data-table tr:hover {
   background: #f5f9ff;
+=======
+  background-color: #0078d7;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 14px 20px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.data-table td {
+  padding: 12px 20px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
+  font-size: 14px;
+}
+
+.data-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.data-table tbody tr:hover {
+  background-color: #e3f2fd;
+>>>>>>> ad3cae94fed3aab6061b0731f5a4be719095d5b8
 }
 
 .filter-actions {
@@ -681,12 +750,12 @@ body {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 25px;
 }
 
-/* Homepage card variant - fixed width with hover */
+/* Homepage card variant - responsive width with hover */
 .card {
-  width: 420px;
+  width: 100%;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -713,10 +782,11 @@ body {
 /* Card headings */
 .card h3 {
   border-bottom: 2px solid #0078d7;
-  padding-bottom: 8px;
-  margin-bottom: 12px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
   color: #0078d7;
-  font-size: 1.2em;
+  font-size: 1.15em;
+  line-height: 1.4;
 }
 
 /* Tables inside cards */
@@ -728,8 +798,8 @@ body {
 
 .card th,
 .card td {
-  text-align: left;
-  padding: 8px;
+  text-align: center;
+  padding: 12px 16px;
 }
 
 .card th {
@@ -749,6 +819,30 @@ body {
 @media (max-width: 900px) {
   .card {
     width: 100%;
+  }
+}
+
+/* ---------- DATA SNAPSHOT GRID ---------- */
+/* 1x4 Grid layout for Key Statistics at a Glance section on homepage */
+.data-snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 40px auto;
+  max-width: 99%;
+  padding: 0 10px;
+}
+
+@media (max-width: 1400px) {
+  .data-snapshot-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .data-snapshot-grid {
+    grid-template-columns: 1fr;
+    max-width: 95%;
   }
 }
 
@@ -816,30 +910,32 @@ body {
 
 .page-section h2 {
   color: #0078d7;
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 20px;
-  border-bottom: 3px solid #0078d7;
-  padding-bottom: 12px;
+  border-left: 5px solid #0078d7;
+  padding-left: 15px;
   position: relative;
 }
 
-.page-section h2::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(90deg, #0078d7, #00a4ef);
+.page-section > p {
+  color: #495057;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
 }
 
 .page-section h3 {
   color: #0078d7;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   margin-top: 30px;
   margin-bottom: 15px;
   padding-left: 15px;
   border-left: 4px solid #0078d7;
+}
+
+.page-section .explore-heading {
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .page-section p {
@@ -873,11 +969,11 @@ body {
   }
 
   .page-section h2 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
 
   .page-section h3 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 
   .page-section p,
@@ -909,6 +1005,7 @@ body {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* Placeholder classes for mission and personas sections - now use .page-section */
 .mission-section,
 .personas-intro-section {
@@ -918,6 +1015,14 @@ body {
 /* Now uses .page-section base class, keep only unique styles */
 .contributors-section {
 =======
+=======
+.section-header .section-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+>>>>>>> ad3cae94fed3aab6061b0731f5a4be719095d5b8
 /* ---------- CONTRIBUTORS SECTION ---------- */
 /* Uses .page-section base class for common styling */
 
@@ -1114,6 +1219,8 @@ body {
 
 /* Chart data table variant - sticky header for scrolling, now extends .table-base */
 .chart-data-table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 13px;
 }
 
@@ -1125,12 +1232,38 @@ body {
 }
 
 .chart-data-table th {
+  background-color: #0078d7;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-align: center;
   border-bottom: 2px solid #005a9e;
-  padding: 10px 12px;
+  padding: 12px 16px;
 }
 
 .chart-data-table td {
-  padding: 8px 12px;
+  padding: 10px 16px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
+}
+
+.chart-data-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.chart-data-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.chart-data-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.chart-data-table tbody tr:hover {
+  background-color: #e3f2fd;
 }
 
 /* Responsive layout for charts and tables */
@@ -1214,14 +1347,18 @@ body {
 }
 
 .initial-state-box {
-  background-color: #f5f5f5;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 5px;
+  background-color: #e9ecef;
+  padding: 30px;
+  margin: 20px auto;
+  border-radius: 10px;
+  max-width: 600px;
+  text-align: center;
 }
 
-.initial-state-box h3 {
-  margin-top: 0;
+.initial-state-box p {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
 }
 
 .chart-no-data {
@@ -1253,52 +1390,42 @@ body {
 .country-table h3 {
   margin-top: 0;
   margin-bottom: 20px;
-  color: #2c3e50;
-  font-size: 18px;
+  color: #0078d7;
+  font-size: 1.6rem;
   font-weight: 600;
-  text-align: center;
-  padding-bottom: 15px;
-  border-bottom: 3px solid #4285f4;
+  text-align: left;
+  padding-left: 15px;
+  border-left: 4px solid #0078d7;
 }
 
 .country-table .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 .country-table .data-table th {
-  background: linear-gradient(135deg, #4285f4, #34a853);
+  background-color: #0078d7;
   color: white;
-  padding: 14px 16px;
-  text-align: left;
+  padding: 14px 20px;
+  text-align: center;
   font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.country-table .data-table th:first-child {
-  border-radius: 6px 0 0 0;
-}
-
-.country-table .data-table th:last-child {
-  border-radius: 0 6px 0 0;
-  text-align: right;
+  font-size: 0.95rem;
 }
 
 .country-table .data-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #edf2f7;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.2s ease;
+  text-align: center;
 }
 
-.country-table .data-table tr:last-child td {
-  border-bottom: none;
+.country-table .data-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.country-table .data-table tr:hover td {
-  background: #f8fafc;
+.country-table .data-table tbody tr:hover {
+  background-color: #e3f2fd;
 }
 
 .country-name {
@@ -1307,40 +1434,24 @@ body {
 }
 
 .coverage-cell {
-  font-weight: 700;
-  text-align: right;
-  font-size: 13px;
-  padding-right: 8px;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.95rem;
 }
 
 .coverage-high {
-  color: #0d652d;
-  background: #e6f4ea;
-  padding: 4px 10px;
-  border-radius: 12px;
-  display: inline-block;
-  min-width: 70px;
-  text-align: center;
+  color: #27ae60;
+  font-weight: 700;
 }
 
 .coverage-medium {
-  color: #b06000;
-  background: #fef7e0;
-  padding: 4px 10px;
-  border-radius: 12px;
-  display: inline-block;
-  min-width: 70px;
-  text-align: center;
+  color: #f39c12;
+  font-weight: 700;
 }
 
 .coverage-low {
-  color: #a50e0e;
-  background: #fce8e6;
-  padding: 4px 10px;
-  border-radius: 12px;
-  display: inline-block;
-  min-width: 70px;
-  text-align: center;
+  color: #e74c3c;
+  font-weight: 700;
 }
 
 .country-table::-webkit-scrollbar {
