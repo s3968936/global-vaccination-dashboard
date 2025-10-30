@@ -76,7 +76,11 @@
         policy recommendations to concerned parents researching vaccination information for their families. By understanding
         their goals, needs, and skills, we can ensure our platform provides relevant, accessible information for everyone.
       </p>
-      <h3 style="margin-top: 30px; margin-bottom: 20px;">Meet Our Personas</h3>
+    </div>
+
+    <!-- Personas Heading -->
+    <div class="section-header">
+      <h2>Meet Our Personas</h2>
     </div>
 
     <!-- Error Message -->
@@ -85,22 +89,18 @@
     </div>
 
     <!-- Personas Container -->
-    <div class="personas-container" th:if="${personas}" 
-        style="display:grid; grid-template-columns: repeat(3, 1fr); gap:30px; margin-bottom:50px;">
+    <div class="personas-container" th:if="${personas}">
 
-      <div class="persona-card" th:each="p : ${personas}" 
-          style="display:flex; flex-direction:column; align-items:center; padding:20px; border:1px solid #ddd; border-radius:8px; background-color:#fefefe; height:100%; box-sizing:border-box;">
+      <div class="persona-card" th:each="p : ${personas}">
 
         <!-- Image -->
-        <div style="width:100%; text-align:center; margin-bottom:15px;">
-          <img th:src="@{/{file}(file=${p.image})}" 
-              alt="Profile Image" 
-              style="max-width:100%; max-height:200px; border-radius:8px;">
-          <p style="font-size: 0.6em; color: #666; margin-top:5px;" th:text="${p.imageCredit}"></p>
+        <div class="persona-image">
+          <img th:src="@{/{file}(file=${p.image})}" alt="Profile Image" />
+          <p class="image-credit" th:text="${p.imageCredit}"></p>
         </div>
 
         <!-- Text Content -->
-        <div style="width:100%; flex:1;">
+        <div class="persona-info">
           <h3 th:text="|${p.title} ${p.name} (${p.age})|"></h3>
           <p><strong>Occupation:</strong> <span th:text="${p.occupation}"></span></p>
           <p><strong>Education:</strong> <span th:text="${p.education}"></span></p>
@@ -142,17 +142,17 @@
           <div class="subtask-card">
             <h4>Sub-Task A</h4>
             <ul>
-              <li><strong>Level 1 (Green):</strong> Landing Page with data snapshot</li>
-              <li><strong>Level 2 (Orange):</strong> Focused view of vaccination rates by country and region</li>
-              <li><strong>Level 3 (Red):</strong> Identify countries with biggest improvement in vaccination rates</li>
+              <li><strong>Level 1 <span class="level-green">Green</span>:</strong> Landing Page with data snapshot</li>
+              <li><strong>Level 2 <span class="level-orange">Orange</span>:</strong> Focused view of vaccination rates by country and region</li>
+              <li><strong>Level 3 <span class="level-red">Red</span>:</strong> Identify countries with biggest improvement in vaccination rates</li>
             </ul>
           </div>
           <div class="subtask-card">
             <h4>Sub-Task B</h4>
             <ul>
-              <li><strong>Level 1 (Green):</strong> Mission Statement and Personas</li>
-              <li><strong>Level 2 (Orange):</strong> Focused view of infection data by economic status</li>
-              <li><strong>Level 3 (Red):</strong> Identify countries with above average infection rates</li>
+              <li><strong>Level 1 <span class="level-green">Green</span>:</strong> Mission Statement and Personas</li>
+              <li><strong>Level 2 <span class="level-orange">Orange</span>:</strong> Focused view of infection data by economic status</li>
+              <li><strong>Level 3 <span class="level-red">Red</span>:</strong> Identify countries with above average infection rates</li>
             </ul>
           </div>
         </div>
@@ -175,14 +175,22 @@
             <td>Thomas Young</td>
             <td>B</td>
             <td>Homepage, Mission Statement, Personas, Feedback, Privacy Policy</td>
-            <td>Green, Orange, Red</td>
+            <td>
+              <span class="level-green">Green</span>
+              <span class="level-orange">Orange</span>
+              <span class="level-red">Red</span>
+            </td>
           </tr>
           <tr>
             <td>S4055262</td>
             <td>Yukheang Kang</td>
             <td>A</td>
             <td>Explore Data, Trending, Insights</td>
-            <td>Green, Orange, Red</td>
+            <td>
+              <span class="level-green">Green</span>
+              <span class="level-orange">Orange</span>
+              <span class="level-red">Red</span>
+            </td>
           </tr>
         </tbody>
       </table>
