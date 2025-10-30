@@ -44,16 +44,13 @@
     <div class="content data-page-content">
       <h2>Explore Global Infection Data</h2>
       <p>
-<<<<<<< HEAD
-        Select a dataset and use the filters below to explore infection data
-        from around the world. Filter by country, economic status, infection
-        type, or year range to see specific trends and patterns.
-=======
-        Track vaccine-preventable diseases and infection patterns worldwide. This page provides access to global
-        infection case data, allowing you to analyse disease burden across countries, economic development levels,
-        and time periods. Use the filters below to compare infection rates, identify outbreak patterns, and understand
-        the relationship between economic status and disease prevalence. Results can be exported for further analysis.
->>>>>>> ad3cae94fed3aab6061b0731f5a4be719095d5b8
+        Track vaccine-preventable diseases and infection patterns worldwide.
+        This page provides access to global infection case data, allowing you to
+        analyse disease burden across countries, economic development levels,
+        and time periods. Use the filters below to compare infection rates,
+        identify outbreak patterns, and understand the relationship between
+        economic status and disease prevalence. Results can be exported for
+        further analysis.
       </p>
 
       <!-- Error Message -->
@@ -336,7 +333,10 @@
       <!-- Initial state - no search performed -->
       <div th:if="${hasFilters == null or !hasFilters}">
         <div class="initial-state-box">
-          <p>Apply one or more filters above to view infection data. Charts and data tables will appear here once you apply filters.</p>
+          <p>
+            Apply one or more filters above to view infection data. Charts and
+            data tables will appear here once you apply filters.
+          </p>
         </div>
       </div>
     </div>
