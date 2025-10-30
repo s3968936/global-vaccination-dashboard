@@ -655,35 +655,13 @@ img.top-image {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-<<<<<<< HEAD
-  background-color: white;
-  border-radius: 8px;
-  margin-top: 20px;
-=======
   margin: 20px 0;
->>>>>>> ad3cae94fed3aab6061b0731f5a4be719095d5b8
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   overflow: hidden;
 }
 
 .data-table th {
-<<<<<<< HEAD
-  background: #3498db;
-  color: white;
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: 600;
-}
-
-.data-table td {
-  padding: 10px 15px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.data-table tr:hover {
-  background: #f5f9ff;
-=======
   background-color: #0078d7;
   color: white;
   font-weight: 600;
@@ -717,7 +695,6 @@ img.top-image {
 
 .data-table tbody tr:hover {
   background-color: #e3f2fd;
->>>>>>> ad3cae94fed3aab6061b0731f5a4be719095d5b8
 }
 
 .filter-actions {
@@ -982,13 +959,6 @@ body {
   }
 }
 
-<<<<<<< HEAD
-/* Individual section classes now extend the base (keep for specificity if needed) */
-.welcome-section {
-}
-
-=======
->>>>>>> be5619debbd72d9351098c93dc6fd702d5c2c22b
 /* ---------- SECTION HEADER ---------- */
 .section-header {
   width: 100%;
@@ -1004,8 +974,6 @@ body {
   margin: 0;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 /* Placeholder classes for mission and personas sections - now use .page-section */
 .mission-section,
 .personas-intro-section {
@@ -1013,16 +981,13 @@ body {
 
 /* ---------- CONTRIBUTORS SECTION ---------- */
 /* Now uses .page-section base class, keep only unique styles */
-.contributors-section {
-=======
-=======
+
 .section-header .section-subtitle {
   color: #666;
   font-size: 1.1rem;
   margin-top: 10px;
 }
 
->>>>>>> ad3cae94fed3aab6061b0731f5a4be719095d5b8
 /* ---------- CONTRIBUTORS SECTION ---------- */
 /* Uses .page-section base class for common styling */
 
@@ -1064,7 +1029,6 @@ body {
   margin: 2px 4px;
   font-size: 0.9em;
   box-shadow: 0 1px 3px rgba(231, 76, 60, 0.2);
->>>>>>> be5619debbd72d9351098c93dc6fd702d5c2c22b
 }
 
 /* Sub-Task Explanation Cards */
@@ -1184,14 +1148,11 @@ body {
   }
 }
 
-<<<<<<< HEAD
 /* ---------- PRIVACY POLICY SECTION ---------- */
 /* Now uses .page-section base class */
 .privacy-section {
 }
 
-=======
->>>>>>> be5619debbd72d9351098c93dc6fd702d5c2c22b
 /* ---------- CHART-TABLE LAYOUT ---------- */
 .chart-table-container {
   display: flex;
