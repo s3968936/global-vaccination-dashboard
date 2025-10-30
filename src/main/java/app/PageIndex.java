@@ -39,7 +39,7 @@ public class PageIndex implements Handler {
         model.put("summary", connection.getDashboardSummary());
 
         // Get data for snapshots
-        model.put("topVaccinations", connection.getTopVaccinationsByCoverage());
+        model.put("topVaccinations", connection.getVaccinationCoverage());
         model.put("economySnapshot", connection.getEconomySnapshot());
         model.put("improvedRegions", connection.getRegions());
         model.put("topInfections", connection.getTopInfections());
