@@ -53,20 +53,7 @@
       </div>
 
       <!-- Warning Message for Year Validation -->
-      <div
-        th:if="${warning}"
-        class="warning-message"
-        style="
-          background-color: #fff3cd;
-          border: 1px solid #ffeeba;
-          color: #856404;
-          padding: 12px;
-          border-radius: 4px;
-          margin: 20px auto;
-          max-width: 600px;
-          text-align: center;
-        "
-      >
+      <div th:if="${warning}" class="warning-message">
         <strong>Warning:</strong> <span th:text="${warning}"></span>
       </div>
 
@@ -215,11 +202,12 @@
             th:if="${hasChartData != null and !hasChartData}"
           >
             <h3>Coverage Trend</h3>
-            <div style="text-align: center; padding: 50px; color: #666">
+            <div class="chart-no-data">
               <p>No coverage data available for chart display</p>
             </div>
           </div>
 
+<<<<<<< HEAD
           <div
             class="data-table-header"
             style="
@@ -290,6 +278,20 @@
                 </button>
               </div>
               <p style="color: #666; font-size: 12px; margin-top: 8px">
+=======
+          <div class="data-table-header">
+            <!-- Data Table - Detailed tabular view of the filtered data -->
+            <h3>Detailed Data</h3>
+            <!-- Export Buttons -->
+            <div class="export-section">
+              <button onclick="exportToPDF()" class="export-btn export-btn-pdf">
+                Export Data to PDF
+              </button>
+              <button onclick="exportToCSV()" class="export-btn export-btn-csv">
+                Export to CSV
+              </button>
+              <p class="export-note">
+>>>>>>> be5619debbd72d9351098c93dc6fd702d5c2c22b
                 Download the filtered data in your preferred format.
               </p>
             </div>
@@ -324,14 +326,7 @@
 
         <!-- Message when no results are found for the selected filters -->
         <div th:if="${vaccinationData == null or vaccinationData.empty}">
-          <div
-            style="
-              background-color: #fff3cd;
-              padding: 20px;
-              border-radius: 5px;
-              margin: 20px 0;
-            "
-          >
+          <div class="no-results-box">
             <h3>No Results Found</h3>
             <p>
               No vaccination data found for the selected criteria. Please try
@@ -343,14 +338,7 @@
 
       <!-- Initial State - Displayed when no filters have been applied yet -->
       <div th:if="${hasFilters == null or !hasFilters}">
-        <div
-          style="
-            background-color: #f5f5f5;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
-          "
-        >
+        <div class="initial-state-box">
           <h3>Data Results Will Appear Here</h3>
           <p>
             Select <strong>Vaccination Data</strong> or

@@ -55,20 +55,7 @@
       </div>
 
       <!-- Warning Message -->
-      <div
-        th:if="${warning}"
-        class="warning-message"
-        style="
-          background-color: #fff3cd;
-          border: 1px solid #ffeeba;
-          color: #856404;
-          padding: 12px;
-          border-radius: 4px;
-          margin: 20px auto;
-          max-width: 600px;
-          text-align: center;
-        "
-      >
+      <div th:if="${warning}" class="warning-message">
         <strong>Warning:</strong> <span th:text="${warning}"></span>
       </div>
 
@@ -380,20 +367,9 @@
       </div>
 
       <!-- No Data Message -->
-      <div
-        th:if="${summaryData == null || summaryData.empty}"
-        class="no-data-message"
-        style="
-          background-color: #e9ecef;
-          padding: 30px;
-          border-radius: 10px;
-          text-align: center;
-          margin: 30px 0;
-        "
-      >
-        <p style="font-size: 1.1rem; color: #666">
-          Select an <strong>Economic Status</strong> and
-          <strong>Infection Type</strong> to view trending data.
+      <div th:if="${summaryData == null || summaryData.empty}" class="no-data-message">
+        <p>
+          Select an <strong>Economic Status</strong> and <strong>Infection Type</strong> to view trending data.
         </p>
       </div>
     </div>
