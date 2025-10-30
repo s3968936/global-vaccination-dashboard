@@ -38,7 +38,16 @@
     </div>
 
     <!-- Content -->
-    <div class="content">
+    <div class="content data-page-content">
+      <h2>Global Vaccination Coverage Map</h2>
+      <p>
+        Visualise vaccination coverage across the globe with an interactive world map. This page displays average
+        vaccination rates for each country, combining data across all vaccine types to provide a comprehensive overview
+        of global immunisation efforts. Compare countries at a glance using the colour-coded map, or browse the detailed
+        country table for specific coverage percentages. The map helps identify regions with strong vaccination programs
+        and areas that may need additional support.
+      </p>
+
       <!-- Main Content: Country Table + Map -->
       <div th:if="${hasData}" class="insights-container">
         <!-- Country Table -->
@@ -48,7 +57,7 @@
             <thead>
               <tr>
                 <th>Country</th>
-                <th style="text-align: right">Coverage %</th>
+                <th>Coverage %</th>
               </tr>
             </thead>
             <tbody>
@@ -74,9 +83,8 @@
       </div>
 
       <!-- No Data Message -->
-      <div th:unless="${hasData}" class="no-data-message">
-        <h3>No data available</h3>
-        <p>Unable to load vaccination coverage data.</p>
+      <div th:unless="${hasData}" class="initial-state-box">
+        <p>Unable to load vaccination coverage data. Please try refreshing the page.</p>
       </div>
     </div>
 

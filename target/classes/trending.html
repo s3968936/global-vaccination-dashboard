@@ -42,11 +42,11 @@
     <div class="content data-page-content">
       <h2>Infection Trends by Economic Status</h2>
       <p>
-        Explore how infectious diseases affect different economic groups. Filter
-        by economic status, infection type, and time period to compare disease
-        burden across developed, developing, and least developed countries. The
-        data shows both detailed country-level information and aggregated
-        summaries by economic phase.
+        Analyse how infectious diseases disproportionately affect different economic development groups. This page
+        compares disease burden between high-income, middle-income, and low-income countries, revealing global health
+        inequalities. Select an economic status and infection type (both required) to view comprehensive data including
+        country rankings, case distributions, and trend comparisons. The data helps identify which economic groups are
+        most affected by specific diseases and where resources are needed most.
       </p>
 
       <!-- Error Message -->
@@ -66,7 +66,7 @@
             <!-- Economic Status Filter (Required) -->
             <div class="combo-box-simple">
               <label for="economicStatus"
-                >Economic Status <span style="color: red">*</span></label
+                >Economic Status <span class="required-field">*</span></label
               >
               <input
                 type="text"
@@ -88,7 +88,7 @@
             <!-- Infection Type Filter (Required) -->
             <div class="combo-box-simple">
               <label for="infectionType"
-                >Infection Type <span style="color: red">*</span></label
+                >Infection Type <span class="required-field">*</span></label
               >
               <input
                 type="text"
@@ -103,25 +103,6 @@
                 <option
                   th:each="type : ${infectionTypes}"
                   th:value="${type}"
-                ></option>
-              </datalist>
-            </div>
-
-            <!-- Country Filter (Optional) -->
-            <div class="combo-box-simple">
-              <label for="country">Country (Optional)</label>
-              <input
-                type="text"
-                id="country"
-                name="country"
-                placeholder="All countries in economic group"
-                list="country-list"
-                th:value="${selectedCountry}"
-              />
-              <datalist id="country-list">
-                <option
-                  th:each="country : ${countries}"
-                  th:value="${country}"
                 ></option>
               </datalist>
             </div>
@@ -165,7 +146,7 @@
               class="reset-btn"
               onclick="window.location.href='/trending'"
             >
-              Reset
+              Clear All
             </button>
           </div>
         </div>
@@ -184,11 +165,11 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th>Economic Status</th>
-                <th>Infection Type</th>
-                <th>Countries</th>
-                <th>Total Cases</th>
-                <th>Average Cases</th>
+                <th>Economic Development Level</th>
+                <th>Disease Type</th>
+                <th>Number of Countries</th>
+                <th>Total Infection Cases</th>
+                <th>Average Cases per Country</th>
               </tr>
             </thead>
             <tbody>
@@ -209,16 +190,13 @@
               <table id="economic_comparison_table" class="chart-data-table">
                 <thead>
                   <tr>
-                    <th>Economic Status</th>
-                    <th>Total Cases</th>
+                    <th>Economic Development Level</th>
+                    <th>Total Infection Cases</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td
-                      colspan="2"
-                      style="text-align: center; padding: 20px; color: #999"
-                    >
+                    <td colspan="2" class="table-loading">
                       Loading data...
                     </td>
                   </tr>
@@ -249,15 +227,12 @@
                   <thead>
                     <tr>
                       <th>Year</th>
-                      <th>Cases</th>
+                      <th>Number of Infection Cases</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td
-                        colspan="2"
-                        style="text-align: center; padding: 20px; color: #999"
-                      >
+                      <td colspan="2" class="table-loading">
                         Loading data...
                       </td>
                     </tr>
@@ -280,16 +255,13 @@
                 <table id="top_countries_table" class="chart-data-table">
                   <thead>
                     <tr>
-                      <th>Country</th>
-                      <th>Total Cases</th>
+                      <th>Country Name</th>
+                      <th>Total Infection Cases</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td
-                        colspan="2"
-                        style="text-align: center; padding: 20px; color: #999"
-                      >
+                      <td colspan="2" class="table-loading">
                         Loading data...
                       </td>
                     </tr>
@@ -312,17 +284,14 @@
                 <table id="distribution_table" class="chart-data-table">
                   <thead>
                     <tr>
-                      <th>Country</th>
-                      <th>Cases</th>
-                      <th>Percentage</th>
+                      <th>Country Name</th>
+                      <th>Number of Cases</th>
+                      <th>Percentage of Total</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td
-                        colspan="3"
-                        style="text-align: center; padding: 20px; color: #999"
-                      >
+                      <td colspan="3" class="table-loading">
                         Loading data...
                       </td>
                     </tr>
@@ -345,16 +314,13 @@
                 <table id="average_cases_table" class="chart-data-table">
                   <thead>
                     <tr>
-                      <th>Economic Status</th>
-                      <th>Avg Cases/Country</th>
+                      <th>Economic Development Level</th>
+                      <th>Average Cases per Country</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td
-                        colspan="2"
-                        style="text-align: center; padding: 20px; color: #999"
-                      >
+                      <td colspan="2" class="table-loading">
                         Loading data...
                       </td>
                     </tr>
@@ -367,10 +333,8 @@
       </div>
 
       <!-- No Data Message -->
-      <div th:if="${summaryData == null || summaryData.empty}" class="no-data-message">
-        <p>
-          Select an <strong>Economic Status</strong> and <strong>Infection Type</strong> to view trending data.
-        </p>
+      <div th:if="${summaryData == null || summaryData.empty}" class="initial-state-box">
+        <p>Select an <strong>Economic Status</strong> and <strong>Infection Type</strong> above to view trending data. Charts and summary tables will appear here once you apply filters.</p>
       </div>
     </div>
 

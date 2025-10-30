@@ -44,9 +44,10 @@
     <div class="content data-page-content">
       <h2>Explore Global Infection Data</h2>
       <p>
-        Select a dataset and use the filters below to explore infection data
-        from around the world. Filter by country, economic status, infection type, or year range
-        to see specific trends and patterns.
+        Track vaccine-preventable diseases and infection patterns worldwide. This page provides access to global
+        infection case data, allowing you to analyse disease burden across countries, economic development levels,
+        and time periods. Use the filters below to compare infection rates, identify outbreak patterns, and understand
+        the relationship between economic status and disease prevalence. Results can be exported for further analysis.
       </p>
 
       <!-- Error Message -->
@@ -55,20 +56,7 @@
       </div>
 
       <!-- Warning Message -->
-      <div
-        th:if="${warning}"
-        class="warning-message"
-        style="
-          background-color: #fff3cd;
-          border: 1px solid #ffeeba;
-          color: #856404;
-          padding: 12px;
-          border-radius: 4px;
-          margin: 20px auto;
-          max-width: 600px;
-          text-align: center;
-        "
-      >
+      <div th:if="${warning}" class="warning-message">
         <strong>Warning:</strong> <span th:text="${warning}"></span>
       </div>
 
@@ -104,16 +92,7 @@
                 name="country"
                 placeholder="Type or select country"
                 list="country-list"
-                th:if="${selectedCountry != null}"
-                th:value="${selectedCountry}"
-              />
-              <input
-                type="text"
-                id="country"
-                name="country"
-                placeholder="Type or select country"
-                list="country-list"
-                th:unless="${selectedCountry != null}"
+                th:value="${selectedCountry != null} ? ${selectedCountry} : ''"
               />
               <datalist id="country-list">
                 <option
@@ -132,16 +111,7 @@
                 name="economicStatus"
                 placeholder="Type or select economic status"
                 list="economicStatus-list"
-                th:if="${selectedEconomicStatus != null}"
-                th:value="${selectedEconomicStatus}"
-              />
-              <input
-                type="text"
-                id="economicStatus"
-                name="economicStatus"
-                placeholder="Type or select economic status"
-                list="economicStatus-list"
-                th:unless="${selectedEconomicStatus != null}"
+                th:value="${selectedEconomicStatus != null} ? ${selectedEconomicStatus} : ''"
               />
               <datalist id="economicStatus-list">
                 <option
@@ -160,16 +130,7 @@
                 name="infectionType"
                 placeholder="Type or select infection type"
                 list="infectionType-list"
-                th:if="${selectedInfectionType != null}"
-                th:value="${selectedInfectionType}"
-              />
-              <input
-                type="text"
-                id="infectionType"
-                name="infectionType"
-                placeholder="Type or select infection type"
-                list="infectionType-list"
-                th:unless="${selectedInfectionType != null}"
+                th:value="${selectedInfectionType != null} ? ${selectedInfectionType} : ''"
               />
               <datalist id="infectionType-list">
                 <option
@@ -181,7 +142,7 @@
 
             <!-- Year Combo Box -->
             <div class="combo-box-simple">
-              <label for="yearStart">Year Range</label>
+              <label for="yearStart">Year Range (2000-2024)</label>
               <div class="year-range">
                 <div class="year-start">
                   <input
@@ -190,16 +151,7 @@
                     name="yearStart"
                     placeholder="From (2000-2024)"
                     list="year-list"
-                    th:if="${selectedYearStart != null}"
-                    th:value="${selectedYearStart}"
-                  />
-                  <input
-                    type="text"
-                    id="yearStart"
-                    name="yearStart"
-                    placeholder="From (2000-2024)"
-                    list="year-list"
-                    th:unless="${selectedYearStart != null}"
+                    th:value="${selectedYearStart != null} ? ${selectedYearStart} : ''"
                   />
                 </div>
                 <div class="year-separator">to</div>
@@ -210,16 +162,7 @@
                     name="yearEnd"
                     placeholder="To (2000-2024)"
                     list="year-list"
-                    th:if="${selectedYearEnd != null}"
-                    th:value="${selectedYearEnd}"
-                  />
-                  <input
-                    type="text"
-                    id="yearEnd"
-                    name="yearEnd"
-                    placeholder="To (leave empty for single year)"
-                    list="year-list"
-                    th:unless="${selectedYearEnd != null}"
+                    th:value="${selectedYearEnd != null} ? ${selectedYearEnd} : ''"
                   />
                 </div>
               </div>
@@ -373,20 +316,8 @@
 
       <!-- Initial state - no search performed -->
       <div th:if="${hasFilters == null or !hasFilters}">
-        <div
-          style="
-            background-color: #f5f5f5;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
-          "
-        >
-          <h3>Data Results Will Appear Here</h3>
-          <p>
-            Select <strong>Infection Data</strong> and apply filters to see the
-            results.
-          </p>
-          <p>Data table and charts will appear here once you apply filters.</p>
+        <div class="initial-state-box">
+          <p>Apply one or more filters above to view infection data. Charts and data tables will appear here once you apply filters.</p>
         </div>
       </div>
     </div>

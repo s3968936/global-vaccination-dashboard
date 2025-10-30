@@ -42,9 +42,10 @@
     <div class="content data-page-content">
       <h2>Explore Global Vaccination Data</h2>
       <p>
-        Select a dataset and use the filters below to explore vaccination data
-        from around the world. Filter by country, region, antigen, or year range
-        to see specific trends and patterns.
+        This page provides comprehensive vaccination coverage data from the World Health Organisation (WHO).
+        Analyse immunisation rates across countries, regions, and vaccine types over time. Use the filters below
+        to explore specific trends, compare coverage between regions, and identify vaccination gaps. Results include
+        interactive charts and detailed tables that can be exported for further analysis.
       </p>
 
       <!-- Error Message Display -->
@@ -193,7 +194,7 @@
           <!-- Chart Section - Visual representation of coverage trends -->
           <div class="chart-container" th:if="${hasChartData}">
             <h3>Coverage Trend</h3>
-            <div id="coverage_chart" style="width: 100%; height: 400px"></div>
+            <div id="coverage_chart" class="chart-area"></div>
           </div>
 
           <!-- Message when no chart data is available -->
@@ -266,13 +267,7 @@
       <!-- Initial State - Displayed when no filters have been applied yet -->
       <div th:if="${hasFilters == null or !hasFilters}">
         <div class="initial-state-box">
-          <h3>Data Results Will Appear Here</h3>
-          <p>
-            Select <strong>Vaccination Data</strong> or
-            <strong>Infection Data</strong> and apply filters to see the
-            results.
-          </p>
-          <p>Data table and charts will appear here once you apply filters.</p>
+          <p>Apply one or more filters above to view vaccination data. Charts and data tables will appear here once you apply filters.</p>
         </div>
       </div>
     </div>
