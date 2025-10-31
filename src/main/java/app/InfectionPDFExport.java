@@ -86,7 +86,7 @@ public class InfectionPDFExport implements Handler {
                 if (country != null && !country.isEmpty()) filterInfo.append("Country: ").append(country).append("; ");
                 if (economicStatus != null && !economicStatus.isEmpty()) filterInfo.append("Economic Status: ").append(economicStatus).append("; ");
                 if (infectionType != null && !infectionType.isEmpty()) filterInfo.append("Infection Type: ").append(infectionType).append("; ");
-                if (yearStart != null && !yearStart.isEmpty()) filterInfo.append("From: ").append(yearStart).append("; ");
+                if (yearStart != null && !yearStart.isEmpty()) filterInfo.append("From: ").append(yearStart).append(" ");
                 if (yearEnd != null && !yearEnd.isEmpty()) filterInfo.append("To: ").append(yearEnd).append("; ");
                 contentStream.showText(filterInfo.toString());
                 contentStream.endText();
@@ -105,15 +105,15 @@ public class InfectionPDFExport implements Handler {
                 contentStream.setNonStrokingColor(blackColor);
                 
                 // Header text
-                contentStream.beginText();
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 10);
                 float xPosition = margin + 5;
                 for (int i = 0; i < headers.length; i++) {
+                    contentStream.beginText();
                     contentStream.newLineAtOffset(xPosition, yPosition - 10);
                     contentStream.showText(headers[i]);
                     xPosition += columnWidths[i];
+                    contentStream.endText();
                 }
-                contentStream.endText();
                 yPosition -= 25;
                 
                 // Table data
@@ -125,7 +125,7 @@ public class InfectionPDFExport implements Handler {
                     // Check if we need a new page
                     if (yPosition < margin + 50) {
                         // Close current content stream before creating a new one
-                        contentStream.close();
+                       
                         
                         // Create new page and content stream
                         page = new PDPage(PDRectangle.A4);
