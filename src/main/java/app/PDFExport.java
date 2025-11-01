@@ -69,7 +69,7 @@ public class PDFExport implements Handler {
             
             // Table headers
             String[] headers = {"Year", "Country", "Antigen", "Coverage%", "Target Pop", "Doses"};
-            float[] columnWidths = {40, 80, 80, 60, 70, 60};
+            float[] columnWidths = {60, 90, 120, 70, 85, 70};
             float tableWidth = 0;
             for (float width : columnWidths) tableWidth += width;
             
@@ -92,32 +92,43 @@ public class PDFExport implements Handler {
                 if (country != null && !country.isEmpty()) filterInfo.append("Country: ").append(country).append("; ");
                 if (region != null && !region.isEmpty()) filterInfo.append("Region: ").append(region).append("; ");
                 if (antigen != null && !antigen.isEmpty()) filterInfo.append("Antigen: ").append(antigen).append("; ");
-                if (yearStart != null && !yearStart.isEmpty()) filterInfo.append("From: ").append(yearStart).append("; ");
-                if (yearEnd != null && !yearEnd.isEmpty()) filterInfo.append("To: ").append(yearEnd).append("; ");
                 contentStream.showText(filterInfo.toString());
                 contentStream.endText();
                 yPosition -= 30;
-                
+
+                //seconds line for year filter
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_OBLIQUE, 10);
+                contentStream.newLineAtOffset(margin, yPosition);
+                StringBuilder yearInfo = new StringBuilder();
+
+                if (yearStart != null && !yearStart.isEmpty()) yearInfo.append("From: ").append(yearStart).append(" ");
+                if (yearEnd != null && !yearEnd.isEmpty()) yearInfo.append("To: ").append(yearEnd).append("; ");
+
+                contentStream.showText(yearInfo.toString());
+                contentStream.endText();
+                yPosition -= 30;
+
                 // Draw header background
                 contentStream.setNonStrokingColor(grayColor);
                 contentStream.addRect(margin, yPosition - 15, tableWidth, 20);
                 contentStream.fill();
                 contentStream.setNonStrokingColor(blackColor);
                 
-                // Header text
-                contentStream.beginText();
+                // Header text - FIXED
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 10);
-                float xPosition = margin + 5;
+                float headerX = margin + 5;
                 for (int i = 0; i < headers.length; i++) {
-                    contentStream.newLineAtOffset(xPosition, yPosition - 10);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(headerX, yPosition - 10);
                     contentStream.showText(headers[i]);
-                    xPosition += columnWidths[i];
+                    contentStream.endText();
+                    headerX += columnWidths[i];
                 }
-                contentStream.endText();
                 yPosition -= 25;
                 
                 // Table data
-                contentStream.setFont(PDType1Font.HELVETICA, 8);
+                contentStream.setFont(PDType1Font.HELVETICA, 9);
                 
                 for (int i = 0; i < data.size(); i++) {
                     Vaccination vaccination = data.get(i);
@@ -133,102 +144,139 @@ public class PDFExport implements Handler {
                         
                         // Create new content stream for the new page
                         try (PDPageContentStream newContentStream = new PDPageContentStream(document, page)) {
-                            newContentStream.setFont(PDType1Font.HELVETICA, 8);
+                            newContentStream.setFont(PDType1Font.HELVETICA, 9);
                             newContentStream.setNonStrokingColor(blackColor);
                             
                             // Reset position for new page
                             yPosition = yStart - 60;
+                            
+                            // Redraw header on new page
+                            newContentStream.setNonStrokingColor(grayColor);
+                            newContentStream.addRect(margin, yPosition - 15, tableWidth, 20);
+                            newContentStream.fill();
+                            newContentStream.setNonStrokingColor(blackColor);
+                            
+                            newContentStream.setFont(PDType1Font.HELVETICA_BOLD, 10);
+                            headerX = margin + 5;
+                            for (int k = 0; k < headers.length; k++) {
+                                newContentStream.beginText();
+                                newContentStream.newLineAtOffset(headerX, yPosition - 10);
+                                newContentStream.showText(headers[k]);
+                                newContentStream.endText();
+                                headerX += columnWidths[k];
+                            }
+                            yPosition -= 25;
+                            newContentStream.setFont(PDType1Font.HELVETICA, 9);
                             
                             // Continue with remaining data
                             for (int j = i; j < data.size(); j++) {
                                 Vaccination remainingVaccination = data.get(j);
                                 
                                 if (yPosition < margin + 50) {
-                                    break; // Would need another page, but for simplicity we stop here
+                                    break;
                                 }
                                 
-                                newContentStream.beginText();
+                                // Draw row on new page
                                 float currentX = margin + 5;
                                 
                                 // Year
+                                newContentStream.beginText();
                                 newContentStream.newLineAtOffset(currentX, yPosition);
                                 newContentStream.showText(String.valueOf(remainingVaccination.getYear()));
+                                newContentStream.endText();
                                 currentX += columnWidths[0];
                                 
                                 // Country
-                                newContentStream.newLineAtOffset(currentX - (margin + 5), 0);
+                                newContentStream.beginText();
+                                newContentStream.newLineAtOffset(currentX, yPosition);
                                 String countryText = remainingVaccination.getCountry();
-                                if (countryText.length() > 12) countryText = countryText.substring(0, 12) + "...";
+                                if (countryText.length() > 10) countryText = countryText.substring(0, 10) + "...";
                                 newContentStream.showText(countryText);
+                                newContentStream.endText();
                                 currentX += columnWidths[1];
                                 
                                 // Antigen
-                                newContentStream.newLineAtOffset(currentX - (margin + 5 + columnWidths[0]), 0);
+                                newContentStream.beginText();
+                                newContentStream.newLineAtOffset(currentX, yPosition);
                                 String antigenText = remainingVaccination.getAntigen();
-                                if (antigenText.length() > 12) antigenText = antigenText.substring(0, 12) + "...";
+                                if (antigenText.length() > 15) antigenText = antigenText.substring(0, 15) + "...";
                                 newContentStream.showText(antigenText);
+                                newContentStream.endText();
                                 currentX += columnWidths[2];
                                 
                                 // Coverage
-                                newContentStream.newLineAtOffset(currentX - (margin + 5 + columnWidths[0] + columnWidths[1]), 0);
+                                newContentStream.beginText();
+                                newContentStream.newLineAtOffset(currentX, yPosition);
                                 newContentStream.showText(String.format("%.1f", remainingVaccination.getCoverage()));
+                                newContentStream.endText();
                                 currentX += columnWidths[3];
                                 
                                 // Target Population
-                                newContentStream.newLineAtOffset(currentX - (margin + 5 + columnWidths[0] + columnWidths[1] + columnWidths[2]), 0);
-                                newContentStream.showText(String.format("%.0f", remainingVaccination.getTargetNum()));
+                                newContentStream.beginText();
+                                newContentStream.newLineAtOffset(currentX, yPosition);
+                                newContentStream.showText(String.format("%,.0f", remainingVaccination.getTargetNum()));
+                                newContentStream.endText();
                                 currentX += columnWidths[4];
                                 
                                 // Doses
-                                newContentStream.newLineAtOffset(currentX - (margin + 5 + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3]), 0);
-                                newContentStream.showText(String.format("%.0f", remainingVaccination.getDoses()));
-                                
+                                newContentStream.beginText();
+                                newContentStream.newLineAtOffset(currentX, yPosition);
+                                newContentStream.showText(String.format("%,.0f", remainingVaccination.getDoses()));
                                 newContentStream.endText();
                                 
                                 yPosition -= 15;
-                                i = j; // Update outer loop index
+                                i = j;
                             }
                         }
-                        break; // Exit outer loop since we handled remaining items
+                        break;
                     }
                     
                     // Draw row on current page
-                    contentStream.beginText();
                     float currentX = margin + 5;
                     
                     // Year
+                    contentStream.beginText();
                     contentStream.newLineAtOffset(currentX, yPosition);
                     contentStream.showText(String.valueOf(vaccination.getYear()));
+                    contentStream.endText();
                     currentX += columnWidths[0];
                     
                     // Country
-                    contentStream.newLineAtOffset(currentX - (margin + 5), 0);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(currentX, yPosition);
                     String countryText = vaccination.getCountry();
-                    if (countryText.length() > 12) countryText = countryText.substring(0, 12) + "...";
+                    if (countryText.length() > 10) countryText = countryText.substring(0, 10) + "...";
                     contentStream.showText(countryText);
+                    contentStream.endText();
                     currentX += columnWidths[1];
                     
                     // Antigen
-                    contentStream.newLineAtOffset(currentX - (margin + 5 + columnWidths[0]), 0);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(currentX, yPosition);
                     String antigenText = vaccination.getAntigen();
-                    if (antigenText.length() > 12) antigenText = antigenText.substring(0, 12) + "...";
+                    if (antigenText.length() > 15) antigenText = antigenText.substring(0, 15) + "...";
                     contentStream.showText(antigenText);
+                    contentStream.endText();
                     currentX += columnWidths[2];
                     
                     // Coverage
-                    contentStream.newLineAtOffset(currentX - (margin + 5 + columnWidths[0] + columnWidths[1]), 0);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(currentX, yPosition);
                     contentStream.showText(String.format("%.1f", vaccination.getCoverage()));
+                    contentStream.endText();
                     currentX += columnWidths[3];
                     
                     // Target Population
-                    contentStream.newLineAtOffset(currentX - (margin + 5 + columnWidths[0] + columnWidths[1] + columnWidths[2]), 0);
-                    contentStream.showText(String.format("%.0f", vaccination.getTargetNum()));
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(currentX, yPosition);
+                    contentStream.showText(String.format("%,.0f", vaccination.getTargetNum()));
+                    contentStream.endText();
                     currentX += columnWidths[4];
                     
                     // Doses
-                    contentStream.newLineAtOffset(currentX - (margin + 5 + columnWidths[0] + columnWidths[1] + columnWidths[2] + columnWidths[3]), 0);
-                    contentStream.showText(String.format("%.0f", vaccination.getDoses()));
-                    
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(currentX, yPosition);
+                    contentStream.showText(String.format("%,.0f", vaccination.getDoses()));
                     contentStream.endText();
                     
                     yPosition -= 15;
