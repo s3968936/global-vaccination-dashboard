@@ -23,63 +23,95 @@ public class InsightsPage implements Handler {
         Map<String, Object> model = new HashMap<>();
 
         try {
-            // Get vaccination coverage data for the geo chart
-            ArrayList<HashMap<String, String>> geoData = connection.getTopVaccinationsByCoverage();
-            
-            /*System.out.println("Retrieved " + geoData.size() + " countries for geo chart");
-            
-            if (!geoData.isEmpty()) {
-                System.out.println("First country: " + geoData.get(0).get("country_name") + 
-                                 " - " + geoData.get(0).get("coverage_percentage") + "%");
-            }*/
+            // Get filter parameters from query string
+            String startYear = context.queryParam("start_year");
+            String endYear = context.queryParam("end_year");
+            String antigen = context.queryParam("antigen");
 
-            // FIXED: Proper JSON formatting without manual string building
-            ArrayList<ArrayList<Object>> chartData = new ArrayList<>();
-            
-            // Add header row
-            ArrayList<Object> header = new ArrayList<>();
-            header.add("Country");
-            header.add("Coverage (%)");
-            chartData.add(header);
-            
-            // Add data rows
-            int count = 0;
-            for (HashMap<String, String> row : geoData) {
-                String countryName = row.get("country_name");
-                String coverage = row.get("coverage_percentage");
-                
-                if (countryName != null && coverage != null && !coverage.isEmpty()) {
-                    try {
-                        String escapedCountry = escapeCountryName(countryName);
-                        double coverageValue = Double.parseDouble(coverage);
-                        
-                        ArrayList<Object> dataRow = new ArrayList<>();
-                        dataRow.add(escapedCountry);
-                        dataRow.add(coverageValue);
-                        chartData.add(dataRow);
-                        
-                        count++;
-                        
-                    } catch (NumberFormatException e) {
+            // Default to "All Vaccines" if not specified
+            if (antigen == null || antigen.isEmpty()) {
+                antigen = "All Vaccines";
+            }
 
+            // Get dropdown data
+            ArrayList<HashMap<String, String>> years = connection.getAllYears();
+            ArrayList<HashMap<String, String>> antigens = connection.getAllAntigens();
+
+            // Extract year values for dropdown
+            ArrayList<String> yearList = new ArrayList<>();
+            for (HashMap<String, String> yearMap : years) {
+                yearList.add(yearMap.get("year"));
+            }
+
+            // Extract antigen values for dropdown
+            ArrayList<String> antigenList = new ArrayList<>();
+            for (HashMap<String, String> antigenMap : antigens) {
+                antigenList.add(antigenMap.get("antigen"));
+            }
+
+            model.put("years", yearList);
+            model.put("antigens", antigenList);
+            model.put("selectedStartYear", startYear);
+            model.put("selectedEndYear", endYear);
+            model.put("selectedAntigen", antigen);
+
+            // Only query data if both years are selected
+            if (startYear != null && !startYear.isEmpty() && endYear != null && !endYear.isEmpty()) {
+                // Get vaccination improvement data
+                ArrayList<HashMap<String, String>> geoData = connection.getVaccinationImprovements(startYear, endYear, antigen);
+
+                // Build chart data
+                ArrayList<ArrayList<Object>> chartData = new ArrayList<>();
+
+                // Add header row
+                ArrayList<Object> header = new ArrayList<>();
+                header.add("Country");
+                header.add("Improvement (% points)");
+                chartData.add(header);
+
+                // Add data rows
+                int count = 0;
+                for (HashMap<String, String> row : geoData) {
+                    String countryName = row.get("country_name");
+                    String improvement = row.get("improvement");
+
+                    if (countryName != null && improvement != null && !improvement.isEmpty()) {
+                        try {
+                            String escapedCountry = escapeCountryName(countryName);
+                            double improvementValue = Double.parseDouble(improvement);
+
+                            // Only show countries with positive improvement or slight negative
+                            if (improvementValue >= -10) {
+                                ArrayList<Object> dataRow = new ArrayList<>();
+                                dataRow.add(escapedCountry);
+                                dataRow.add(Math.max(0, improvementValue)); // Show 0 for negative values on map
+                                chartData.add(dataRow);
+                                count++;
+                            }
+
+                        } catch (NumberFormatException e) {
+                            // Skip invalid data
+                        }
                     }
                 }
+
+                // Convert to JSON for the geo chart
+                String geoChartData = convertToJson(chartData);
+
+                // Add all data to model
+                model.put("geoChartData", geoChartData);
+                model.put("geoData", geoData);
+                model.put("hasData", count > 0);
+                model.put("dataCount", count);
+            } else {
+                // No filters selected yet
+                model.put("hasData", false);
+                model.put("geoData", new ArrayList<>());
             }
-            
-            // Convert to JSON for the geo chart
-            String geoChartData = convertToJson(chartData);
-            
-            //System.out.println("Final data has " + count + " valid countries");
-            //System.out.println("First few rows: " + geoChartData.substring(0, Math.min(200, geoChartData.length())) + "...");
-            
-            // Add all data to model
-            model.put("geoChartData", geoChartData);
-            model.put("geoData", geoData);
-            model.put("hasData", count > 0);
-            model.put("dataCount", count);
 
         } catch (Exception e) {
-            model.put("error", "Error loading geo chart data: " + e.getMessage());
+            model.put("error", "Error loading vaccination improvement data: " + e.getMessage());
+            model.put("hasData", false);
         }
 
         // Render to the insights.html template

@@ -152,12 +152,12 @@ public class JDBCConnection {
      */
     public ArrayList<HashMap<String, String>> getTopVaccinationsByCoverage() {
         String query = """
-        SELECT 
+        SELECT
             c.name AS country_name,
             ROUND(AVG(v.coverage), 2) AS coverage_percentage
         FROM Vaccination v
         JOIN Country c ON v.country = c.CountryID
-        WHERE v.coverage IS NOT NULL 
+        WHERE v.coverage IS NOT NULL
           AND v.coverage > 0
         GROUP BY c.name
         HAVING coverage_percentage > 0
@@ -165,6 +165,81 @@ public class JDBCConnection {
         LIMIT 10;
         """;
         return executeQuery(query);
+    }
+
+    /**
+     * Gets vaccination rate improvements between two years for all countries
+     * Shows which countries improved the most in vaccination coverage
+     * @param startYear The starting year for comparison
+     * @param endYear The ending year for comparison
+     * @param antigen Optional antigen filter (null or empty for all antigens)
+     * @return List of countries with their improvement metrics
+     */
+    public ArrayList<HashMap<String, String>> getVaccinationImprovements(String startYear, String endYear, String antigen) {
+        ArrayList<HashMap<String, String>> results = new ArrayList<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+
+            // Build query to calculate improvements
+            String query = """
+                SELECT
+                    c.name AS country_name,
+                    ROUND(AVG(CASE WHEN v.year = ? THEN v.coverage END), 2) AS initial_coverage,
+                    ROUND(AVG(CASE WHEN v.year = ? THEN v.coverage END), 2) AS final_coverage,
+                    ROUND(AVG(CASE WHEN v.year = ? THEN v.coverage END) -
+                          AVG(CASE WHEN v.year = ? THEN v.coverage END), 2) AS improvement
+                FROM Vaccination v
+                JOIN Country c ON v.country = c.CountryID
+            """;
+
+            // Add antigen filter if specified
+            if (antigen != null && !antigen.isEmpty() && !antigen.equals("All Vaccines")) {
+                query += " JOIN Antigen a ON v.antigen = a.AntigenID WHERE a.name = ?";
+            } else {
+                query += " WHERE 1=1";
+            }
+
+            query += """
+                GROUP BY c.name
+                HAVING initial_coverage IS NOT NULL AND final_coverage IS NOT NULL
+                ORDER BY improvement DESC;
+            """;
+
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, startYear);
+            stmt.setString(2, endYear);
+            stmt.setString(3, endYear);
+            stmt.setString(4, startYear);
+
+            if (antigen != null && !antigen.isEmpty() && !antigen.equals("All Vaccines")) {
+                stmt.setString(5, antigen);
+            }
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                HashMap<String, String> row = new HashMap<>();
+                row.put("country_name", resultSet.getString("country_name"));
+                row.put("initial_coverage", resultSet.getString("initial_coverage"));
+                row.put("final_coverage", resultSet.getString("final_coverage"));
+                row.put("improvement", resultSet.getString("improvement"));
+                results.add(row);
+            }
+
+            stmt.close();
+        } catch (SQLException e) {
+            System.err.println("Error getting vaccination improvements: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+            }
+        }
+
+        return results;
     }
 
     /**

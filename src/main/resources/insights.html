@@ -34,43 +34,122 @@
     <div class="header">
       <h1>Global Vaccination Insights</h1>
       <p class="subtitle">
-        Vaccination coverage rates by country with interactive world map
+        Identify countries with the biggest improvement in vaccination rates
       </p>
     </div>
 
     <!-- Content -->
     <div class="content data-page-content">
-      <h2>Global Vaccination Coverage Map</h2>
+      <h2>Vaccination Rate Improvements</h2>
       <p>
-        Visualise vaccination coverage across the globe with an interactive world map. This page displays average
-        vaccination rates for each country, combining data across all vaccine types to provide a comprehensive overview
-        of global immunisation efforts. Compare countries at a glance using the colour-coded map, or browse the detailed
-        country table for specific coverage percentages. The map helps identify regions with strong vaccination programs
-        and areas that may need additional support.
+        Analyse which countries have made the greatest progress in vaccination coverage over time. Select a year range
+        and vaccine type to see how vaccination rates have improved globally. The interactive world map displays
+        improvement as percentage point increases, with darker blue indicating greater improvement. This analysis helps
+        identify successful vaccination programmes and countries that have made significant strides in protecting their
+        populations against preventable diseases.
       </p>
 
-      <!-- Main Content: Country Table + Map -->
-      <div th:if="${hasData}" class="insights-container">
+      <!-- Filter Form -->
+      <form method="get" action="/insights" id="filter-form">
+        <div class="filter-section">
+          <div class="filter-grid">
+            <!-- Start Year Filter -->
+            <div class="combo-box-simple">
+              <label for="start_year">Start Year <span class="required-field">*</span></label>
+              <input
+                type="text"
+                id="start_year"
+                name="start_year"
+                placeholder="Select start year"
+                list="start-year-list"
+                th:value="${selectedStartYear}"
+                required
+              />
+              <datalist id="start-year-list">
+                <option th:each="year : ${years}" th:value="${year}"></option>
+              </datalist>
+            </div>
+
+            <!-- End Year Filter -->
+            <div class="combo-box-simple">
+              <label for="end_year">End Year <span class="required-field">*</span></label>
+              <input
+                type="text"
+                id="end_year"
+                name="end_year"
+                placeholder="Select end year"
+                list="end-year-list"
+                th:value="${selectedEndYear}"
+                required
+              />
+              <datalist id="end-year-list">
+                <option th:each="year : ${years}" th:value="${year}"></option>
+              </datalist>
+            </div>
+
+            <!-- Vaccine Type Filter -->
+            <div class="combo-box-simple">
+              <label for="antigen">Vaccine Type</label>
+              <input
+                type="text"
+                id="antigen"
+                name="antigen"
+                placeholder="All Vaccines"
+                list="antigen-list"
+                th:value="${selectedAntigen}"
+              />
+              <datalist id="antigen-list">
+                <option value="All Vaccines"></option>
+                <option th:each="antigen : ${antigens}" th:value="${antigen}"></option>
+              </datalist>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="filter-actions">
+            <button type="submit" class="apply-btn">Apply Filters</button>
+            <button
+              type="button"
+              class="reset-btn"
+              onclick="window.location.href='/insights'"
+            >
+              Clear All
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- No Data Message -->
+      <div th:unless="${hasData}" class="initial-state-box">
+        <p>Select a start year and end year to view vaccination rate improvements.</p>
+      </div>
+    </div>
+
+    <!-- Main Content: Country Table + Map -->
+    <div th:if="${hasData}" class="insights-results-card">
+      <div class="insights-container">
         <!-- Country Table -->
         <div class="country-table">
-          <h3>Country Coverage Data</h3>
+          <h3>Country Improvement Data</h3>
           <table class="data-table">
             <thead>
               <tr>
                 <th>Country</th>
-                <th>Coverage %</th>
+                <th>Initial Coverage (%)</th>
+                <th>Final Coverage (%)</th>
+                <th>Improvement (% points)</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="item : ${geoData}">
                 <td th:text="${item.country_name}">Country</td>
+                <td th:text="${item.initial_coverage != null ? item.initial_coverage + '%' : 'N/A'}">0%</td>
+                <td th:text="${item.final_coverage != null ? item.final_coverage + '%' : 'N/A'}">0%</td>
                 <td
-                  class="coverage-cell"
-                  th:classappend="${item.coverage_percentage >= 80} ? 'coverage-high' : 
-                                  (${item.coverage_percentage >= 50} ? 'coverage-medium' : 'coverage-low')"
-                  th:text="${item.coverage_percentage} + '%'"
+                  class="improvement-cell"
+                  th:text="${item.improvement != null ? (item.improvement.startsWith('-') ? item.improvement : '+' + item.improvement) : 'N/A'}"
                 >
-                  0%
+                  0
                 </td>
               </tr>
             </tbody>
@@ -81,11 +160,6 @@
         <div class="chart-container">
           <div id="regions_div" style="width: 100%; height: 100%"></div>
         </div>
-      </div>
-
-      <!-- No Data Message -->
-      <div th:unless="${hasData}" class="initial-state-box">
-        <p>Unable to load vaccination coverage data. Please try refreshing the page.</p>
       </div>
     </div>
 
@@ -142,11 +216,11 @@
 
           // Chart options
           const options = {
-            title: "Global Vaccination Coverage (%)",
+            title: "Vaccination Rate Improvement (Percentage Points)",
             colorAxis: {
               colors: ["#E8F0FE", "#D2E3FC", "#9BC1F9", "#5E9AF9", "#2E68CF"],
               minValue: 0,
-              maxValue: 100,
+              maxValue: 50,
             },
             backgroundColor: "#ffffff",
             datalessRegionColor: "#f5f5f5",

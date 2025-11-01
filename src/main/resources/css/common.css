@@ -1047,33 +1047,44 @@ img.top-image {
   color: #666;
 }
 
+.insights-results-card {
+  width: 95%;
+  max-width: 2000px;
+  margin: 30px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  border: 1px solid #e1e5e9;
+}
+
 .insights-container {
   display: flex;
   gap: 30px;
-  margin: 20px 0;
-  min-height: 550px;
+  margin: 0;
+  min-height: 700px;
   align-items: stretch;
 }
 
 .country-table {
-  flex: 0 0 380px;
+  flex: 0 0 550px;
   background: white;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 25px;
-  max-height: 550px;
+  padding: 20px;
+  max-height: 700px;
   overflow-y: auto;
   border: 1px solid #e1e5e9;
 }
 
 .country-table h3 {
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: #0078d7;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 600;
   text-align: left;
-  padding-left: 15px;
+  padding-left: 10px;
   border-left: 4px solid #0078d7;
 }
 
@@ -1086,17 +1097,18 @@ img.top-image {
 .country-table .data-table th {
   background-color: #0078d7;
   color: white;
-  padding: 14px 20px;
+  padding: 12px 10px;
   text-align: center;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .country-table .data-table td {
-  padding: 12px 20px;
+  padding: 10px;
   border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.2s ease;
   text-align: center;
+  font-size: 0.95rem;
 }
 
 .country-table .data-table tbody tr:nth-child(even) {
@@ -1133,6 +1145,32 @@ img.top-image {
   font-weight: 700;
 }
 
+.improvement-cell {
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.improvement-high {
+  color: #27ae60;
+  font-weight: 700;
+}
+
+.improvement-medium {
+  color: #2980b9;
+  font-weight: 700;
+}
+
+.improvement-low {
+  color: #95a5a6;
+  font-weight: 700;
+}
+
+.improvement-negative {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
 .country-table::-webkit-scrollbar {
   width: 6px;
 }
@@ -1154,7 +1192,7 @@ img.top-image {
 #regions_div {
   width: 100% !important;
   height: 100% !important;
-  min-height: 450px;
+  min-height: 700px;
 }
 
 /* ---------- SUMMARY STATISTICS CARDS ---------- */
