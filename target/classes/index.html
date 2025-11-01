@@ -9,7 +9,7 @@
     <title>Global Health Dashboard - Homepage</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
 
-    <link rel="icon" href="logo.png" />
+    <link rel="icon" href="logo_small.png" type="image/png" />
   </head>
   <body>
     <!-- Top Navigation -->
@@ -36,10 +36,9 @@
       <p class="subtitle">Empowering informed global health decisions</p>
     </div>
 
-    <div class="content">
-      <!-- Welcome Section -->
-      <div class="welcome-section page-section">
-        <h2>Welcome to the Global Health Dashboard</h2>
+    <!-- Welcome Section -->
+    <div class="content data-page-content page-section welcome-section">
+      <h2>Welcome to the Global Health Dashboard</h2>
         <p>
           Vaccination has been instrumental in eradicating diseases like
           smallpox and achieving global herd immunity for others, such as polio.
@@ -72,12 +71,12 @@
           Explore the data below to discover key insights, or use our navigation
           menu to dive deeper into specific areas of interest.
         </p>
-      </div>
+    </div>
 
+    <div class="content">
       <!-- Summary Statistics Cards -->
       <div class="stats-grid">
         <div class="stat-card stat-card-blue">
-          <div class="stat-icon">🌍</div>
           <div class="stat-content">
             <h3 class="stat-number" th:text="${summary.totalCountries}">0</h3>
             <p class="stat-label">Countries Tracked</p>
@@ -85,7 +84,6 @@
         </div>
 
         <div class="stat-card stat-card-green">
-          <div class="stat-icon">💉</div>
           <div class="stat-content">
             <h3 class="stat-number" th:text="${summary.totalVaccines}">0</h3>
             <p class="stat-label">Vaccine Types</p>
@@ -93,7 +91,6 @@
         </div>
 
         <div class="stat-card stat-card-purple">
-          <div class="stat-icon">🗺️</div>
           <div class="stat-content">
             <h3 class="stat-number" th:text="${summary.totalRegions}">0</h3>
             <p class="stat-label">Global Regions</p>
@@ -101,7 +98,6 @@
         </div>
 
         <div class="stat-card stat-card-orange">
-          <div class="stat-icon">📊</div>
           <div class="stat-content">
             <h3 class="stat-number" th:text="${summary.totalInfectionCases}">
               0
@@ -128,17 +124,17 @@
             <thead>
               <tr>
                 <th>Country Name</th>
-                <th>Average Coverage (%)</th>
                 <th>Vaccines Tracked</th>
+                <th>Average Coverage (%)</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="vaccination : ${topVaccinations}">
                 <td th:text="${vaccination.country_name}">Country</td>
+                <td th:text="${vaccination.vaccine_count}">Vaccines</td>
                 <td th:text="${vaccination.coverage_percentage} + '%'">
                   Coverage
                 </td>
-                <td th:text="${vaccination.vaccine_count}">Vaccines</td>
               </tr>
             </tbody>
           </table>
@@ -164,7 +160,7 @@
               <tr th:each="economy : ${economySnapshot}">
                 <td th:text="${economy.economy}">Economy</td>
                 <td th:text="${economy.country_count}">Count</td>
-                <td th:text="${economy.avg_vaccination} ?: 'N/A'">Coverage</td>
+                <td th:text="${economy.avg_vaccination != null ? economy.avg_vaccination + '%' : 'N/A'}">Coverage</td>
               </tr>
             </tbody>
           </table>
@@ -178,7 +174,7 @@
               <tr>
                 <th>Region Name</th>
                 <th>Countries</th>
-                <th>Avg Coverage (%)</th>
+                <th>Average Coverage (%)</th>
               </tr>
             </thead>
             <tbody>

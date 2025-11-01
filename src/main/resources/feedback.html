@@ -4,6 +4,7 @@
    <meta charset="UTF-8" />
    <title>Feedback - Global Health Dashboard</title>
    <link rel="stylesheet" type="text/css" href="common.css" />
+   <link rel="icon" href="logo_small.png" type="image/png" />
 </head>
 <body>
    <!-- Top Navigation -->
@@ -21,12 +22,12 @@
       </div>
    </div>
    
-   <div class='header'>
+   <div class="header">
       <h1 th:text="${title}"></h1>
       <p class="subtitle">Share your thoughts and help us improve</p>
    </div>
 
-   <div class='content'>
+   <div class="content">
       <div class="feedback-card">
           <!-- Optional success message -->
           <div class="success-message" th:if="${submitted}">
@@ -35,18 +36,18 @@
 
           <form action="/feedback" method="POST" class="feedback-form">
               <div class="combo-box-simple">
-                  <label for="name">Name:</label>
-                  <input type="text" id="name" name="name" placeholder="Your name" required />
+                  <label for="name">Your Name:</label>
+                  <input type="text" id="name" name="name" placeholder="Enter your name" required />
               </div>
 
               <div class="combo-box-simple">
-                  <label for="email">Email:</label>
-                  <input type="email" id="email" name="email" placeholder="Your email" required />
+                  <label for="email">Your Email:</label>
+                  <input type="email" id="email" name="email" placeholder="Enter your email address" required />
               </div>
 
               <div class="combo-box-simple">
-                  <label for="feedback">Feedback:</label>
-                  <textarea id="feedback" name="feedback" rows="5" placeholder="Your feedback" required></textarea>
+                  <label for="feedback">Your Feedback:</label>
+                  <textarea id="feedback" name="feedback" rows="5" placeholder="Enter your feedback" required></textarea>
               </div>
 
               <div class="filter-actions">

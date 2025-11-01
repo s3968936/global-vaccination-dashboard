@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Explore Data - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
+    <link rel="icon" href="logo_small.png" type="image/png" />
     <!-- Load Google Charts for data visualization -->
     <script
       type="text/javascript"
@@ -319,7 +320,7 @@
       <!-- Initial State - Displayed when no filters have been applied yet -->
       <div th:if="${hasFilters == null or !hasFilters}">
         <div class="initial-state-box">
-          <p>Apply one or more filters above to view vaccination data. Charts and data tables will appear here once you apply filters.</p>
+          <p>Select one or more filters above to view vaccination data. Charts and data tables will appear here once you apply filters.</p>
         </div>
       </div>
     </div>
