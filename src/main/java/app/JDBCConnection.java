@@ -240,7 +240,23 @@ public class JDBCConnection {
             ORDER BY total_cases DESC
             LIMIT 10;
         """;
-        return executeQuery(query);
+        ArrayList<HashMap<String, String>> results = executeQuery(query);
+
+        // Format total_cases with commas
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        for (HashMap<String, String> row : results) {
+            String totalCases = row.get("total_cases");
+            if (totalCases != null && !totalCases.isEmpty()) {
+                try {
+                    long cases = Long.parseLong(totalCases);
+                    row.put("total_cases", formatter.format(cases));
+                } catch (NumberFormatException e) {
+                    // Keep original value if parsing fails
+                }
+            }
+        }
+
+        return results;
     }
 
     // ===========================

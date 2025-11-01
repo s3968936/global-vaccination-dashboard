@@ -145,9 +145,9 @@ img.top-image {
 }
 
 .content {
-  background-color: #ddd;
-  padding: 10px; /* optional */
-  border-radius: 5px;
+  padding: 0 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   width: 100%; /* ensures it can contain wide cards */
   box-sizing: border-box; /* includes padding in width */
 }
@@ -156,7 +156,7 @@ img.top-image {
   display: block !important;
   width: 90%;
   max-width: 1800px;
-  margin: 0 auto;
+  margin: 20px auto;
   background-color: white;
   padding: 30px;
   border-radius: 10px;
@@ -372,7 +372,7 @@ img.top-image {
   border-radius: 10px;
   max-width: 1000px;
   width: 90%;
-  margin: 30px auto;
+  margin: 0 auto;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
@@ -738,11 +738,9 @@ img.top-image {
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  margin-bottom: 30px;
+  margin: 20px auto 30px auto;
   width: 90%;
   max-width: 1800px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .page-section h2 {
