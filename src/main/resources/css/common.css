@@ -383,6 +383,9 @@ img.top-image {
   border: 2px solid #ddd;
   border-radius: 6px;
   font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: #333;
   margin-top: 5px;
   margin-bottom: 20px;
   box-sizing: border-box;
