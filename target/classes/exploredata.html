@@ -43,10 +43,10 @@
     <div class="content data-page-content">
       <h2>Explore Global Vaccination Data</h2>
       <p>
-        This page provides comprehensive vaccination coverage data from the World Health Organisation (WHO).
-        Analyse immunisation rates across countries, regions, and vaccine types over time. Use the filters below
+        This page provides vaccination coverage data from the World Health Organisation (WHO).
+        View immunisation rates across countries, regions, and vaccine types over time. Use the filters below
         to explore specific trends, compare coverage between regions, and identify vaccination gaps. Results include
-        interactive charts and detailed tables that can be exported for further analysis.
+        interactive charts and detailed tables that can be saved for your own use.
       </p>
 
       <!-- Error Message Display -->
@@ -97,6 +97,7 @@
                 name="region"
                 placeholder="Type or select region"
                 list="region-list"
+                autocomplete="off"
                 th:value="${selectedRegion != null} ? ${selectedRegion} : ''"
               />
               <datalist id="region-list">
@@ -116,6 +117,7 @@
                 name="country"
                 placeholder="Type or select country"
                 list="country-list"
+                autocomplete="off"
                 th:value="${selectedCountry != null} ? ${selectedCountry} : ''"
               />
               <datalist id="country-list">
@@ -135,6 +137,7 @@
                 name="antigen"
                 placeholder="Type or select antigen"
                 list="antigen-list"
+                autocomplete="off"
                 th:value="${selectedAntigen != null} ? ${selectedAntigen} : ''"
               />
               <datalist id="antigen-list">
@@ -209,65 +212,21 @@
             </div>
           </div>
 
-          <div
-            class="data-table-header"
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: flex-start;
-              margin-bottom: 20px;
-              padding: 20px;
-              background-color: #f8f9fa;
-              border-radius: 8px;
-              border-left: 4px solid #3498db;
-            "
-          >
+          <div class="data-table-header">
             <!-- Data Table - Detailed tabular view of the filtered data -->
             <h3>Detailed Data</h3>
             <!-- Export Buttons -->
-            <div
-              class="export-section"
-              style="
-                text-align: right;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-              "
-            >
-              <div style="display: flex; gap: 10px; margin-bottom: 8px">
+            <div class="export-section">
+              <div class="export-buttons-container">
                 <button
                   onclick="exportToPDF()"
                   class="export-btn export-btn-pdf"
-                  style="
-                    background-color: #dc3545;
-                    color: white;
-                    border: none;
-                    padding: 12px 20px;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: bold;
-                    transition: background-color 0.3s;
-                    min-width: 140px;
-                  "
                 >
                   Export Data to PDF
                 </button>
                 <button
                   onclick="exportToCSV()"
                   class="export-btn export-btn-csv"
-                  style="
-                    background-color: #28a745;
-                    color: white;
-                    border: none;
-                    padding: 12px 20px;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: bold;
-                    transition: background-color 0.3s;
-                    min-width: 140px;
-                  "
                 >
                   Export to CSV
                 </button>
@@ -470,7 +429,7 @@
         const chartDiv = document.getElementById("coverage_chart");
         if (chartDiv) {
           chartDiv.innerHTML =
-            "<p style='text-align:center; color:#777; padding:60px;'>No data available for the selected filters</p>";
+            "<div class='chart-no-data'><p>No data available for the selected filters</p></div>";
         }
       }
 
@@ -593,6 +552,59 @@
           exportBtn.disabled = false;
         }, 2000);
       }
+
+      // Region-Country dynamic filtering
+      const regionCountryMapRaw = /*[[${regionCountryMap}]]*/ "{}";
+      const allCountriesRaw = /*[[${countries}]]*/ [];
+
+      // Parse the region country map
+      let regionCountryMap = {};
+      try {
+        regionCountryMap = JSON.parse(regionCountryMapRaw);
+        console.log("Region-Country Map loaded:", regionCountryMap);
+      } catch (e) {
+        console.error("Failed to parse regionCountryMap:", e);
+        console.log("Raw data:", regionCountryMapRaw);
+      }
+
+      const allCountries = allCountriesRaw;
+      console.log("All countries:", allCountries);
+
+      // Store all countries initially
+      let availableCountries = [...allCountries];
+
+      // Update country dropdown when region changes
+      document.getElementById('region').addEventListener('input', function() {
+        const selectedRegion = this.value.trim();
+        const countryInput = document.getElementById('country');
+        const countryDatalist = document.getElementById('country-list');
+
+        console.log("Selected region:", selectedRegion);
+        console.log("Available in map:", regionCountryMap[selectedRegion]);
+
+        // Always clear the country input when region changes
+        countryInput.value = '';
+
+        if (selectedRegion && regionCountryMap[selectedRegion]) {
+          // Filter countries to only those in the selected region
+          availableCountries = regionCountryMap[selectedRegion];
+          console.log("Filtered to countries:", availableCountries);
+        } else {
+          // Reset to all countries if no region selected
+          availableCountries = [...allCountries];
+          console.log("Reset to all countries");
+        }
+
+        // Update the datalist options
+        countryDatalist.innerHTML = '';
+        availableCountries.forEach(country => {
+          const option = document.createElement('option');
+          option.value = country;
+          countryDatalist.appendChild(option);
+        });
+
+        console.log("Updated datalist with", availableCountries.length, "countries");
+      });
     </script>
   </body>
 </html>

@@ -24,7 +24,6 @@ public class JDBCConnection {
     private static final String DATABASE = "jdbc:sqlite:database/who.db";
 
     public JDBCConnection() {
-        System.out.println("Created JDBC Connection Object");
     }
 
     /**
@@ -128,44 +127,6 @@ public class JDBCConnection {
         return summary;
     }
 
-    /**
-     * Gets average vaccination coverage by country for dashboard display
-     */
-    public ArrayList<HashMap<String, String>> getAverageVaccinationCoverageByCountry() {
-        String query = """
-            SELECT
-                c.name AS country_name,
-                ROUND(AVG(v.coverage), 2) AS avg_coverage
-            FROM Vaccination v
-            JOIN Country c ON v.country = c.CountryID
-            WHERE v.coverage IS NOT NULL
-            GROUP BY c.name
-            HAVING avg_coverage > 0
-            ORDER BY avg_coverage DESC
-            LIMIT 10;
-        """;
-        return executeQuery(query);
-    }
-
-    /**
-     * Gets top vaccination coverage percentages for the dashboard Geo chart
-     */
-    public ArrayList<HashMap<String, String>> getTopVaccinationsByCoverage() {
-        String query = """
-        SELECT
-            c.name AS country_name,
-            ROUND(AVG(v.coverage), 2) AS coverage_percentage
-        FROM Vaccination v
-        JOIN Country c ON v.country = c.CountryID
-        WHERE v.coverage IS NOT NULL
-          AND v.coverage > 0
-        GROUP BY c.name
-        HAVING coverage_percentage > 0
-        ORDER BY coverage_percentage DESC
-        LIMIT 10;
-        """;
-        return executeQuery(query);
-    }
 
     /**
      * Gets vaccination rate improvements between two years for all countries
@@ -175,7 +136,7 @@ public class JDBCConnection {
      * @param antigen Optional antigen filter (null or empty for all antigens)
      * @return List of countries with their improvement metrics
      */
-    public ArrayList<HashMap<String, String>> getVaccinationImprovements(String startYear, String endYear, String antigen) {
+    public ArrayList<HashMap<String, String>> getVaccinationImprovements(String startYear, String endYear, String antigen, String country) {
         ArrayList<HashMap<String, String>> results = new ArrayList<>();
         Connection connection = null;
 
@@ -201,6 +162,11 @@ public class JDBCConnection {
                 query += " WHERE 1=1";
             }
 
+            // Add country filter if specified
+            if (country != null && !country.isEmpty()) {
+                query += " AND c.name = ?";
+            }
+
             query += """
                 GROUP BY c.name
                 HAVING initial_coverage IS NOT NULL AND final_coverage IS NOT NULL
@@ -213,8 +179,12 @@ public class JDBCConnection {
             stmt.setString(3, endYear);
             stmt.setString(4, startYear);
 
+            int paramIndex = 5;
             if (antigen != null && !antigen.isEmpty() && !antigen.equals("All Vaccines")) {
-                stmt.setString(5, antigen);
+                stmt.setString(paramIndex++, antigen);
+            }
+            if (country != null && !country.isEmpty()) {
+                stmt.setString(paramIndex, country);
             }
 
             ResultSet resultSet = stmt.executeQuery();
@@ -512,14 +482,13 @@ public class JDBCConnection {
     }
 
     /**
-     * Gets countries by region for dynamic dropdown filtering
+     * Gets all region-country mappings for client-side filtering
      */
-    public ArrayList<HashMap<String, String>> getCountriesByRegion(String region) {
-        String query = "SELECT c.name AS country " +
+    public ArrayList<HashMap<String, String>> getRegionCountryMappings() {
+        String query = "SELECT r.region AS region, c.name AS country " +
                     "FROM Country c " +
                     "JOIN Region r ON c.region = r.RegionID " +
-                    "WHERE r.region = '" + region + "' " +
-                    "ORDER BY c.name";
+                    "ORDER BY r.region, c.name";
         return executeQuery(query);
     }
 

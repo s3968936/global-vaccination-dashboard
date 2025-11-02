@@ -37,6 +37,7 @@ public class ExploreDataPage implements Handler {
             ArrayList<HashMap<String, String>> regions = connection.getAllRegions();
             ArrayList<HashMap<String, String>> antigens = connection.getAllAntigens();
             ArrayList<HashMap<String, String>> years = connection.getAllYears();
+            ArrayList<HashMap<String, String>> regionCountryMappings = connection.getRegionCountryMappings();
 
             // Convert to simple lists for Thymeleaf dropdowns
             ArrayList<String> countryList = new ArrayList<>();
@@ -57,11 +58,47 @@ public class ExploreDataPage implements Handler {
                 yearList.add(year.get("year"));
             }
 
+            // Build region-country mapping as JSON for JavaScript
+            StringBuilder regionCountryJson = new StringBuilder("{");
+            String currentRegion = null;
+            boolean firstCountryInRegion = true;
+
+            for (HashMap<String, String> mapping : regionCountryMappings) {
+                String region = mapping.get("region");
+                String country = mapping.get("country");
+
+                // Starting a new region
+                if (!region.equals(currentRegion)) {
+                    // Close previous region array if exists
+                    if (currentRegion != null) {
+                        regionCountryJson.append("],");
+                    }
+                    // Start new region
+                    regionCountryJson.append("\"").append(region.replace("\"", "\\\"")).append("\":[");
+                    currentRegion = region;
+                    firstCountryInRegion = true;
+                }
+
+                // Add country to current region
+                if (!firstCountryInRegion) {
+                    regionCountryJson.append(",");
+                }
+                regionCountryJson.append("\"").append(country.replace("\"", "\\\"")).append("\"");
+                firstCountryInRegion = false;
+            }
+
+            // Close the last region array
+            if (currentRegion != null) {
+                regionCountryJson.append("]");
+            }
+            regionCountryJson.append("}");
+
             // Add lists to model for Thymeleaf template
             model.put("countries", countryList);
             model.put("regions", regionList);
             model.put("antigens", antigenList);
             model.put("years", yearList);
+            model.put("regionCountryMap", regionCountryJson.toString());
 
             // Get filter parameters from HTTP request
             String country = context.queryParam("country");
@@ -83,7 +120,7 @@ public class ExploreDataPage implements Handler {
                     int start = Integer.parseInt(yearStart);
                     if (start < minYear || start > maxYear) {
                         validYearRange = false;
-                        warningMessage = "⚠️ Start year must be between " + minYear + " and " + maxYear + ".";
+                        warningMessage = "Start year must be between " + minYear + " and " + maxYear + ".";
                     }
                 }
                 // Validate end year
@@ -91,53 +128,38 @@ public class ExploreDataPage implements Handler {
                     int end = Integer.parseInt(yearEnd);
                     if (end < minYear || end > maxYear) {
                         validYearRange = false;
-                        warningMessage = "⚠️ End year must be between " + minYear + " and " + maxYear + ".";
+                        warningMessage = "End year must be between " + minYear + " and " + maxYear + ".";
                     }
                 }
-                
+
                 // Validate that start year is not greater than end year
                 if (yearStart != null && !yearStart.isEmpty() && yearEnd != null && !yearEnd.isEmpty()) {
                     int start = Integer.parseInt(yearStart);
                     int end = Integer.parseInt(yearEnd);
                     if (start > end) {
                         validYearRange = false;
-                        warningMessage = "⚠️ Start year cannot be greater than end year.";
+                        warningMessage = "Start year cannot be greater than end year.";
                     }
                 }
             } catch (NumberFormatException e) {
                 validYearRange = false;
-                warningMessage = "⚠️ Please enter valid numeric years.";
+                warningMessage = "Please enter valid numeric years.";
             }
 
             // If year range is invalid, show warning and stop processing
             if (!validYearRange) {
                 model.put("warning", warningMessage);
-                
+
                 // Keep form selections even when there's a warning for better UX
                 model.put("selectedCountry", country);
                 model.put("selectedRegion", region);
                 model.put("selectedAntigen", antigen);
                 model.put("selectedYearStart", yearStart);
                 model.put("selectedYearEnd", yearEnd);
-                
+
                 context.render(TEMPLATE, model);
                 return; // Stop processing to prevent wrong data display
             }
-
-            // Dynamic country filtering - if region is selected, show only countries in that region
-            if (region != null && !region.isEmpty()) {
-                ArrayList<HashMap<String, String>> countriesInRegion = connection.getCountriesByRegion(region);
-                countryList.clear();
-                for (HashMap<String, String> countryMap : countriesInRegion) {
-                    countryList.add(countryMap.get("country"));
-                }
-            }
-
-            // Add updated lists to model (after potential filtering)
-            model.put("countries", countryList);
-            model.put("regions", regionList);
-            model.put("antigens", antigenList);
-            model.put("years", yearList);
 
             // Check if any filters are applied (not just initial page load)
             boolean hasFilters = (country != null && !country.isEmpty()) ||

@@ -42,12 +42,22 @@
     <div class="content data-page-content">
       <h2>Vaccination Rate Improvements</h2>
       <p>
-        Analyse which countries have made the greatest progress in vaccination coverage over time. Select a year range
-        and vaccine type to see how vaccination rates have improved globally. The interactive world map displays
-        improvement as percentage point increases, with darker blue indicating greater improvement. This analysis helps
-        identify successful vaccination programmes and countries that have made significant strides in protecting their
+        See which countries have made the greatest progress in vaccination coverage over time. Select a year range
+        and vaccine type to see how vaccination rates have improved globally. The interactive world map shows
+        improvement as percentage increases, with darker blue showing greater improvement. This helps
+        identify successful vaccination programmes and countries that have made significant progress in protecting their
         populations against preventable diseases.
       </p>
+
+      <!-- Error Message Display -->
+      <div th:if="${error}" class="error-message">
+        <strong>Error:</strong> <span th:text="${error}"></span>
+      </div>
+
+      <!-- Warning Message for Year Validation -->
+      <div th:if="${warning}" class="warning-message">
+        <strong>Warning:</strong> <span th:text="${warning}"></span>
+      </div>
 
       <!-- Filter Form -->
       <form method="get" action="/insights" id="filter-form">
@@ -87,6 +97,22 @@
               </datalist>
             </div>
 
+            <!-- Country Filter -->
+            <div class="combo-box-simple">
+              <label for="country">Country (Optional)</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="All Countries"
+                list="country-list"
+                th:value="${selectedCountry}"
+              />
+              <datalist id="country-list">
+                <option th:each="country : ${countries}" th:value="${country}"></option>
+              </datalist>
+            </div>
+
             <!-- Vaccine Type Filter -->
             <div class="combo-box-simple">
               <label for="antigen">Vaccine Type</label>
@@ -94,12 +120,12 @@
                 type="text"
                 id="antigen"
                 name="antigen"
-                placeholder="All Vaccines"
+                placeholder="Type or select vaccine type"
                 list="antigen-list"
+                autocomplete="off"
                 th:value="${selectedAntigen}"
               />
               <datalist id="antigen-list">
-                <option value="All Vaccines"></option>
                 <option th:each="antigen : ${antigens}" th:value="${antigen}"></option>
               </datalist>
             </div>
@@ -143,11 +169,11 @@
             <tbody>
               <tr th:each="item : ${geoData}">
                 <td th:text="${item.country_name}">Country</td>
-                <td th:text="${item.initial_coverage != null ? item.initial_coverage + '%' : 'N/A'}">0%</td>
-                <td th:text="${item.final_coverage != null ? item.final_coverage + '%' : 'N/A'}">0%</td>
+                <td th:text="${item.initial_coverage != null ? item.initial_coverage + '%' : 'No Data'}">0%</td>
+                <td th:text="${item.final_coverage != null ? item.final_coverage + '%' : 'No Data'}">0%</td>
                 <td
                   class="improvement-cell"
-                  th:text="${item.improvement != null ? (item.improvement.startsWith('-') ? item.improvement : '+' + item.improvement) : 'N/A'}"
+                  th:text="${item.improvement != null ? (item.improvement.startsWith('-') ? item.improvement : '+' + item.improvement) : 'No Data'}"
                 >
                   0
                 </td>
@@ -157,8 +183,8 @@
         </div>
 
         <!-- Geo Chart -->
-        <div class="chart-container">
-          <div id="regions_div" style="width: 100%; height: 100%"></div>
+        <div class="insights-map-container">
+          <div id="regions_div"></div>
         </div>
       </div>
     </div>
@@ -185,31 +211,25 @@
 
     <!-- Google Charts Script -->
     <script th:inline="javascript">
-      console.log("=== GEO CHART ===");
-
       google.charts.load("current", {
         packages: ["geochart"],
       });
 
       google.charts.setOnLoadCallback(function () {
-        console.log("Google Charts loaded");
         drawChart();
       });
 
       function drawChart() {
         const chartDiv = document.getElementById("regions_div");
         if (!chartDiv) {
-          console.error("Chart container not found");
           return;
         }
 
         try {
           const geoChartData = /*[[${geoChartData}]]*/ "[]";
-          console.log("Raw data:", geoChartData);
 
           // Parse the data
           const dataArray = JSON.parse(geoChartData);
-          console.log("Parsed data array with", dataArray.length, "rows");
 
           // Create data table
           const data = google.visualization.arrayToDataTable(dataArray);
@@ -218,19 +238,34 @@
           const options = {
             title: "Vaccination Rate Improvement (Percentage Points)",
             colorAxis: {
-              colors: ["#E8F0FE", "#D2E3FC", "#9BC1F9", "#5E9AF9", "#2E68CF"],
-              minValue: 0,
-              maxValue: 50,
+              colors: [
+                "#67001f", // Dark red - severe decline (-35)
+                "#b2182b", // Red - major decline (-25)
+                "#d6604d", // Light red - moderate decline (-15)
+                "#f4a582", // Pale red - slight decline (-5)
+                "#fddbc7", // Very pale red - minimal decline (-2)
+                "#f7f7f7", // Neutral grey - no change (0)
+                "#d1e5f0", // Very pale blue - minimal improvement (+5)
+                "#92c5de", // Pale blue - slight improvement (+15)
+                "#4393c3", // Light blue - moderate improvement (+30)
+                "#2166ac", // Blue - good improvement (+50)
+                "#08519c", // Dark blue - excellent improvement (+70)
+                "#053061"  // Very dark blue - outstanding improvement (+100)
+              ],
+              minValue: -35,
+              maxValue: 100,
+              legend: {
+                position: "bottom",
+                textStyle: {
+                  color: "#333",
+                  fontSize: 12,
+                  bold: false
+                }
+              }
             },
-            backgroundColor: "#ffffff",
-            datalessRegionColor: "#f5f5f5",
-            defaultColor: "#f5f5f5",
-            legend: {
-              textStyle: {
-                color: "#333",
-                fontSize: 12,
-              },
-            },
+            backgroundColor: "#e8ecf0",
+            datalessRegionColor: "#d0d5db",
+            defaultColor: "#d0d5db",
             tooltip: {
               textStyle: {
                 color: "#333",
@@ -244,9 +279,7 @@
           // Draw chart
           const chart = new google.visualization.GeoChart(chartDiv);
           chart.draw(data, options);
-          console.log("✅ Chart successfully drawn!");
         } catch (error) {
-          console.error("Chart error:", error);
           chartDiv.innerHTML = `
                 <div style="text-align: center; padding: 50px; color: #666;">
                     <h3>Map Loading Issue</h3>
