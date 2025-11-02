@@ -1,14 +1,14 @@
 package app;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import app.model.Vaccination;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import app.model.Vaccination;
 
 /**
  * Handler for the Explore Data page
@@ -163,44 +163,6 @@ public class ExploreDataPage implements Handler {
                 return; // Stop processing to prevent wrong data display
             }
 
-<<<<<<< HEAD
-=======
-            
-            //========================== ANTIGEN VALIDATION =========================
-            if(antigen != null && !antigen.isEmpty()) {
-                boolean hasLocationFilter = (country != null && !country.isEmpty()) || (region != null && !region.isEmpty());
-                if(!hasLocationFilter) {
-                    model.put("warning", "⚠️ Please select a Country or Region when filtering by Antigen.");
-                    
-                    // Keep form selections even when there's a warning for better UX
-                    model.put("selectedCountry", country);
-                    model.put("selectedRegion", region);
-                    model.put("selectedAntigen", antigen);
-                    model.put("selectedYearStart", yearStart);
-                    model.put("selectedYearEnd", yearEnd);
-                    
-                    context.render(TEMPLATE, model);
-                    return; // Stop processing to prevent wrong data display
-
-                }
-            }
-
-            // Dynamic country filtering - if region is selected, show only countries in that region
-            if (region != null && !region.isEmpty()) {
-                ArrayList<HashMap<String, String>> countriesInRegion = connection.getCountriesByRegion(region);
-                countryList.clear();
-                for (HashMap<String, String> countryMap : countriesInRegion) {
-                    countryList.add(countryMap.get("country"));
-                }
-            }
-
-            // Add updated lists to model (after potential filtering)
-            model.put("countries", countryList);
-            model.put("regions", regionList);
-            model.put("antigens", antigenList);
-            model.put("years", yearList);
-
->>>>>>> 4c2693629aa59cd9492bdec4bde2efaaf30e2621
             // Check if any filters are applied (not just initial page load)
             boolean hasFilters = (country != null && !country.isEmpty()) ||
                                  (region != null && !region.isEmpty()) ||
