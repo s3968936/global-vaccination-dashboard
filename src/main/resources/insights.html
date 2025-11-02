@@ -62,6 +62,9 @@
       <!-- Filter Form -->
       <form method="get" action="/insights" id="filter-form">
         <div class="filter-section">
+          <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
+            <strong>Note:</strong> Fields marked with <span style="color: #dc3545;">*</span> are required.
+          </p>
           <div class="filter-grid">
             <!-- Start Year Filter -->
             <div class="combo-box-simple">
@@ -115,7 +118,7 @@
 
             <!-- Vaccine Type Filter -->
             <div class="combo-box-simple">
-              <label for="antigen">Vaccine Type</label>
+              <label for="antigen">Vaccine Type (Optional)</label>
               <input
                 type="text"
                 id="antigen"

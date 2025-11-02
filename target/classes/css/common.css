@@ -295,6 +295,11 @@ img.top-image {
   color: #333;
 }
 
+.required-field {
+  color: #dc3545;
+  margin-left: 2px;
+}
+
 .combo-box-simple input {
   width: 100%;
   padding: 12px;
