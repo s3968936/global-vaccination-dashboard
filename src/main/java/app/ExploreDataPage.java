@@ -155,24 +155,34 @@ public class ExploreDataPage implements Handler {
                 return; // Stop processing to prevent wrong data display
             }
 
+            // ================= ANTIGEN VALIDATION =================
+            // Validate that when antigen is selected, at least region or country is also selected
+            // This prevents overwhelming data display from showing all countries/regions
             if (antigen != null && !antigen.isEmpty()) {
-    boolean hasLocationFilter = (country != null && !country.isEmpty()) || 
-                               (region != null && !region.isEmpty());
-    
-            if (!hasLocationFilter) {
-                model.put("warning", "⚠️ Please select a Region or Country when filtering by Antigen. Showing data for all locations may result in overwhelming results.");
+                boolean hasLocationFilter = (country != null && !country.isEmpty()) || 
+                                           (region != null && !region.isEmpty());
                 
-                // Keep form selections for better UX
-                model.put("selectedCountry", country);
-                model.put("selectedRegion", region);
-                model.put("selectedAntigen", antigen);
-                model.put("selectedYearStart", yearStart);
-                model.put("selectedYearEnd", yearEnd);
-                
-                context.render(TEMPLATE, model);
-                return; // Stop processing
+                if (!hasLocationFilter) {
+                    model.put("warning", "Please select a Region or Country when filtering by Antigen. Showing data for all locations may result in overwhelming results.");
+                    
+                    // Keep form selections for better UX
+                    model.put("selectedCountry", country);
+                    model.put("selectedRegion", region);
+                    model.put("selectedAntigen", antigen);
+                    model.put("selectedYearStart", yearStart);
+                    model.put("selectedYearEnd", yearEnd);
+                    
+                    context.render(TEMPLATE, model);
+                    return; // Stop processing to prevent overwhelming data display
+                }
             }
-        }
+
+            // ================= REGION + ANTIGEN VALIDATION =================
+            // Validate that when both region and antigen are selected without a specific country,
+            // we calculate regional averages to prevent messy charts with multiple country lines
+            boolean regionOnlyWithAntigen = (antigen != null && !antigen.isEmpty()) && 
+                                          (region != null && !region.isEmpty()) && 
+                                          (country == null || country.isEmpty());
 
             // Check if any filters are applied (not just initial page load)
             boolean hasFilters = (country != null && !country.isEmpty()) ||
@@ -208,8 +218,42 @@ public class ExploreDataPage implements Handler {
                     // Check if antigen filter is applied
                     boolean hasAntigenFilter = antigen != null && !antigen.isEmpty();
                     
-                    if (hasAntigenFilter) {
-                        // Single antigen - use individual data points
+                    if (hasAntigenFilter && regionOnlyWithAntigen) {
+                        // Region + Antigen without specific country - calculate regional averages
+                        // This prevents messy charts with multiple country lines for the same region
+                        Map<Integer, List<Double>> coverageByYear = new HashMap<>();
+                        
+                        // Group coverage data by year for the entire region
+                        for (Vaccination data : vaccinationData) {
+                            int year = data.getYear();
+                            double coverage = data.getCoverage();
+                            
+                            // Only include valid coverage data (non-negative)
+                            if (coverage >= 0) {
+                                coverageByYear.computeIfAbsent(year, k -> new ArrayList<>()).add(coverage);
+                            }
+                        }
+                        
+                        // Calculate average coverage for each year across all countries in the region
+                        List<Integer> sortedYears = new ArrayList<>(coverageByYear.keySet());
+                        Collections.sort(sortedYears);
+                        
+                        for (int year : sortedYears) {
+                            List<Double> coverages = coverageByYear.get(year);
+                            double average = coverages.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+                            
+                            if (validDataCount > 0) {
+                                chartDataJson.append(",");
+                            }
+                            chartDataJson.append("[\"")
+                                         .append(year)
+                                         .append("\", ")
+                                         .append(String.format("%.2f", average))
+                                         .append("]");
+                            validDataCount++;
+                        }
+                    } else if (hasAntigenFilter) {
+                        // Single antigen with specific country - use individual data points
                         for (Vaccination data : vaccinationData) {
                             int year = data.getYear();
                             double coverage = data.getCoverage();
@@ -230,7 +274,7 @@ public class ExploreDataPage implements Handler {
                             }
                         }
                     } else {
-                        // No antigen filter - calculate average coverage per year
+                        // No antigen filter - calculate average coverage per year across all antigens
                         Map<Integer, List<Double>> coverageByYear = new HashMap<>();
                         
                         // Group coverage data by year
@@ -269,7 +313,7 @@ public class ExploreDataPage implements Handler {
                     model.put("hasChartData", validDataCount > 0);
                     
                     // Add flag to indicate if we're showing average data
-                    model.put("showingAverageData", !hasAntigenFilter);
+                    model.put("showingAverageData", !hasAntigenFilter || regionOnlyWithAntigen);
                 } else {
                     model.put("hasChartData", false);
                     model.put("showingAverageData", false);
@@ -285,6 +329,7 @@ public class ExploreDataPage implements Handler {
         context.render(TEMPLATE, model);
     }
 
+   // Helper method to determine dynamic chart title based on selected filters
     private String determineChartTitle(String country, String region, String antigen) {
         StringBuilder title = new StringBuilder("Vaccination Coverage Over Time");
         
