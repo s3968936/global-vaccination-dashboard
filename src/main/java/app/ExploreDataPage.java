@@ -10,10 +10,6 @@ import app.model.Vaccination;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
-/**
- * Handler for the Explore Data page
- * Processes filter requests and displays vaccination data with dynamic chart titles
- */
 public class ExploreDataPage implements Handler {
 
     private JDBCConnection connection;
@@ -25,10 +21,6 @@ public class ExploreDataPage implements Handler {
     public static final String URL = "/explore";
     private static final String TEMPLATE = "exploredata.html";
 
-    /**
-     * Handles HTTP requests for the explore data page
-     * Processes filters, validates input, and prepares data for display
-     */
     @Override
     public void handle(Context context) throws Exception {
         Map<String, Object> model = new HashMap<>();
@@ -274,15 +266,6 @@ public class ExploreDataPage implements Handler {
         context.render(TEMPLATE, model);
     }
 
-    /**
-     * Generates a dynamic chart title based on the selected filters
-     * Makes the chart more informative by showing what data is being displayed
-     * 
-     * @param country The selected country (can be null)
-     * @param region The selected region (can be null)  
-     * @param antigen The selected antigen/vaccine type (can be null)
-     * @return A descriptive chart title like "Vaccination Coverage Over Time in France - Measles"
-     */
     private String determineChartTitle(String country, String region, String antigen) {
         StringBuilder title = new StringBuilder("Vaccination Coverage Over Time");
         
