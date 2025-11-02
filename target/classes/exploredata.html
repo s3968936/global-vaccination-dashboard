@@ -43,10 +43,12 @@
     <div class="content data-page-content">
       <h2>Explore Global Vaccination Data</h2>
       <p>
-        This page provides vaccination coverage data from the World Health Organisation (WHO).
-        View immunisation rates across countries, regions, and vaccine types over time. Use the filters below
-        to explore specific trends, compare coverage between regions, and identify vaccination gaps. Results include
-        interactive charts and detailed tables that can be saved for your own use.
+        This page provides vaccination coverage data from the World Health
+        Organisation (WHO). View immunisation rates across countries, regions,
+        and vaccine types over time. Use the filters below to explore specific
+        trends, compare coverage between regions, and identify vaccination gaps.
+        Results include interactive charts and detailed tables that can be saved
+        for your own use.
       </p>
 
       <!-- Error Message -->
@@ -88,7 +90,8 @@
 
         <div class="filter-section">
           <p class="filter-note">
-            <strong>Note:</strong> All filters are optional. Select one or more filters to view data.
+            <strong>Note:</strong> All filters are optional. Select one or more
+            filters to view data.
           </p>
           <div class="filter-grid">
             <div class="combo-box-simple">
@@ -198,7 +201,6 @@
             <h3>Coverage Trend</h3>
             <div id="coverage_chart" class="chart-area"></div>
           </div>
-
 
           <div
             class="chart-container"
@@ -576,16 +578,16 @@
       let availableCountries = [...allCountries];
 
       // Update country dropdown when region changes
-      document.getElementById('region').addEventListener('input', function() {
+      document.getElementById("region").addEventListener("input", function () {
         const selectedRegion = this.value.trim();
-        const countryInput = document.getElementById('country');
-        const countryDatalist = document.getElementById('country-list');
+        const countryInput = document.getElementById("country");
+        const countryDatalist = document.getElementById("country-list");
 
         console.log("Selected region:", selectedRegion);
         console.log("Available in map:", regionCountryMap[selectedRegion]);
 
         // Always clear the country input when region changes
-        countryInput.value = '';
+        countryInput.value = "";
 
         if (selectedRegion && regionCountryMap[selectedRegion]) {
           // Filter countries to only those in the selected region
@@ -598,14 +600,18 @@
         }
 
         // Update the datalist options
-        countryDatalist.innerHTML = '';
-        availableCountries.forEach(country => {
-          const option = document.createElement('option');
+        countryDatalist.innerHTML = "";
+        availableCountries.forEach((country) => {
+          const option = document.createElement("option");
           option.value = country;
           countryDatalist.appendChild(option);
         });
 
-        console.log("Updated datalist with", availableCountries.length, "countries");
+        console.log(
+          "Updated datalist with",
+          availableCountries.length,
+          "countries"
+        );
       });
     </script>
   </body>
