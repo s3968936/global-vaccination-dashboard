@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Global Health Dashboard - Homepage</title>
+    <link rel="stylesheet" type="text/css" href="common.css" />
+
+    <link rel="icon" href="logo_small.png" type="image/png" />
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <div class="simple-topnav">
+      <a href="/" class="nav-logo-link">
+        <img
+          src="logo.png"
+          class="nav-logo"
+          alt="Global Health Dashboard Logo"
+        />
+      </a>
+      <div class="nav-links">
+        <a href="/" class="active">Homepage</a>
+        <a href="/explore">Explore Data</a>
+        <a href="/trending">Trending</a>
+        <a href="/insights">Insights</a>
+        <a href="/mission">Mission Statement</a>
+        <a href="/feedback">Feedback</a>
+      </div>
+    </div>
+
+    <div class="header">
+      <h1 th:text="${title}"></h1>
+      <p class="subtitle">Empowering informed global health decisions</p>
+    </div>
+
+    <!-- Welcome Section -->
+    <div class="content data-page-content page-section welcome-section">
+      <h2>Welcome to the Global Health Dashboard</h2>
+        <p>
+          Vaccination has been instrumental in eradicating diseases like
+          smallpox and achieving global herd immunity for others, such as polio.
+          This platform provides comprehensive, unbiased data from the World
+          Health Organisation (WHO) to help families and communities make
+          informed decisions about global immunisation efforts. Whether you are
+          a parent, educator, health professional, or researcher, this site
+          brings together vaccination and infection data in one accessible place.
+        </p>
+        <h3 class="explore-heading">What you can explore:</h3>
+        <ul>
+          <li>
+            <strong>Explore Data:</strong> Filter and analyse vaccination rates
+            by country, vaccine type, region, and time period with interactive
+            charts
+          </li>
+          <li>
+            <strong>Trending:</strong> Discover infection data patterns across
+            different economic development levels and disease types
+          </li>
+          <li>
+            <strong>Insights:</strong> View global vaccination coverage on an
+            interactive world map with detailed country-level data
+          </li>
+          <li>
+            <strong>Mission Statement:</strong> Learn about our target users,
+            project goals, and the team behind this platform
+          </li>
+        </ul>
+
+        <h3 class="explore-heading">Diseases and vaccines tracked in our database:</h3>
+        <p>
+          Our database contains data on three critical vaccine-preventable diseases and their corresponding vaccines:
+        </p>
+        <ul>
+          <li>
+            <strong>Measles:</strong> A highly contagious viral disease that can cause serious complications and death. Tracked through <strong>Measles-containing vaccine</strong> coverage data.
+          </li>
+          <li>
+            <strong>Pertussis (Whooping Cough):</strong> A highly contagious respiratory disease that is particularly dangerous for infants and causes severe coughing fits. Tracked through <strong>DTP-containing vaccine</strong> coverage data. DTP stands for Diphtheria, Tetanus, and Pertussis.
+          </li>
+          <li>
+            <strong>Rubella (German Measles):</strong> A viral infection that is particularly dangerous during pregnancy because it can cause severe birth defects in unborn babies. Tracked through <strong>Rubella-containing vaccine</strong> coverage data.
+          </li>
+        </ul>
+        <p>
+          Explore the data below to discover key insights about vaccination coverage and infection trends for these diseases, or use our navigation
+          menu to dive deeper into specific areas of interest.
+        </p>
+    </div>
+
+    <div class="content">
+      <!-- Summary Statistics Cards -->
+      <div class="stats-grid">
+        <div class="stat-card stat-card-blue">
+          <div class="stat-content">
+            <h3 class="stat-number" th:text="${summary.totalCountries}">0</h3>
+            <p class="stat-label">Countries Tracked</p>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-green">
+          <div class="stat-content">
+            <h3 class="stat-number" th:text="${summary.totalVaccines}">0</h3>
+            <p class="stat-label">Vaccine Types</p>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-purple">
+          <div class="stat-content">
+            <h3 class="stat-number" th:text="${summary.totalRegions}">0</h3>
+            <p class="stat-label">Global Regions</p>
+          </div>
+        </div>
+
+        <div class="stat-card stat-card-orange">
+          <div class="stat-content">
+            <h3 class="stat-number" th:text="${summary.totalInfectionCases}">
+              0
+            </h3>
+            <p class="stat-label">Total Infection Cases</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Snapshot Section -->
+      <div class="section-header">
+        <h2>Key Statistics at a Glance</h2>
+        <p class="section-subtitle">
+          Explore detailed vaccination and infection data across multiple
+          dimensions
+        </p>
+      </div>
+
+      <div class="data-snapshot-grid">
+        <!-- Top Vaccinations -->
+        <div class="card">
+          <h3>Top 5 Countries by Vaccination Coverage</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Country Name</th>
+                <th>Vaccines Tracked</th>
+                <th>Average Coverage (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="vaccination : ${topVaccinations}">
+                <td th:text="${vaccination.country_name}">Country</td>
+                <td th:text="${vaccination.vaccine_count}">Vaccines</td>
+                <td th:text="${vaccination.coverage_percentage} + '%'">
+                  Coverage
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Economy Snapshot -->
+        <div class="card">
+          <h3>Economic Development Overview</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Economic Level</th>
+                <th>Number of Countries</th>
+                <th>Average Coverage (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:if="${economySnapshot.empty}">
+                <td colspan="3" class="table-loading">
+                  No economy data available
+                </td>
+              </tr>
+              <tr th:each="economy : ${economySnapshot}">
+                <td th:text="${economy.economy}">Economy</td>
+                <td th:text="${economy.country_count}">Count</td>
+                <td th:text="${economy.avg_vaccination != null ? economy.avg_vaccination + '%' : 'N/A'}">Coverage</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Regions -->
+        <div class="card">
+          <h3>Regional Vaccination Performance</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Region Name</th>
+                <th>Countries</th>
+                <th>Average Coverage (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="region : ${improvedRegions}">
+                <td th:text="${region.region}">Region Name</td>
+                <td th:text="${region.country_count}">Country Count</td>
+                <td th:text="${region.avg_coverage} + '%'">Coverage</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Top Infections -->
+        <div class="card">
+          <h3>Disease Burden by Infection Type</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Disease Type</th>
+                <th>Total Reported Cases</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:if="${topInfections.empty}">
+                <td colspan="2" class="table-loading">
+                  No infection data available
+                </td>
+              </tr>
+              <tr th:each="infection : ${topInfections}">
+                <td th:text="${infection.infection_type}">Infection</td>
+                <td th:text="${infection.total_cases} ?: 'N/A'">Cases</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p><strong>Global Health Dashboard</strong></p>
+        <nav class="footer-links">
+          <a href="/">Homepage</a> | <a href="/explore">Explore Data</a> |
+          <a href="/trending">Trending</a> | <a href="/insights">Insights</a> |
+          <a href="/mission">Mission Statement</a> |
+          <a href="/feedback">Feedback</a> |
+          <a href="/privacy">Privacy Policy</a>
+        </nav>
+        <p>
+          <small>
+            © 2025 RMIT University - Global Vaccination Initiatives | Empowering
+            informed global health decisions
+          </small>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

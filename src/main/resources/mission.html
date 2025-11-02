@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mission Statement & Personas - Global Health Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="common.css" />
+  <link rel="icon" href="logo_small.png" type="image/png" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <div class="simple-topnav">
+    <a href="/" class="nav-logo-link">
+      <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+    </a>
+    <div class="nav-links">
+      <a href="/">Homepage</a>
+      <a href="/explore">Explore Data</a>
+      <a href="/trending">Trending</a>
+      <a href="/insights">Insights</a>
+      <a href="/mission" class="active">Mission Statement</a>
+      <a href="/feedback">Feedback</a>
+    </div>
+  </div>
+
+  <div class="header">
+    <h1 th:text="${title}"></h1>
+    <p class="subtitle">Promoting global health awareness through data-driven insights.</p>
+  </div>
+
+  <!-- Mission Statement Section -->
+  <div class="content data-page-content page-section mission-section">
+    <h2>Our Mission</h2>
+      <p>
+        The Global Health Dashboard is dedicated to promoting awareness and understanding of vaccination and infection trends
+        through accessible data insights. Our mission is to address the critical social challenge of preventable
+        infectious diseases by providing comprehensive, unbiased information that empowers families and communities.
+      </p>
+
+      <h3>How This Website Addresses the Social Challenge</h3>
+      <p>
+        Vaccination has been instrumental in eradicating diseases like smallpox and achieving global herd immunity for
+        others, such as polio. However, understanding global immunisation efforts requires access to detailed, trustworthy
+        data. Our platform bridges this gap by:
+      </p>
+      <ul>
+        <li><strong>Presenting unbiased data:</strong> We provide comprehensive WHO data in an informative and respectful manner</li>
+        <li><strong>Supporting families and communities:</strong> Whether you are a parent, educator, health professional, or researcher, our platform provides information at the level you need</li>
+        <li><strong>Enabling informed decisions:</strong> Through both simple summaries and detailed analysis tools, users can explore data that matters to them</li>
+        <li><strong>Promoting transparency:</strong> Clear visualisations and accessible filters help users understand vaccination coverage, disease trends, and health outcomes</li>
+      </ul>
+
+      <h3>How to Use This Website</h3>
+      <p>
+        Navigate through our platform to discover insights tailored to your needs:
+      </p>
+      <ul>
+        <li><strong>Homepage:</strong> View key statistics at a glance to understand global vaccination trends</li>
+        <li><strong>Explore Data:</strong> Filter and analyse vaccination rates by country, region, and time period</li>
+        <li><strong>Trending:</strong> Discover patterns in infection data across different economic groups</li>
+        <li><strong>Insights:</strong> Access deep-dive analyses including vaccination improvements and infection rate comparisons</li>
+        <li><strong>Feedback:</strong> Share your thoughts and help us improve the platform</li>
+      </ul>
+  </div>
+
+  <!-- Personas Section -->
+  <div class="content data-page-content page-section personas-intro-section">
+    <h2>Understanding Our Target Users</h2>
+      <p>
+        To ensure this platform meets the needs of real people, we've developed <strong>personas</strong>. These are detailed profiles
+        representing our target user groups. These personas guide our design decisions and help us create a user experience
+        that serves different needs effectively.
+      </p>
+      <p>
+        Each persona represents a different user in global health. This includes parents and educators from the Family Group
+        who need clear vaccination information for their children, as well as health professionals and researchers from the
+        Community Group who need detailed data for analysis and policy work. By understanding their goals, needs, and skills,
+        we can ensure our platform provides relevant, accessible information for everyone.
+      </p>
+  </div>
+
+  <div class="content">
+    <!-- Personas Heading -->
+    <div class="section-header">
+      <h2>Meet Our Personas</h2>
+    </div>
+
+    <!-- Error Message -->
+    <div th:if="${error}" class="error-message">
+      <strong>Error:</strong> <span th:text="${error}"></span>
+    </div>
+
+    <!-- Personas Container -->
+    <div class="personas-container" th:if="${personas}">
+
+      <div class="persona-card" th:each="p : ${personas}">
+
+        <!-- Image -->
+        <div class="persona-image">
+          <img th:src="@{/{file}(file=${p.image})}" alt="Profile Image" />
+          <p class="image-credit" th:text="${p.imageCredit}"></p>
+        </div>
+
+        <!-- Text Content -->
+        <div class="persona-info">
+          <h3 th:text="|${p.title} ${p.name} (${p.age})|"></h3>
+          <p><strong>Occupation:</strong> <span th:text="${p.occupation}"></span></p>
+          <p><strong>Education:</strong> <span th:text="${p.education}"></span></p>
+          <p><strong>Location:</strong> <span th:text="${p.location}"></span></p>
+          <p><strong>Language:</strong> <span th:text="${p.language}"></span></p>
+          <p><strong>Disability:</strong> <span th:text="${p.disability}"></span></p>
+
+          <p><strong>Needs:</strong></p>
+          <ul>
+            <li th:each="n : ${p.needsList}" th:text="${n}"></li>
+          </ul>
+
+          <p><strong>Goals:</strong></p>
+          <ul>
+            <li th:each="g : ${p.goalsList}" th:text="${g}"></li>
+          </ul>
+
+          <p><strong>Skills:</strong></p>
+          <ul>
+            <li th:each="s : ${p.skillsList}" th:text="${s}"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Contributors Section -->
+  <div class="content data-page-content page-section contributors-section">
+    <h2>Project Contributors</h2>
+      <p>
+        This project was developed as part of COSC2803 Java Programming Studio 1 at RMIT University. The implementation
+        was divided into two parallel sub-task streams (A and B), each covering three complexity levels: Green
+        (foundational), Orange (intermediate), and Red (advanced).
+      </p>
+
+      <div class="subtask-explanation">
+        <h3>Sub-Task Breakdown</h3>
+        <div class="subtask-grid">
+          <div class="subtask-card">
+            <h4>Sub-Task A</h4>
+            <ul>
+              <li><strong>Level 1 <span class="level-green">Green</span>:</strong> Landing Page with data snapshot</li>
+              <li><strong>Level 2 <span class="level-orange">Orange</span>:</strong> Focused view of vaccination rates by country and region</li>
+              <li><strong>Level 3 <span class="level-red">Red</span>:</strong> Identify countries with biggest improvement in vaccination rates</li>
+            </ul>
+          </div>
+          <div class="subtask-card">
+            <h4>Sub-Task B</h4>
+            <ul>
+              <li><strong>Level 1 <span class="level-green">Green</span>:</strong> Mission Statement and Personas</li>
+              <li><strong>Level 2 <span class="level-orange">Orange</span>:</strong> Focused view of infection data by economic status</li>
+              <li><strong>Level 3 <span class="level-red">Red</span>:</strong> Identify countries with above average infection rates</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3>Team Members</h3>
+      <table class="student-table">
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Sub-Task</th>
+            <th>Pages Implemented</th>
+            <th>Levels Completed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>S3968936</td>
+            <td>Thomas Young</td>
+            <td>B</td>
+            <td>Homepage, Mission Statement, Personas, Feedback, Privacy Policy</td>
+            <td>
+              <span class="level-green">Green</span>
+              <span class="level-orange">Orange</span>
+              <span class="level-red">Red</span>
+            </td>
+          </tr>
+          <tr>
+            <td>S4055262</td>
+            <td>Yukheang Kang</td>
+            <td>A</td>
+            <td>Explore Data, Trending, Insights</td>
+            <td>
+              <span class="level-green">Green</span>
+              <span class="level-orange">Orange</span>
+              <span class="level-red">Red</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><strong>Global Health Dashboard</strong></p>
+      <nav class="footer-links">
+        <a href="/">Homepage</a> |
+        <a href="/explore">Explore Data</a> |
+        <a href="/trending">Trending</a> |
+        <a href="/insights">Insights</a> |
+        <a href="/mission">Mission Statement</a> |
+        <a href="/feedback">Feedback</a> |
+        <a href="/privacy">Privacy Policy</a>
+      </nav>
+      <p>
+        <small>
+          © 2025 RMIT University - Global Vaccination Initiatives |
+          Empowering informed global health decisions
+        </small>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Privacy Policy - Global Health Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="common.css" />
+  <link rel="icon" href="logo_small.png" type="image/png" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <div class="simple-topnav">
+    <a href="/" class="nav-logo-link">
+      <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+    </a>
+    <div class="nav-links">
+      <a href="/">Homepage</a>
+      <a href="/explore">Explore Data</a>
+      <a href="/trending">Trending</a>
+      <a href="/insights">Insights</a>
+      <a href="/mission">Mission Statement</a>
+      <a href="/feedback">Feedback</a>
+    </div>
+  </div>
+
+  <div class="header">
+    <h1 th:text="${title}"></h1>
+    <p class="subtitle">Your privacy and data protection</p>
+  </div>
+
+  <div class="content">
+    <!-- Privacy Policy Section -->
+    <div class="privacy-section page-section">
+      <h2>Privacy Policy</h2>
+      <p>
+        At the Global Health Dashboard, we value your privacy and are committed to protecting any personal information
+        you may share whilst using this platform. This privacy policy outlines how we handle data on this educational project.
+      </p>
+
+      <h3>Information We Collect</h3>
+      <p>
+        This platform is an educational project developed for COSC2803 at RMIT University. We do <strong>not collect
+        sensitive personal data</strong> unless voluntarily provided through forms (e.g., feedback submissions). Any
+        information submitted is used solely for educational purposes and platform improvement.
+      </p>
+
+      <h3>How We Use Your Information</h3>
+      <p>
+        Any data collected through feedback forms is used to:
+      </p>
+      <ul>
+        <li>Improve the user experience and functionality of the platform</li>
+        <li>Understand user needs and platform effectiveness</li>
+        <li>Respond to enquiries and feedback</li>
+      </ul>
+      <p>
+        We do <strong>not sell, trade, or share your information with third parties</strong>.
+      </p>
+
+      <h3>Data Security</h3>
+      <p>
+        We use standard security measures to safeguard information stored on our systems. As this is an educational
+        project, we encourage users to avoid submitting sensitive personal information through any forms on this platform.
+      </p>
+
+      <h3>Your Consent</h3>
+      <p>
+        By using this platform, you consent to the practices described in this policy. If you have any questions or
+        concerns about how your information is handled, please be aware this is a student project and data handling
+        follows RMIT University's guidelines for educational purposes.
+      </p>
+
+      <p class="privacy-note">
+        <strong>Note:</strong> This is an educational project. For demonstration purposes only.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><strong>Global Health Dashboard</strong></p>
+      <nav class="footer-links">
+        <a href="/">Homepage</a> |
+        <a href="/explore">Explore Data</a> |
+        <a href="/trending">Trending</a> |
+        <a href="/insights">Insights</a> |
+        <a href="/mission">Mission Statement</a> |
+        <a href="/feedback">Feedback</a> |
+        <a href="/privacy">Privacy Policy</a>
+      </nav>
+      <p>
+        <small>
+          © 2025 RMIT University - Global Vaccination Initiatives |
+          Empowering informed global health decisions
+        </small>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

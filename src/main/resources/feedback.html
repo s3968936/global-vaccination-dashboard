@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta charset="UTF-8" />
+   <title>Feedback - Global Health Dashboard</title>
+   <link rel="stylesheet" type="text/css" href="common.css" />
+   <link rel="icon" href="logo_small.png" type="image/png" />
+</head>
+<body>
+   <!-- Top Navigation -->
+   <div class="simple-topnav">
+      <a href="/" class="nav-logo-link">
+        <img src="logo.png" class="nav-logo" alt="Global Health Dashboard Logo" />
+      </a>
+      <div class="nav-links">
+        <a href="/">Homepage</a>
+        <a href="/explore">Explore Data</a>
+        <a href="/trending">Trending</a>
+        <a href="/insights">Insights</a>
+        <a href="/mission">Mission Statement</a>
+        <a href="/feedback" class="active">Feedback</a>
+      </div>
+   </div>
+   
+   <div class="header">
+      <h1 th:text="${title}"></h1>
+      <p class="subtitle">Share your thoughts and help us improve</p>
+   </div>
+
+   <div class="content">
+      <div class="feedback-card">
+          <!-- Optional success message -->
+          <div class="success-message" th:if="${submitted}">
+              Thank you, <span th:text="${name}"></span>, for your feedback!
+          </div>
+
+          <form action="/feedback" method="POST" class="feedback-form">
+              <div class="combo-box-simple">
+                  <label for="name">Your Name:</label>
+                  <input type="text" id="name" name="name" placeholder="Enter your name" required />
+              </div>
+
+              <div class="combo-box-simple">
+                  <label for="email">Your Email:</label>
+                  <input type="email" id="email" name="email" placeholder="Enter your email address" required />
+              </div>
+
+              <div class="combo-box-simple">
+                  <label for="feedback">Your Feedback:</label>
+                  <textarea id="feedback" name="feedback" rows="5" placeholder="Enter your feedback" required></textarea>
+              </div>
+
+              <div class="filter-actions">
+                  <button type="submit" class="apply-btn">Submit Feedback</button>
+              </div>
+          </form>
+      </div>
+   </div>
+
+   <!-- Footer -->
+   <footer class="footer">
+      <div class="footer-content">
+        <p><strong>Global Health Dashboard</strong></p>
+        <nav class="footer-links">
+          <a href="/">Homepage</a> |
+          <a href="/explore">Explore Data</a> |
+          <a href="/trending">Trending</a> |
+          <a href="/insights">Insights</a> |
+          <a href="/mission">Mission Statement</a> |
+          <a href="/feedback">Feedback</a> |
+          <a href="/privacy">Privacy Policy</a>
+        </nav>
+        <p><small>© 2025 RMIT University - Global Vaccination Initiatives | Empowering informed global health decisions</small></p>
+        <p class="footer-admin-link">
+          <small>
+            <a href="/secret-feedback-view">Admin</a>
+          </small>
+        </p>
+      </div>
+   </footer>
+</body>
+</html>
