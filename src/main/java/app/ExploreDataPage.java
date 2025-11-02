@@ -3,6 +3,8 @@ package app;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.Collections;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
@@ -161,6 +163,44 @@ public class ExploreDataPage implements Handler {
                 return; // Stop processing to prevent wrong data display
             }
 
+<<<<<<< HEAD
+=======
+            
+            //========================== ANTIGEN VALIDATION =========================
+            if(antigen != null && !antigen.isEmpty()) {
+                boolean hasLocationFilter = (country != null && !country.isEmpty()) || (region != null && !region.isEmpty());
+                if(!hasLocationFilter) {
+                    model.put("warning", "⚠️ Please select a Country or Region when filtering by Antigen.");
+                    
+                    // Keep form selections even when there's a warning for better UX
+                    model.put("selectedCountry", country);
+                    model.put("selectedRegion", region);
+                    model.put("selectedAntigen", antigen);
+                    model.put("selectedYearStart", yearStart);
+                    model.put("selectedYearEnd", yearEnd);
+                    
+                    context.render(TEMPLATE, model);
+                    return; // Stop processing to prevent wrong data display
+
+                }
+            }
+
+            // Dynamic country filtering - if region is selected, show only countries in that region
+            if (region != null && !region.isEmpty()) {
+                ArrayList<HashMap<String, String>> countriesInRegion = connection.getCountriesByRegion(region);
+                countryList.clear();
+                for (HashMap<String, String> countryMap : countriesInRegion) {
+                    countryList.add(countryMap.get("country"));
+                }
+            }
+
+            // Add updated lists to model (after potential filtering)
+            model.put("countries", countryList);
+            model.put("regions", regionList);
+            model.put("antigens", antigenList);
+            model.put("years", yearList);
+
+>>>>>>> 4c2693629aa59cd9492bdec4bde2efaaf30e2621
             // Check if any filters are applied (not just initial page load)
             boolean hasFilters = (country != null && !country.isEmpty()) ||
                                  (region != null && !region.isEmpty()) ||
@@ -176,7 +216,7 @@ public class ExploreDataPage implements Handler {
                 ArrayList<Vaccination> vaccinationData = connection.getVaccinationData(country, region, antigen, yearStart, yearEnd);
                 model.put("vaccinationData", vaccinationData);
 
-                            // Keep form selections for better user experience
+                // Keep form selections for better user experience
                 model.put("selectedCountry", country);
                 model.put("selectedRegion", region);
                 model.put("selectedAntigen", antigen);
@@ -192,22 +232,60 @@ public class ExploreDataPage implements Handler {
                     StringBuilder chartDataJson = new StringBuilder("[");
                     int validDataCount = 0;
 
-                    // Convert vaccination data to JSON format for Google Charts
-                    for (Vaccination data : vaccinationData) {
-                        int year = data.getYear();
-                        double coverage = data.getCoverage();
+                    // Check if antigen filter is applied
+                    boolean hasAntigenFilter = antigen != null && !antigen.isEmpty();
+                    
+                    if (hasAntigenFilter) {
+                        // Single antigen - use individual data points
+                        for (Vaccination data : vaccinationData) {
+                            int year = data.getYear();
+                            double coverage = data.getCoverage();
 
-                        // Only include valid coverage data (non-negative)
-                        if (coverage >= 0) {
+                            // Only include valid coverage data (non-negative)
+                            if (coverage >= 0) {
+                                if (validDataCount > 0) {
+                                    chartDataJson.append(",");
+                                }
+
+                                // Format as JSON array: ["year", coverage]
+                                chartDataJson.append("[\"")
+                                             .append(year)
+                                             .append("\", ")
+                                             .append(coverage)
+                                             .append("]");
+                                validDataCount++;
+                            }
+                        }
+                    } else {
+                        // No antigen filter - calculate average coverage per year
+                        Map<Integer, List<Double>> coverageByYear = new HashMap<>();
+                        
+                        // Group coverage data by year
+                        for (Vaccination data : vaccinationData) {
+                            int year = data.getYear();
+                            double coverage = data.getCoverage();
+                            
+                            // Only include valid coverage data (non-negative)
+                            if (coverage >= 0) {
+                                coverageByYear.computeIfAbsent(year, k -> new ArrayList<>()).add(coverage);
+                            }
+                        }
+                        
+                        // Calculate average for each year and sort by year
+                        List<Integer> sortedYears = new ArrayList<>(coverageByYear.keySet());
+                        Collections.sort(sortedYears);
+                        
+                        for (int year : sortedYears) {
+                            List<Double> coverages = coverageByYear.get(year);
+                            double average = coverages.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+                            
                             if (validDataCount > 0) {
                                 chartDataJson.append(",");
                             }
-
-                            // Format as JSON array: ["year", coverage]
                             chartDataJson.append("[\"")
                                          .append(year)
                                          .append("\", ")
-                                         .append(coverage)
+                                         .append(String.format("%.2f", average))
                                          .append("]");
                             validDataCount++;
                         }
@@ -216,8 +294,12 @@ public class ExploreDataPage implements Handler {
                     chartDataJson.append("]");
                     model.put("chartDataJson", chartDataJson.toString());
                     model.put("hasChartData", validDataCount > 0);
+                    
+                    // Add flag to indicate if we're showing average data
+                    model.put("showingAverageData", !hasAntigenFilter);
                 } else {
                     model.put("hasChartData", false);
+                    model.put("showingAverageData", false);
                 }
             }
 
@@ -252,9 +334,11 @@ public class ExploreDataPage implements Handler {
         // Add antigen/vaccine type information
         if (antigen != null && !antigen.isEmpty()) {
             title.append(" - ").append(antigen);
+        } else {
+            title.append(" - All Antigens (Average)");
         }
         
         return title.toString();
     }
+    
 }
-               
