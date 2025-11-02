@@ -160,7 +160,7 @@ public class ExploreDataPage implements Handler {
                                (region != null && !region.isEmpty());
     
             if (!hasLocationFilter) {
-                model.put("warning", "⚠️ Please select a Region or Country when filtering by Antigen. Showing data for all locations may result in overwhelming results.");
+                model.put("warning", "Please select a Region or Country when filtering by Antigen. Showing data for all locations may result in overwhelming results.");
                 
                 // Keep form selections for better UX
                 model.put("selectedCountry", country);
