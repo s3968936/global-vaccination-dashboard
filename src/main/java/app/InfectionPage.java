@@ -31,10 +31,13 @@ public class InfectionPage implements Handler {
             ArrayList<String> countries = connection.getCountries();
             ArrayList<String> years = connection.getYears();
 
+            HashMap<String, ArrayList<String>> economicStatusCountries = connection.getEconomicStatusForCountry();
+
             model.put("infectionTypes", infectionTypes);
             model.put("economicStatuses", economicStatuses);
             model.put("countries", countries);
             model.put("years", years);
+            model.put("economicStatusCountries", economicStatusCountries);
 
             // Get filter parameters from request
             String country = context.queryParam("country");

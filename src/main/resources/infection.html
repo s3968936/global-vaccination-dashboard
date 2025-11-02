@@ -45,12 +45,11 @@
       <h2>Explore Global Infection Data</h2>
       <p>
         Track vaccine-preventable diseases and infection patterns worldwide.
-        This page provides global infection case data that lets you view
-        disease burden across countries, economic development levels,
-        and time periods. Use the filters below to compare infection rates,
-        identify outbreak patterns, and understand the relationship between
-        economic status and disease spread. Results can be saved for
-        your own use.
+        This page provides global infection case data that lets you view disease
+        burden across countries, economic development levels, and time periods.
+        Use the filters below to compare infection rates, identify outbreak
+        patterns, and understand the relationship between economic status and
+        disease spread. Results can be saved for your own use.
       </p>
 
       <!-- Error Message -->
@@ -85,28 +84,11 @@
         />
 
         <div class="filter-section">
-          <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
-            <strong>Note:</strong> All filters are optional. Select one or more filters to view data.
+          <p style="margin-bottom: 15px; color: #666; font-size: 14px">
+            <strong>Note:</strong> All filters are optional. Select one or more
+            filters to view data.
           </p>
           <div class="filter-grid">
-            <div class="combo-box-simple">
-              <label for="country">Country</label>
-              <input
-                type="text"
-                id="country"
-                name="country"
-                placeholder="Type or select country"
-                list="country-list"
-                th:value="${selectedCountry != null} ? ${selectedCountry} : ''"
-              />
-              <datalist id="country-list">
-                <option
-                  th:each="country : ${countries}"
-                  th:value="${country}"
-                ></option>
-              </datalist>
-            </div>
-
             <div class="combo-box-simple">
               <label for="economicStatus">Economic Status</label>
               <input
@@ -121,6 +103,24 @@
                 <option
                   th:each="status : ${economicStatuses}"
                   th:value="${status}"
+                ></option>
+              </datalist>
+            </div>
+
+            <div class="combo-box-simple">
+              <label for="country">Country</label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="Type or select country"
+                list="country-list"
+                th:value="${selectedCountry != null} ? ${selectedCountry} : ''"
+              />
+              <datalist id="country-list">
+                <option
+                  th:each="country : ${countries}"
+                  th:value="${country}"
                 ></option>
               </datalist>
             </div>
@@ -325,7 +325,10 @@
       <!-- Initial State -->
       <div th:if="${hasFilters == null or !hasFilters}">
         <div class="initial-state-box">
-          <p>Select one or more filters above to view infection data. Charts and data tables will appear here once you apply filters.</p>
+          <p>
+            Select one or more filters above to view infection data. Charts and
+            data tables will appear here once you apply filters.
+          </p>
         </div>
       </div>
     </div>
@@ -632,6 +635,43 @@
           exportBtn.disabled = false;
         }, 2000);
       }
+
+      // ADD the method to update country options based on economic status
+      const economicStatusCountries = /*[[${economicStatusCountries}]]*/ {};
+
+      function updateCountryOptions() {
+        const economicStatus = document
+          .getElementById("economicStatus")
+          .value.trim();
+        const countryDatalist = document.getElementById("country-list");
+
+        // Clear and rebuild datalist options
+        countryDatalist.innerHTML = "";
+
+        const countriesToShow =
+          economicStatus && economicStatusCountries[economicStatus]
+            ? economicStatusCountries[economicStatus]
+            : /*[[${countries}]]*/ [];
+
+        countriesToShow.forEach((country) => {
+          const option = document.createElement("option");
+          option.value = country;
+          countryDatalist.appendChild(option);
+        });
+      }
+
+      // Initialize dependent filtering when page loads
+      document.addEventListener("DOMContentLoaded", function () {
+        updateCountryOptions(); // Set initial state
+
+        // Add event listeners for economic status changes
+        document
+          .getElementById("economicStatus")
+          .addEventListener("input", updateCountryOptions);
+        document
+          .getElementById("economicStatus")
+          .addEventListener("change", updateCountryOptions);
+      });
     </script>
   </body>
 </html>
