@@ -155,6 +155,25 @@ public class ExploreDataPage implements Handler {
                 return; // Stop processing to prevent wrong data display
             }
 
+            if (antigen != null && !antigen.isEmpty()) {
+    boolean hasLocationFilter = (country != null && !country.isEmpty()) || 
+                               (region != null && !region.isEmpty());
+    
+            if (!hasLocationFilter) {
+                model.put("warning", "⚠️ Please select a Region or Country when filtering by Antigen. Showing data for all locations may result in overwhelming results.");
+                
+                // Keep form selections for better UX
+                model.put("selectedCountry", country);
+                model.put("selectedRegion", region);
+                model.put("selectedAntigen", antigen);
+                model.put("selectedYearStart", yearStart);
+                model.put("selectedYearEnd", yearEnd);
+                
+                context.render(TEMPLATE, model);
+                return; // Stop processing
+            }
+        }
+
             // Check if any filters are applied (not just initial page load)
             boolean hasFilters = (country != null && !country.isEmpty()) ||
                                  (region != null && !region.isEmpty()) ||
