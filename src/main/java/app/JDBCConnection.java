@@ -560,6 +560,44 @@ public class JDBCConnection {
         return economicStatuses;
     }
 
+    /*Get all the country that filter by the economic status */
+        public HashMap<String, ArrayList<String>> getEconomicStatusForCountry() {
+        HashMap<String, ArrayList<String>> mappings = new HashMap<>();
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            String query = "SELECT e.phase AS economic_status, c.name AS country " +
+                          "FROM Country c JOIN Economy e ON c.economy = e.economyID " +
+                          "ORDER BY e.phase, c.name";
+            
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                String economicStatus = resultSet.getString("economic_status");
+                String country = resultSet.getString("country");
+                
+                if (!mappings.containsKey(economicStatus)) {
+                    mappings.put(economicStatus, new ArrayList<>());
+                }
+                mappings.get(economicStatus).add(country);
+            }
+
+            statement.close();
+        } catch (SQLException e) {
+            System.err.println("Error getting economic status-country mappings: " + e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println("Error closing connection: " + e.getMessage());
+            }
+        }
+
+        return mappings;
+    }
+
     /**
      * Gets all countries for the dropdown filter
      */
