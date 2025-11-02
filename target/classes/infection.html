@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Infection Data - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
-    <!-- Google Charts Loader -->
+    <!-- Google Charts -->
     <script
       type="text/javascript"
       src="https://www.gstatic.com/charts/loader.js"
@@ -63,7 +63,7 @@
         <strong>Warning:</strong> <span th:text="${warning}"></span>
       </div>
 
-      <!-- Dataset Selector Tabs -->
+      <!-- Dataset Tabs -->
       <div class="dataset-selector">
         <div
           class="dataset-tab"
@@ -89,7 +89,6 @@
             <strong>Note:</strong> All filters are optional. Select one or more filters to view data.
           </p>
           <div class="filter-grid">
-            <!-- Country Combo Box -->
             <div class="combo-box-simple">
               <label for="country">Country</label>
               <input
@@ -108,7 +107,6 @@
               </datalist>
             </div>
 
-            <!-- Economic Status Combo Box -->
             <div class="combo-box-simple">
               <label for="economicStatus">Economic Status</label>
               <input
@@ -127,7 +125,6 @@
               </datalist>
             </div>
 
-            <!-- Infection Type Combo Box -->
             <div class="combo-box-simple">
               <label for="infectionType">Infection Type</label>
               <input
@@ -146,7 +143,6 @@
               </datalist>
             </div>
 
-            <!-- Year Combo Box -->
             <div class="combo-box-simple">
               <label for="yearStart">Year Range (2000-2024)</label>
               <div class="year-range">
@@ -178,7 +174,6 @@
             </div>
           </div>
 
-          <!-- Action Buttons -->
           <div class="filter-actions">
             <button type="submit" class="apply-btn">Apply Filters</button>
             <button type="button" onclick="clearFilters()" class="reset-btn">
@@ -188,12 +183,12 @@
         </div>
       </form>
 
-      <!-- Results Section -->
+      <!-- Results -->
       <div th:if="${hasFilters}">
         <div th:if="${infectionData != null and !infectionData.empty}">
           <h2>Infection Data Results</h2>
 
-          <!-- Chart Section -->
+          <!-- Chart -->
           <div class="chart-container" th:if="${hasChartData}">
             <h3>Infection Trend</h3>
             <div id="infection_chart" style="width: 100%; height: 400px"></div>
@@ -223,9 +218,7 @@
               border-left: 4px solid #3498db;
             "
           >
-            <!-- Data Table - Detailed tabular view of the filtered data -->
             <h3 style="margin: 0px; padding: 0">Detailed Data</h3>
-            <!-- PDF Export Button -->
             <div
               class="export-section"
               style="
@@ -257,7 +250,6 @@
                   Export Data to PDF
                 </button>
 
-                <!-- CSV Export Button -->
                 <button
                   onclick="exportToCSV()"
                   class="export-btn"
@@ -285,7 +277,6 @@
             </div>
           </div>
 
-          <!-- Table Controls -->
           <table class="data-table" id="resultsTable">
             <thead>
               <tr>
@@ -307,14 +298,12 @@
             </tbody>
           </table>
 
-          <!-- Results Count -->
           <div style="margin-top: 10px; color: #666; font-size: 14px">
             Showing <span id="visibleRowCount">0</span> of
             <span th:text="${infectionData.size()}">0</span> rows
           </div>
         </div>
 
-        <!-- Show message when no results -->
         <div th:if="${infectionData == null or infectionData.empty}">
           <div
             style="
@@ -333,7 +322,7 @@
         </div>
       </div>
 
-      <!-- Initial State - Displayed when no filters have been applied yet -->
+      <!-- Initial State -->
       <div th:if="${hasFilters == null or !hasFilters}">
         <div class="initial-state-box">
           <p>Select one or more filters above to view infection data. Charts and data tables will appear here once you apply filters.</p>
@@ -361,7 +350,7 @@
       </div>
     </footer>
 
-    <!-- JavaScript Section -->
+    <!-- Chart Script -->
     <script th:inline="javascript">
       google.charts.load("current", { packages: ["corechart"] });
 

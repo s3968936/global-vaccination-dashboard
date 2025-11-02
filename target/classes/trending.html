@@ -9,7 +9,7 @@
     <title>Trending - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
     <link rel="icon" href="logo_small.png" type="image/png" />
-    <!-- Google Charts Loader -->
+    <!-- Google Charts -->
     <script
       type="text/javascript"
       src="https://www.gstatic.com/charts/loader.js"
@@ -66,7 +66,7 @@
             <strong>Note:</strong> Fields marked with <span style="color: #dc3545;">*</span> are required.
           </p>
           <div class="filter-grid">
-            <!-- Economic Status Filter (Required) -->
+            
             <div class="combo-box-simple">
               <label for="economicStatus"
                 >Economic Status <span class="required-field">*</span></label
@@ -88,7 +88,7 @@
               </datalist>
             </div>
 
-            <!-- Infection Type Filter (Required) -->
+            
             <div class="combo-box-simple">
               <label for="infectionType"
                 >Infection Type <span class="required-field">*</span></label
@@ -110,7 +110,7 @@
               </datalist>
             </div>
 
-            <!-- Year Range Filter -->
+            
             <div class="combo-box-simple">
               <label>Year Range (2000-2024, Optional)</label>
               <div class="year-range">
@@ -141,7 +141,7 @@
             </div>
           </div>
 
-          <!-- Filter Actions -->
+          
           <div class="filter-actions">
             <button type="submit" class="apply-btn">Apply Filters</button>
             <button
@@ -155,9 +155,9 @@
         </div>
       </form>
 
-      <!-- Data Display Section -->
+      <!-- Results -->
       <div th:if="${summaryData != null && !summaryData.empty}">
-        <!-- Summary Table: Aggregated by Economic Status -->
+        
         <div class="data-card">
           <h3>Economic Status Comparison</h3>
           <p>
@@ -186,7 +186,7 @@
             </tbody>
           </table>
 
-          <!-- Chart and Data Table Container -->
+          
           <div class="chart-table-container">
             <div id="economic_comparison_chart" class="chart-area"></div>
             <div class="data-table-container">
@@ -209,9 +209,9 @@
           </div>
         </div>
 
-        <!-- Visual Analytics Section -->
+        <!-- Charts -->
         <div th:if="${detailedData != null && !detailedData.empty}">
-          <!-- Cases Over Time Chart -->
+          
           <div class="data-card">
             <h3>Infection Cases Over Time</h3>
             <p>
@@ -245,7 +245,7 @@
             </div>
           </div>
 
-          <!-- Top Countries Bar Chart -->
+          
           <div class="data-card">
             <h3>Most Affected Countries</h3>
             <p>
@@ -274,7 +274,7 @@
             </div>
           </div>
 
-          <!-- Distribution Pie Chart -->
+          
           <div class="data-card">
             <h3>Cases Distribution</h3>
             <p>
@@ -304,7 +304,7 @@
             </div>
           </div>
 
-          <!-- Additional Chart Placeholder -->
+          
           <div class="data-card">
             <h3>Average Cases Per Country by Economic Status</h3>
             <p>
@@ -335,7 +335,7 @@
         </div>
       </div>
 
-      <!-- No Data Message -->
+      
       <div th:if="${summaryData == null || summaryData.empty}" class="initial-state-box">
         <p>Select an <strong>Economic Status</strong> and <strong>Infection Type</strong> above to view trending data. Charts and summary tables will appear here once you apply filters.</p>
       </div>
@@ -361,7 +361,7 @@
       </div>
     </footer>
 
-    <!-- JavaScript Section -->
+    <!-- Chart Script -->
     <script th:inline="javascript">
       google.charts.load("current", { packages: ["corechart"] });
 

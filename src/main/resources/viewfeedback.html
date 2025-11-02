@@ -32,7 +32,7 @@
             Total Feedback Messages: <span th:text="${feedbackCount}">0</span>
           </h2>
 
-          <!-- Display feedback messages -->
+          
           <div th:if="${feedbackList != null && !feedbackList.empty}">
               <div th:each="feedback : ${feedbackList}"
                    style="background-color: #f8f9fa;
@@ -66,7 +66,7 @@
               </div>
           </div>
 
-          <!-- No feedback message -->
+          
           <div th:if="${feedbackList == null || feedbackList.empty}"
                style="background-color: #e9ecef;
                       padding: 30px;

@@ -28,7 +28,7 @@
     <p class="subtitle">Promoting global health awareness through data-driven insights.</p>
   </div>
 
-  <!-- Mission Statement Section -->
+  <!-- Mission Statement -->
   <div class="content data-page-content page-section mission-section">
     <h2>Our Mission</h2>
       <p>
@@ -63,7 +63,7 @@
       </ul>
   </div>
 
-  <!-- Personas Section -->
+  <!-- Personas Introduction -->
   <div class="content data-page-content page-section personas-intro-section">
     <h2>Understanding Our Target Users</h2>
       <p>
@@ -80,7 +80,6 @@
   </div>
 
   <div class="content">
-    <!-- Personas Heading -->
     <div class="section-header">
       <h2>Meet Our Personas</h2>
     </div>
@@ -90,18 +89,15 @@
       <strong>Error:</strong> <span th:text="${error}"></span>
     </div>
 
-    <!-- Personas Container -->
     <div class="personas-container" th:if="${personas}">
 
       <div class="persona-card" th:each="p : ${personas}">
 
-        <!-- Image -->
         <div class="persona-image">
           <img th:src="@{/{file}(file=${p.image})}" alt="Profile Image" />
           <p class="image-credit" th:text="${p.imageCredit}"></p>
         </div>
 
-        <!-- Text Content -->
         <div class="persona-info">
           <h3 th:text="|${p.title} ${p.name} (${p.age})|"></h3>
           <p><strong>Occupation:</strong> <span th:text="${p.occupation}"></span></p>
@@ -129,7 +125,7 @@
     </div>
   </div>
 
-  <!-- Project Contributors Section -->
+  <!-- Contributors -->
   <div class="content data-page-content page-section contributors-section">
     <h2>Project Contributors</h2>
       <p>

@@ -5,14 +5,14 @@
     <title>Explore Data - Global Health Dashboard</title>
     <link rel="stylesheet" type="text/css" href="common.css" />
     <link rel="icon" href="logo_small.png" type="image/png" />
-    <!-- Load Google Charts for data visualization -->
+    <!-- Google Charts -->
     <script
       type="text/javascript"
       src="https://www.gstatic.com/charts/loader.js"
     ></script>
   </head>
   <body class="explore-page" xmlns="http://www.thymeleaf.org">
-    <!-- Top Navigation Bar -->
+    <!-- Top Navigation -->
     <div class="simple-topnav">
       <a href="/" class="nav-logo-link">
         <img
@@ -39,7 +39,7 @@
       </p>
     </div>
 
-    <!-- Main Content Area -->
+    <!-- Content -->
     <div class="content data-page-content">
       <h2>Explore Global Vaccination Data</h2>
       <p>
@@ -49,17 +49,17 @@
         interactive charts and detailed tables that can be saved for your own use.
       </p>
 
-      <!-- Error Message Display -->
+      <!-- Error Message -->
       <div th:if="${error}" class="error-message">
         <strong>Error:</strong> <span th:text="${error}"></span>
       </div>
 
-      <!-- Warning Message for Year Validation -->
+      <!-- Warning Message -->
       <div th:if="${warning}" class="warning-message">
         <strong>Warning:</strong> <span th:text="${warning}"></span>
       </div>
 
-      <!-- Dataset Selector Tabs - Choose between Vaccination and Infection Data -->
+      <!-- Dataset Tabs -->
       <div class="dataset-selector">
         <div
           class="dataset-tab active"
@@ -77,7 +77,7 @@
         </div>
       </div>
 
-      <!-- Filter Form - Users can apply multiple filters to refine their data view -->
+      <!-- Filter Form -->
       <form method="get" action="/explore" id="filter-form">
         <input
           type="hidden"
@@ -91,7 +91,6 @@
             <strong>Note:</strong> All filters are optional. Select one or more filters to view data.
           </p>
           <div class="filter-grid">
-            <!-- Region Filter - Select geographic region -->
             <div class="combo-box-simple">
               <label for="region">Region</label>
               <input
@@ -111,7 +110,6 @@
               </datalist>
             </div>
 
-            <!-- Country Filter - Select specific country or leave empty for all -->
             <div class="combo-box-simple">
               <label for="country">Country</label>
               <input
@@ -131,7 +129,6 @@
               </datalist>
             </div>
 
-            <!-- Antigen Filter - Select specific vaccine type -->
             <div class="combo-box-simple">
               <label for="antigen" id="antigen-label">Antigen</label>
               <input
@@ -151,7 +148,6 @@
               </datalist>
             </div>
 
-            <!-- Year Range Filter - Select start and end years for data range -->
             <div class="combo-box-simple">
               <label for="yearStart">Year Range (2000-2024)</label>
               <div class="year-range">
@@ -183,7 +179,6 @@
             </div>
           </div>
 
-          <!-- Action Buttons -->
           <div class="filter-actions">
             <button type="submit" class="apply-btn">Apply Filters</button>
             <button type="button" onclick="clearFilters()" class="reset-btn">
@@ -193,18 +188,18 @@
         </div>
       </form>
 
-      <!-- Results Section - Displayed after filters are applied -->
+      <!-- Results -->
       <div th:if="${hasFilters}">
         <div th:if="${vaccinationData != null and !vaccinationData.empty}">
           <h2>Vaccination Data Results</h2>
 
-          <!-- Chart Section - Visual representation of coverage trends -->
+          <!-- Chart -->
           <div class="chart-container" th:if="${hasChartData}">
             <h3>Coverage Trend</h3>
             <div id="coverage_chart" class="chart-area"></div>
           </div>
 
-          <!-- Message when no chart data is available -->
+
           <div
             class="chart-container"
             th:if="${hasChartData != null and !hasChartData}"
@@ -216,9 +211,7 @@
           </div>
 
           <div class="data-table-header">
-            <!-- Data Table - Detailed tabular view of the filtered data -->
             <h3>Detailed Data</h3>
-            <!-- Export Buttons -->
             <div class="export-section">
               <div class="export-buttons-container">
                 <button
@@ -267,7 +260,6 @@
           </table>
         </div>
 
-        <!-- Message when no results are found for the selected filters -->
         <div th:if="${vaccinationData == null or vaccinationData.empty}">
           <div class="no-results-box">
             <h3>No Results Found</h3>
@@ -279,7 +271,7 @@
         </div>
       </div>
 
-      <!-- Initial State - Displayed when no filters have been applied yet -->
+      <!-- Initial State -->
       <div th:if="${hasFilters == null or !hasFilters}">
         <div class="initial-state-box">
           <p>
@@ -290,7 +282,7 @@
       </div>
     </div>
 
-    <!-- Footer Section -->
+    <!-- Footer -->
     <footer class="footer">
       <div class="footer-content">
         <p><strong>Global Health Dashboard</strong></p>
@@ -310,7 +302,7 @@
       </div>
     </footer>
 
-    <!-- JavaScript for Chart Visualization -->
+    <!-- Chart Script -->
     <script th:inline="javascript">
       // Load Google Charts library
       google.charts.load("current", { packages: ["corechart"] });
