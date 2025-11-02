@@ -1298,3 +1298,132 @@ img.top-image {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* ==========================================================================
+   10. Utility Classes for Forms & Data Display
+   ========================================================================== */
+
+/* Filter section note text */
+.filter-note {
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Required field indicator span */
+.required-indicator {
+  color: #dc3545;
+}
+
+/* Chart container with fixed dimensions */
+.infection-chart-container {
+  width: 100%;
+  height: 400px;
+}
+
+/* Row count information display */
+.row-count-info {
+  margin-top: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Info box with yellow background */
+.info-box {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #856404;
+}
+
+/* Map loading error message */
+.map-loading-error {
+  text-align: center;
+  padding: 50px;
+  color: #666;
+}
+
+/* ==========================================================================
+   11. View Feedback Page Styles
+   ========================================================================== */
+
+/* Feedback view container */
+.feedback-view-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Feedback count heading */
+.feedback-count-heading {
+  color: #0078d7;
+  margin-bottom: 20px;
+}
+
+/* Individual feedback item card */
+.feedback-item {
+  background-color: #f8f9fa;
+  border-left: 4px solid #0078d7;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+/* Feedback item header with name and timestamp */
+.feedback-item-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Feedback author name */
+.feedback-author-name {
+  color: #0078d7;
+  font-size: 1.1em;
+}
+
+/* Feedback author email */
+.feedback-author-email {
+  color: #666;
+  margin-left: 10px;
+}
+
+/* Feedback timestamp */
+.feedback-timestamp {
+  color: #666;
+  font-size: 0.9em;
+}
+
+/* Feedback message content box */
+.feedback-message-box {
+  background-color: white;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  line-height: 1.6;
+}
+
+/* Feedback message text */
+.feedback-message-text {
+  margin: 0;
+  color: #333;
+  white-space: pre-wrap;
+}
+
+/* Empty feedback list message */
+.feedback-empty-state {
+  background-color: #e9ecef;
+  padding: 30px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.feedback-empty-message {
+  font-size: 1.1rem;
+  color: #666;
+}

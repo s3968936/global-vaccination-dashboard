@@ -62,8 +62,8 @@
       <!-- Filter Form -->
       <form method="get" action="/insights" id="filter-form">
         <div class="filter-section">
-          <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
-            <strong>Note:</strong> Fields marked with <span style="color: #dc3545;">*</span> are required.
+          <p class="filter-note">
+            <strong>Note:</strong> Fields marked with <span class="required-indicator">*</span> are required.
           </p>
           <div class="filter-grid">
             
@@ -284,7 +284,7 @@
           chart.draw(data, options);
         } catch (error) {
           chartDiv.innerHTML = `
-                <div style="text-align: center; padding: 50px; color: #666;">
+                <div class="map-loading-error">
                     <h3>Map Loading Issue</h3>
                     <p>${error.message}</p>
                     <p>Please check the browser console for details.</p>

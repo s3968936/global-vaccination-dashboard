@@ -26,53 +26,39 @@
       <p class="subtitle">All feedback submissions</p>
    </div>
 
-   <div class='content' style="display: block !important;">
-      <div style="background-color: white; padding: 30px; border-radius: 10px; max-width: 1200px; margin: 0 auto;">
-          <h2 style="color: #0078d7; margin-bottom: 20px;">
+   <div class='content data-page-content'>
+      <div class="feedback-view-container">
+          <h2 class="feedback-count-heading">
             Total Feedback Messages: <span th:text="${feedbackCount}">0</span>
           </h2>
 
-          
-          <div th:if="${feedbackList != null && !feedbackList.empty}">
-              <div th:each="feedback : ${feedbackList}"
-                   style="background-color: #f8f9fa;
-                          border-left: 4px solid #0078d7;
-                          padding: 20px;
-                          margin-bottom: 20px;
-                          border-radius: 8px;
-                          box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
 
-                  <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+          <div th:if="${feedbackList != null && !feedbackList.empty}">
+              <div th:each="feedback : ${feedbackList}" class="feedback-item">
+
+                  <div class="feedback-item-header">
                       <div>
-                          <strong style="color: #0078d7; font-size: 1.1em;" th:text="${feedback.name}">Name</strong>
-                          <span style="color: #666; margin-left: 10px;">
+                          <strong class="feedback-author-name" th:text="${feedback.name}">Name</strong>
+                          <span class="feedback-author-email">
                               (<span th:text="${feedback.email}">email@example.com</span>)
                           </span>
                       </div>
-                      <div style="color: #666; font-size: 0.9em;" th:text="${feedback.submitted_at}">
+                      <div class="feedback-timestamp" th:text="${feedback.submitted_at}">
                           Submitted at
                       </div>
                   </div>
 
-                  <div style="background-color: white;
-                              padding: 15px;
-                              border-radius: 5px;
-                              margin-top: 10px;
-                              line-height: 1.6;">
-                      <p style="margin: 0; color: #333; white-space: pre-wrap;" th:text="${feedback.feedback}">
+                  <div class="feedback-message-box">
+                      <p class="feedback-message-text" th:text="${feedback.feedback}">
                           Feedback message
                       </p>
                   </div>
               </div>
           </div>
 
-          
-          <div th:if="${feedbackList == null || feedbackList.empty}"
-               style="background-color: #e9ecef;
-                      padding: 30px;
-                      border-radius: 10px;
-                      text-align: center;">
-              <p style="font-size: 1.1rem; color: #666;">No feedback messages yet.</p>
+
+          <div th:if="${feedbackList == null || feedbackList.empty}" class="feedback-empty-state">
+              <p class="feedback-empty-message">No feedback messages yet.</p>
           </div>
       </div>
    </div>
