@@ -135,6 +135,12 @@ public class ExploreDataPage implements Handler {
                         warningMessage = "Start year cannot be greater than end year.";
                     }
                 }
+
+                // Check if only end year is provided without start year
+                if ((yearStart == null || yearStart.isEmpty()) && (yearEnd != null && !yearEnd.isEmpty())) {
+                    validYearRange = false;
+                    warningMessage = "Please enter a start year first before entering an end year.";
+                }
             } catch (NumberFormatException e) {
                 validYearRange = false;
                 warningMessage = "Please enter valid numeric years.";
@@ -143,6 +149,7 @@ public class ExploreDataPage implements Handler {
             // If year range is invalid, show warning and stop processing
             if (!validYearRange) {
                 model.put("warning", warningMessage);
+                model.put("hasFilters", false);
 
                 // Keep form selections even when there's a warning for better UX
                 model.put("selectedCountry", country);
@@ -164,6 +171,7 @@ public class ExploreDataPage implements Handler {
                 
                 if (!hasLocationFilter) {
                     model.put("warning", "Please select a Region or Country when filtering by Antigen. Showing data for all locations may result in overwhelming results.");
+                    model.put("hasFilters", false);
                     
                     // Keep form selections for better UX
                     model.put("selectedCountry", country);

@@ -42,11 +42,13 @@
     <div class="content data-page-content">
       <h2>Vaccination Rate Improvements</h2>
       <p>
-        See which countries have made the greatest progress in vaccination coverage over time. Select a year range
-        and vaccine type to see how vaccination rates have improved globally. The interactive world map shows
-        improvement as percentage increases, with darker blue showing greater improvement. This helps
-        identify successful vaccination programmes and countries that have made significant progress in protecting their
-        populations against preventable diseases.
+        See which countries have made the greatest progress in vaccination
+        coverage over time. Select a year range and vaccine type to see how
+        vaccination rates have improved globally. The interactive world map
+        shows improvement as percentage increases, with darker blue showing
+        greater improvement. This helps identify successful vaccination
+        programmes and countries that have made significant progress in
+        protecting their populations against preventable diseases.
       </p>
 
       <!-- Error Message -->
@@ -63,12 +65,14 @@
       <form method="get" action="/insights" id="filter-form">
         <div class="filter-section">
           <p class="filter-note">
-            <strong>Note:</strong> Fields marked with <span class="required-indicator">*</span> are required.
+            <strong>Note:</strong> Fields marked with
+            <span class="required-indicator">*</span> are required.
           </p>
           <div class="filter-grid">
-            
             <div class="combo-box-simple">
-              <label for="start_year">Start Year <span class="required-field">*</span></label>
+              <label for="start_year"
+                >Start Year <span class="required-field">*</span></label
+              >
               <input
                 type="number"
                 id="start_year"
@@ -81,9 +85,10 @@
               />
             </div>
 
-
             <div class="combo-box-simple">
-              <label for="end_year">End Year <span class="required-field">*</span></label>
+              <label for="end_year"
+                >End Year <span class="required-field">*</span></label
+              >
               <input
                 type="number"
                 id="end_year"
@@ -96,7 +101,6 @@
               />
             </div>
 
-            
             <div class="combo-box-simple">
               <label for="country">Country (Optional)</label>
               <input
@@ -108,11 +112,13 @@
                 th:value="${selectedCountry}"
               />
               <datalist id="country-list">
-                <option th:each="country : ${countries}" th:value="${country}"></option>
+                <option
+                  th:each="country : ${countries}"
+                  th:value="${country}"
+                ></option>
               </datalist>
             </div>
 
-            
             <div class="combo-box-simple">
               <label for="antigen">Vaccine Type (Optional)</label>
               <input
@@ -125,12 +131,14 @@
                 th:value="${selectedAntigen}"
               />
               <datalist id="antigen-list">
-                <option th:each="antigen : ${antigens}" th:value="${antigen}"></option>
+                <option
+                  th:each="antigen : ${antigens}"
+                  th:value="${antigen}"
+                ></option>
               </datalist>
             </div>
           </div>
 
-          
           <div class="filter-actions">
             <button type="submit" class="apply-btn">Apply Filters</button>
             <button
@@ -146,14 +154,16 @@
 
       <!-- Initial State -->
       <div th:unless="${hasData}" class="initial-state-box">
-        <p>Select a start year and end year to view vaccination rate improvements.</p>
+        <p>
+          Select a start year and end year to view vaccination rate
+          improvements.
+        </p>
       </div>
     </div>
 
     <!-- Results -->
     <div th:if="${hasData}" class="insights-results-card">
       <div class="insights-container">
-        
         <div class="country-table">
           <h3>Country Improvement Data</h3>
           <table class="data-table">
@@ -168,8 +178,16 @@
             <tbody>
               <tr th:each="item : ${geoData}">
                 <td th:text="${item.country_name}">Country</td>
-                <td th:text="${item.initial_coverage != null ? item.initial_coverage + '%' : 'No Data'}">0%</td>
-                <td th:text="${item.final_coverage != null ? item.final_coverage + '%' : 'No Data'}">0%</td>
+                <td
+                  th:text="${item.initial_coverage != null ? item.initial_coverage + '%' : 'No Data'}"
+                >
+                  0%
+                </td>
+                <td
+                  th:text="${item.final_coverage != null ? item.final_coverage + '%' : 'No Data'}"
+                >
+                  0%
+                </td>
                 <td
                   class="improvement-cell"
                   th:text="${item.improvement != null ? (item.improvement.startsWith('-') ? item.improvement : '+' + item.improvement) : 'No Data'}"
@@ -181,7 +199,6 @@
           </table>
         </div>
 
-        
         <div class="insights-map-container">
           <div id="regions_div"></div>
         </div>
@@ -249,7 +266,7 @@
                 "#4393c3", // Light blue - moderate improvement (+30)
                 "#2166ac", // Blue - good improvement (+50)
                 "#08519c", // Dark blue - excellent improvement (+70)
-                "#053061"  // Very dark blue - outstanding improvement (+100)
+                "#053061", // Very dark blue - outstanding improvement (+100)
               ],
               minValue: -35,
               maxValue: 100,
@@ -258,9 +275,9 @@
                 textStyle: {
                   color: "#333",
                   fontSize: 12,
-                  bold: false
-                }
-              }
+                  bold: false,
+                },
+              },
             },
             backgroundColor: "#e8ecf0",
             datalessRegionColor: "#d0d5db",

@@ -57,14 +57,14 @@ public class InfectionPage implements Handler {
                     int start = Integer.parseInt(yearStart);
                     if (start < minYear || start > maxYear) {
                         validYearRange = false;
-                        warningMessage = "⚠️ Start year must be between " + minYear + " and " + maxYear + ".";
+                        warningMessage = "Start year must be between " + minYear + " and " + maxYear + ".";
                     }
                 }
                 if (yearEnd != null && !yearEnd.isEmpty()) {
                     int end = Integer.parseInt(yearEnd);
                     if (end < minYear || end > maxYear) {
                         validYearRange = false;
-                        warningMessage = "⚠️ End year must be between " + minYear + " and " + maxYear + ".";
+                        warningMessage = "End year must be between " + minYear + " and " + maxYear + ".";
                     }
                 }
 
@@ -74,12 +74,19 @@ public class InfectionPage implements Handler {
                     int end = Integer.parseInt(yearEnd);
                     if (start > end) {
                         validYearRange = false;
-                        warningMessage = "⚠️ Start year cannot be greater than end year.";
+                        warningMessage = "Start year cannot be greater than end year.";
                     }
                 }
+
+                // Check if only end year is provided without start year
+                if ((yearStart == null || yearStart.isEmpty()) && (yearEnd != null && !yearEnd.isEmpty())) {
+                    validYearRange = false;
+                    warningMessage = "Please enter a start year first before entering an end year.";
+                }
+
             } catch (NumberFormatException e) {
                 validYearRange = false;
-                warningMessage = "⚠️ Please enter valid numeric years.";
+                warningMessage = "Please enter valid numeric years.";
             }
 
             // If year range is invalid, show warning and stop processing
