@@ -182,6 +182,57 @@
         </div>
       </form>
 
+      <script>
+        // Client-side year range validation
+        document.getElementById('filter-form').addEventListener('submit', function(e) {
+          const yearStart = document.getElementById('yearStart');
+          const yearEnd = document.getElementById('yearEnd');
+
+          // Clear any previous custom validation messages
+          yearStart.setCustomValidity('');
+          yearEnd.setCustomValidity('');
+
+          const startVal = parseInt(yearStart.value);
+          const endVal = parseInt(yearEnd.value);
+
+          if (yearStart.value && (startVal < 2000 || startVal > 2024)) {
+            yearStart.setCustomValidity('Start year must be between 2000 and 2024');
+            e.preventDefault();
+            yearStart.reportValidity();
+            return false;
+          }
+
+          if (yearEnd.value && (endVal < 2000 || endVal > 2024)) {
+            yearEnd.setCustomValidity('End year must be between 2000 and 2024');
+            e.preventDefault();
+            yearEnd.reportValidity();
+            return false;
+          }
+
+          if (yearStart.value && yearEnd.value && startVal > endVal) {
+            yearStart.setCustomValidity('Start year cannot be greater than end year');
+            e.preventDefault();
+            yearStart.reportValidity();
+            return false;
+          }
+
+          if (!yearStart.value && yearEnd.value) {
+            yearStart.setCustomValidity('Please enter a start year first');
+            e.preventDefault();
+            yearStart.reportValidity();
+            return false;
+          }
+        });
+
+        // Clear validation messages on input
+        document.getElementById('yearStart').addEventListener('input', function() {
+          this.setCustomValidity('');
+        });
+        document.getElementById('yearEnd').addEventListener('input', function() {
+          this.setCustomValidity('');
+        });
+      </script>
+
       <!-- Results -->
       <div th:if="${hasFilters}">
         <div th:if="${infectionData != null and !infectionData.empty}">
