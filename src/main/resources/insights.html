@@ -70,34 +70,30 @@
             <div class="combo-box-simple">
               <label for="start_year">Start Year <span class="required-field">*</span></label>
               <input
-                type="text"
+                type="number"
                 id="start_year"
                 name="start_year"
-                placeholder="Select start year"
-                list="start-year-list"
+                placeholder="2000"
+                min="2000"
+                max="2024"
                 th:value="${selectedStartYear}"
                 required
               />
-              <datalist id="start-year-list">
-                <option th:each="year : ${years}" th:value="${year}"></option>
-              </datalist>
             </div>
 
-            
+
             <div class="combo-box-simple">
               <label for="end_year">End Year <span class="required-field">*</span></label>
               <input
-                type="text"
+                type="number"
                 id="end_year"
                 name="end_year"
-                placeholder="Select end year"
-                list="end-year-list"
+                placeholder="2024"
+                min="2000"
+                max="2024"
                 th:value="${selectedEndYear}"
                 required
               />
-              <datalist id="end-year-list">
-                <option th:each="year : ${years}" th:value="${year}"></option>
-              </datalist>
             </div>
 
             
