@@ -144,33 +144,32 @@
             </div>
 
             <div class="combo-box-simple">
-              <label for="yearStart">Year Range (2000-2024)</label>
+              <label>Year Range (2000-2024, Optional)</label>
               <div class="year-range">
                 <div class="year-start">
                   <input
-                    type="text"
+                    type="number"
                     id="yearStart"
                     name="yearStart"
-                    placeholder="From (2000-2024)"
-                    list="year-list"
+                    placeholder="2000"
+                    min="2000"
+                    max="2024"
                     th:value="${selectedYearStart != null} ? ${selectedYearStart} : ''"
                   />
                 </div>
-                <div class="year-separator">to</div>
+                <span class="year-separator">to</span>
                 <div class="year-end">
                   <input
-                    type="text"
+                    type="number"
                     id="yearEnd"
                     name="yearEnd"
-                    placeholder="To (2000-2024)"
-                    list="year-list"
+                    placeholder="2024"
+                    min="2000"
+                    max="2024"
                     th:value="${selectedYearEnd != null} ? ${selectedYearEnd} : ''"
                   />
                 </div>
               </div>
-              <datalist id="year-list">
-                <option th:each="year : ${years}" th:value="${year}"></option>
-              </datalist>
             </div>
           </div>
 

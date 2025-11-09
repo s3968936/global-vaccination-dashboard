@@ -39,70 +39,69 @@
     <!-- Welcome Section -->
     <div class="content data-page-content page-section welcome-section">
       <h2>Welcome to the Global Health Dashboard</h2>
-        <p>
-          Vaccination has been instrumental in eradicating diseases like
-          smallpox and achieving global herd immunity for others, such as polio.
-          This platform provides comprehensive, unbiased data from the World
-          Health Organisation (WHO) to help families and communities make
-          informed decisions about global immunisation efforts. Whether you are
-          a parent, educator, health professional, or researcher, this site
-          brings together vaccination and infection data in one accessible place.
-        </p>
-        <h3 class="explore-heading">What you can explore:</h3>
-        <ul>
-          <li>
-            <strong>Explore Data:</strong> Filter and analyse vaccination rates
-            by country, vaccine type, region, and time period with interactive
-            charts
-          </li>
-          <li>
-            <strong>Trending:</strong> Discover infection data patterns across
-            different economic development levels and disease types
-          </li>
-          <li>
-            <strong>Insights:</strong> View global vaccination coverage on an
-            interactive world map with detailed country-level data
-          </li>
-          <li>
-            <strong>Mission Statement:</strong> Learn about our target users,
-            project goals, and the team behind this platform
-          </li>
-        </ul>
+      <p class="welcome-intro">
+        Your comprehensive platform for tracking global vaccination and infection trends using WHO data from 2000-2024.
+        Whether you're a parent making informed decisions, an educator teaching public health, a researcher analyzing trends,
+        or simply curious about global health patterns, our dashboard provides accessible, evidence-based insights into
+        vaccination coverage and disease prevention worldwide.
+      </p>
 
-        <h3 class="explore-heading">Diseases and vaccines tracked in our database:</h3>
-        <p>
-          Our database contains data on three critical vaccine-preventable diseases and their corresponding vaccines:
-        </p>
-        <ul>
-          <li>
-            <strong>Measles:</strong> A highly contagious viral disease that can cause serious complications and death. Tracked through <strong>Measles-containing vaccine</strong> coverage data.
-          </li>
-          <li>
-            <strong>Pertussis (Whooping Cough):</strong> A highly contagious respiratory disease that is particularly dangerous for infants and causes severe coughing fits. Tracked through <strong>DTP-containing vaccine</strong> coverage data. DTP stands for Diphtheria, Tetanus, and Pertussis.
-          </li>
-          <li>
-            <strong>Rubella (German Measles):</strong> A viral infection that is particularly dangerous during pregnancy because it can cause severe birth defects in unborn babies. Tracked through <strong>Rubella-containing vaccine</strong> coverage data.
-          </li>
-        </ul>
+      <!-- Features Grid -->
+      <div class="features-grid">
+        <a href="/explore" class="feature-card">
+          <h3>Explore Data</h3>
+          <p>Interactive charts showing vaccination coverage across 217 countries. Filter by vaccines, regions, or time periods and export as CSV or PDF.</p>
+        </a>
 
-        <h3 class="explore-heading">Why vaccinations matter:</h3>
-        <p>
-          Vaccines save millions of lives every year and are one of the most effective tools in public health.
-          They work by training our immune systems to recognise and fight diseases before we get sick. When enough
-          people in a community are vaccinated, it creates protection for everyone, including those who cannot be
-          vaccinated, such as newborn babies and people with weakened immune systems. This is called herd immunity.
-        </p>
-        <p>
-          Vaccination programmes have helped eliminate or significantly reduce many deadly diseases worldwide. For example,
-          measles cases have dropped by over 80% globally since 2000 due to vaccination efforts. However, gaps in
-          vaccination coverage can lead to outbreaks, which is why tracking and understanding vaccination data is essential
-          for protecting communities everywhere.
-        </p>
+        <a href="/trending" class="feature-card">
+          <h3>Trending</h3>
+          <p>Analyze infection patterns across economic development levels. Track measles, pertussis, and rubella trends over time.</p>
+        </a>
 
+        <a href="/insights" class="feature-card">
+          <h3>Insights</h3>
+          <p>Interactive world map visualizing global vaccination coverage. Compare countries and identify regions needing support.</p>
+        </a>
+
+        <a href="/mission" class="feature-card">
+          <h3>Mission Statement</h3>
+          <p>Learn about our commitment to transparent health data and meet the team behind the platform.</p>
+        </a>
+      </div>
+
+      <!-- Diseases Section -->
+      <div class="diseases-section">
+        <h3>Diseases we track</h3>
+        <div class="diseases-grid">
+          <div class="disease-card disease-card-red">
+            <h4>Measles</h4>
+            <p>Highly contagious viral disease that can cause serious complications. We track measles-containing vaccine (MCV) coverage worldwide.</p>
+          </div>
+
+          <div class="disease-card disease-card-orange">
+            <h4>Pertussis (Whooping Cough)</h4>
+            <p>Dangerous respiratory disease, especially for infants. We monitor DTP vaccine coverage (diphtheria, tetanus, and pertussis).</p>
+          </div>
+
+          <div class="disease-card disease-card-purple">
+            <h4>Rubella (German Measles)</h4>
+            <p>Can cause severe birth defects during pregnancy. We track rubella vaccine coverage to prevent congenital rubella syndrome.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Why Vaccines Matter -->
+      <div class="vaccines-impact">
+        <h3>Why vaccines matter</h3>
         <p>
-          Explore the data below to discover key insights about vaccination coverage and infection trends for these diseases, or use our navigation
-          menu to dive deeper into specific areas of interest.
+          Vaccines save 2-3 million lives annually by training our immune systems to fight diseases.
+          When 90-95% of a community is vaccinated, "herd immunity" protects everyone—including those who cannot be vaccinated.
         </p>
+        <p>
+          Since 2000, measles deaths have decreased by over 80% globally through vaccination.
+          <a href="/explore">Explore our data</a> to see vaccination trends and their impact on disease prevention.
+        </p>
+      </div>
     </div>
 
     <div class="content">
